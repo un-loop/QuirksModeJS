@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/stylesheet.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:15 GMT -->
+<head>
+<title>W3C DOM tests - styleSheet tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../quirksmode.css" />
+<link rel="stylesheet" href="teststyles.css" />
+<link rel="stylesheet" href="teststyleSheet.css" />
+<script type="text/javascript" src="../../quirksmode.js"></script>
+<script type="text/javascript" src="testscripts.js"></script>
+<script type="text/javascript" >
+<!--
+var x,y;
+function initPage () {
+	x = document.getElementById('test');
+	var tmp = document.styleSheets;
+	if (tmp) {
+		for (var i=0;i<tmp.length;i++) {
+			if (tmp[i].href.indexOf('teststyleSheet.css') != -1) {
+				y = tmp[i];
+				break;
+			}
+		}
+	}
+}
+
+
+// -->
+</script>
+
+</head>
+
+<body>
+
+<h2>W3C DOM tests - styleSheet tests</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<div class="testHTML">
+<p id="test"
+	style="border: 1px solid #cc0000"
+	>This is element <code>x</code>. It has inline style <code>border: 1px solid #cc0000</code>.
+	Element <code>y</code> is the test style sheet.</p>
+</div>
+</div>
+
+
+<h3 id="testStart">Test scripts</h3>
+
+<h4>styleSheet</h4>
+
+<pre class="testScript">alert(document.styleSheets.length);</pre>
+
+<h4>cssRules</h4>
+
+<p>Should be 2</p>
+<pre class="testScript">alert(y.cssRules.length);</pre>
+<p>Should be <code>undefined</code> (it&#8217;s an <code>@import</code> rule).</p>
+<pre class="testScript">alert(y.cssRules[0].selectorText);</pre>
+<p>Should be <code>p#test,ul</code>.</p>
+<pre class="testScript">alert(y.cssRules[y.cssRules.length-1].selectorText);</pre>
+
+<h4>rules</h4>
+
+<p>Should be 2</p>
+<pre class="testScript">alert(y.rules.length);</pre>
+<p>Should be <code>undefined</code> (it&#8217;s an <code>@import</code> rule).</p>
+<pre class="testScript">alert(y.rules[0].selectorText);</pre>
+<p>Should be <code>p#test,ul</code>.</p>
+<pre class="testScript">alert(y.rules[y.rules.length-1].selectorText);</pre>
+
+<h4>imports</h4>
+
+<pre class="testScript">alert(y.imports.length);</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/stylesheet.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:15 GMT -->
+</html>

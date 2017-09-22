@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/toc.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:09 GMT -->
+<head>
+<title>JavaScript - ToC script</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+</head>
+
+<body>
+
+<h2>Table of Contents script</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 8E of <a href="https://www.quirksmode.org/book/">the book</a> for an explanation of creating HTML elements.</p>
+<p>This script <b>crashes</b> Explorer 5.2 on Mac.</p>
+<p>The h3s and h4s are not in the correct order in Safari 1.3.2, because it doesn't support
+my <a href="getElementsByTagNames.html">getElementsByTagNames()</a> function.</p>
+</div>
+
+<p class="intro">On this page I explain the Table of Contents script that runs in all pages on this site.
+It generates a list of all <code>h3</code>'s and <code>h4</code>'s on the page and offers links to them.</p>
+
+<p>If you want to use it yourself you also need my <a href="getElementsByTagNames.html">getElementsByTagNames()</a>
+function.</p>
+
+<h3>The script</h3>
+
+<pre>
+function createTOC() {
+	var y = document.createElement('div');
+	y.id = 'innertoc';
+	var a = y.appendChild(document.createElement('span'));
+	a.onclick = showhideTOC;
+	a.id = 'contentheader';
+	a.innerHTML = 'show page contents';
+	var z = y.appendChild(document.createElement('div'));
+	z.onclick = showhideTOC;
+	var toBeTOCced = getElementsByTagNames('h2,h3,h4,h5');
+	if (toBeTOCced.length &lt; 2) return false;
+
+	for (var i=0;i&lt;toBeTOCced.length;i++) {
+		var tmp = document.createElement('a');
+		tmp.innerHTML = toBeTOCced[i].innerHTML;
+		tmp.className = 'page';
+		z.appendChild(tmp);
+		if (toBeTOCced[i].nodeName == 'H4')
+			tmp.className += ' indent';
+		if (toBeTOCced[i].nodeName == 'H5')
+			tmp.className += ' extraindent';
+		var headerId = toBeTOCced[i].id || 'link' + i;
+		tmp.href = '#' + headerId;
+		toBeTOCced[i].id = headerId;
+		if (toBeTOCced[i].nodeName == 'H2') {
+			tmp.innerHTML = 'Top';
+			tmp.href = '#top';
+			toBeTOCced[i].id = 'top';
+		}
+	}
+	return y;
+}
+
+var TOCstate = 'none';
+
+function showhideTOC() {
+	TOCstate = (TOCstate == 'none') ? 'block' : 'none';
+	var newText = (TOCstate == 'none') ? 'show page contents' : 'hide page contents';
+	document.getElementById('contentheader').innerHTML = newText;
+	document.getElementById('innertoc').lastChild.style.display = TOCstate;
+}
+</pre>
+
+<h3>Explanation</h3>
+
+<p>The script works as follows:</p>
+
+<h4>Preparations</h4>
+
+<p>First I create a <code>&lt;div id="innertoc"&gt;</code> to hold the table of contents.</p>
+
+<pre>
+function createTOC() {
+	var y = document.createElement('div');
+	y.id = 'innertoc';
+</pre>
+
+<p>I append a <code>&lt;span&gt;</code> to it with the text 'show page contents'. Clicking on this element runs the <code>showhideTOC()</code>
+script I explain below.</p>
+
+
+<pre>
+	var a = y.appendChild(document.createElement('span'));
+	a.onclick = showhideTOC;
+	a.id = 'contentheader';
+	a.innerHTML = 'show page contents';
+</pre>
+
+<p>The I create yet another <code>&lt;div&gt;</code> to contain the actual links. Clicking on this <code>&lt;div&gt;</code>
+(which really means: clicking on any link in this <code>&lt;div&gt;</code>) also calls <code>showhideTOC()</code>.</p>
+
+
+<pre>
+	var z = y.appendChild(document.createElement('div'));
+	z.onclick = showhideTOC;
+</pre>
+
+<h4>Getting the headers</h4>
+
+<p>Then I create a new array <code>toBeTOCced</code> and use my <a href="getElementsByTagNames.html">getElementsByTagNames()</a>
+function to get all headers in the document.</p>
+
+<pre>
+	var toBeTOCced = getElementsByTagNames('h2,h3,h4,h5');
+</pre>
+
+<p>If there's only one item in this array (i.e. the page only contains the <code>&lt;h2&gt;</code> page title)
+I stop the function. I don't want a ToC with only one item.</p>
+
+<pre>
+	if (toBeTOCced.length &lt; 2) return false;
+</pre>
+
+<h4>Creating the ToC</h4>
+
+<p>Now I start creating the ToC. I go through the <code>toBeTOCced</code> array. For each element I create a link
+that has the same text as the header. Note the use of <code>innerHTML</code>: a few headers on this site contain
+HTML tags like <code>&lt;code&gt;</code>, and I want these to show up in the ToC, too. I append these newly
+created links to the ToC's inner <code>&lt;div&gt;</code>.</p>
+
+<pre>
+	for (var i=0;i&lt;toBeTOCced.length;i++) {
+		var tmp = document.createElement('a');
+		tmp.innerHTML = toBeTOCced[i].innerHTML;
+		tmp.className = 'page';
+		z.appendChild(tmp);
+</pre>
+
+<p>I add an extra class to the link if the current header is an <code>&lt;h4&gt;</code> or <code>&lt;h5&gt;</code>. These
+classes create the fake nested lists.</p>
+
+<pre>
+		if (toBeTOCced[i].nodeName == 'H4')
+			tmp.className += ' indent';
+		if (toBeTOCced[i].nodeName == 'H5')
+			tmp.className += ' extraindent';
+</pre>
+
+<p>Now we have to link the <code>&lt;a&gt;</code> element I just created with the header it refers to. This
+requires the creation of a unique ID. However, the header may already have an ID, since on a few old pages on
+this site I use internal links (<code>&lt;a href="#somewhere&gt;</code>/<code>&lt;h3 id="somewhere"&gt;</code>).
+I don't want to break these internal links, so I preferably use the ID the header already has. Only when the
+header has no ID yet do I create one by appending the number of the current header to the text 'link'.</p>
+
+<pre>
+		var headerId = toBeTOCced[i].id || 'link' + i;
+</pre>
+
+<p>The link we just created gets an <code>href</code> of '#' plus the newly created ID, and the header itselfs
+also receives the correct ID.</p>
+
+<pre>
+		tmp.href = '#' + headerId;
+		toBeTOCced[i].id = headerId;
+</pre>
+
+<p>Finally a special case: if the header is the <code>&lt;h2&gt;</code> that heads the page, it's called 'top'
+and also gets that ID.</p>
+
+<pre>
+		if (toBeTOCced[i].nodeName == 'H2') {
+			tmp.innerHTML = 'Top';
+			tmp.href = '#top';
+			toBeTOCced[i].id = 'top';
+		}
+	}
+</pre>
+
+<p>The Table of Contents is now ready; we return it to whichever function asked for it.</p>
+
+<pre>
+	return y;
+}
+</pre>
+
+<h4>Showing and hiding the ToC</h4>
+
+<p>Finally, the function that shows and hides the ToC. It's very simple: it first checks the current ToC state,
+and then generates a new text and a new <code>display</code> value based on that information.</p>
+
+<pre>
+var TOCstate = 'none';
+
+function showhideTOC() {
+	TOCstate = (TOCstate == 'none') ? 'block' : 'none';
+	var newText = (TOCstate == 'none') ? 'show page contents' : 'hide page contents';
+	document.getElementById('contentheader').innerHTML = newText;
+	document.getElementById('innertoc').lastChild.style.display = TOCstate;
+}
+</pre>
+
+
+<p>This function is called whenever the user clicks on the 'Contents' span, so he can toggle the display of
+the ToC. In addition, it's called whenever the user clicks on a link. This immediately hides the ToC.</p>
+
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/toc.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:09 GMT -->
+</html>

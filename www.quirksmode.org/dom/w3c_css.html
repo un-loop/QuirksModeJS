@@ -1,0 +1,947 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/w3c_css.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:02 GMT -->
+<head>
+<title>W3C DOM Compatibility - CSS</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+
+<body>
+
+
+<h2>W3C DOM Compatibility - CSS</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Last major update on <span class="lastUpdate">19 July 2010</span>.</p>
+<p>This page has been translated into <a href="http://www.costeamarian.com/translations/dom/w3c_css.html" class="external">Romanian</a>.</p>
+<p class="smaller">You can also view the <a href="w3c_cssOld.html">previous version</a>.</p>
+</div>
+
+<p class="intro">This compatibility table details support for the W3C DOM CSS Level 2
+modules and assorted Microsoft extensions in all modern browsers.</p>
+
+<p class="accent">Want these Tables updated? Join the <a href="https://www.quirksmode.org/blog/archives/2011/06/donation_drive.html">donation drive</a>.</p>
+
+<p>This page contains five tables. The first three are quite important, the last two
+aren't.</p>
+
+<ol>
+
+<li>First the ways of accessing <a href="#style" class="page">styles</a> of individual HTML elements.</li>
+<li>How to access whole <a href="#access" class="page">style sheets</a>.</li>
+<li class="lastimportant">How to <a href="#change" class="page">change</a> style sheets.</li>
+<li>Some <a href="#properties" class="page">properties</a> of style sheets and style rules.</li>
+<li>Finally some less important <a href="#misc" class="page">miscellaneous</a> methods.</li>
+</ol>
+
+<h3 id="style">Element styles</h3>
+
+<p>Basic style manipulation starts with accessing styles of individual HTML elements. The
+important <code>style</code> property gives access to the inline styles of the element.
+Finding out which non-inline styles apply to an element is more difficult. See the
+<a href="getstyles.html">Get styles</a> page for a practical example.</p>
+
+<table class="compatibility" cellspacing="5">
+
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- CURRENTSTYLE -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">currentStyle</div>
+		The current style of the element, however this style is set
+		<br /><br /><a href="tests/style.html#currentStyle">Test page</a>
+	<b class="warning">Microsoft</b>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>x.currentStyle</pre>
+	<p>Returns the actual style of element <code>x</code>, even if this is not an inline
+	style. It thus reports the result of all style declarations that work on element <code>x</code>.</p>
+	</td>
+</tr>
+
+<!-- GETCOMPUTEDSTYLE -->
+
+<tr>
+	<td rowspan="2" class="declaration">
+		<div class="name">getComputed<wbr />Style()</div>
+		The current style of the element, however this style is set
+		<br /><br /><a href="tests/style.html#getComputedStyle">Test page</a>
+		<b class="warning">W3C</b>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>window.getComputedStyle(x,null).color</pre>
+	<p>Read out the current color style of element <code>x</code>. All units are converted to pixels first.</p></td>
+</tr>
+
+<!-- STYLE -->
+
+<tr>
+	<td class="declaration" rowspan="6">
+		<div class="name">style</div>
+		The <em>inline</em> style of the element
+		<br /><br /><a href="tests/style.html#style">Test page</a>
+	</td>
+	<td class="comp almost" colspan="2">Almost</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>x.style</pre>
+	<p>Access the <em>inline</em> styles of element <code>x</code>. Styles defined in embedded,
+	linked or imported style sheets are not reported.</p>
+	<p>You can also set it: <code>x.style.color = '#0000cc'</code>. This sets the <em>inline</em> style,
+	which of course overrules all other styles.</p>
+	<ul>
+		<li>Konqueror has trouble with reading out the <code>border</code> style that I use in my test.
+		However, in general <code>style</code> works correctly in both browsers.</li>
+		<li>IE5.5 and 6 have problems with setting the new <code>border</code> rule, but I suspect that's
+		caused by my template and not by the actual test. In general they support <code>style</code> changes
+		well.</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+
+</tr>
+<tr>
+	<td colspan="20"><pre>x.style = 'font-size: 150%'</pre>
+	<p>Change the inline styles to <em>only</em> <code>font-size: 150%</code>.</p>
+	</td>
+</tr>
+<tr>
+	<td class="comp incomplete" colspan="4">Read only
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[0].style</pre>
+	<p>Access the styles in the first rule of the second style sheet. These, too, can be set:<br />
+	<code>document.styleSheets[1].cssRules[0].style.color = '#0000cc'</code></p>
+	<p>(IE uses <code>rules</code> instead of <code>cssRules</code>, obviously.)</p>
+	</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+</table>
+
+<h3 id="access">Accessing style sheets</h3>
+
+<p>You can access and change entire style sheets.
+See the <a href="changess.html">Change style sheet</a> page for
+an introduction to these properties and the inevitable browser compatibility problems.</p>
+
+<table class="compatibility wide" cellspacing="5">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- CSSRULES -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">cssRules[]</div>
+		An array with all rules in a stylesheet.
+		<br /><br /><a href="tests/stylesheet.html#cssRules">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1]</pre>
+	<p>Access the second rule of the second style sheet in the document.</p></td>
+</tr>
+
+<!-- IMPORTS -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">imports[]</div>
+		An array with all imported style sheets in a style sheet
+		<br /><br /><a href="tests/stylesheet.html#imports">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="2">No</td>
+ 	<td class="comp no" colspan="3">No</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].imports</pre>
+	<p>Access all style sheets that are imported by the second style sheet in the document.</p>	</td>
+</tr>
+
+<!-- RULES-->
+
+<tr>
+	<td rowspan="2" class="declaration">
+		<div class="name">rules[]</div>
+		An array with all rules in a stylesheet.
+		<br /><br /><a href="tests/stylesheet.html#rules">Test page</a>
+	</td>
+	<td class="comp incorrect" colspan="5">Incor<wbr />rect</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp no" colspan="3">No</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].rules[1]</pre>
+	<p>Access the second rule of the second style sheet in the document.</p>
+	<p><code>rules</code> does not contain <code>@import</code> declarations, while <code>cssRules</code>
+	does.</p>
+	<ul>
+		<li>IE doesn't count <code>@import</code>s as rules, but splits up selectors like <code>p#test, ul</code>
+		into two rules. This behaviour persists in IE9, although <code>cssRules</code> works correctly.</li>
+	</ul>
+	</td>
+</tr>
+
+
+
+<!-- STYLESHEETS -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">styleSheets[]</div>
+		An array with all stylesheets in the document
+		<br /><br /><a href="tests/stylesheet.html#styleSheet">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1]</pre>
+	<p>Access the second style sheet (linked or embedded) in the document.</p>
+	</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+</table>
+
+
+
+<h3 id="change">Changing style sheets</h3>
+
+<p>You can change entire style sheets, which means that the styles you change will apply to
+the whole HTML page, not just one element. There are some cute old-fashioned browser compatibility
+problems here.</p>
+
+<table class="compatibility wide" cellspacing="5">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- ADDRULE-->
+
+<tr>
+	<td rowspan="2" class="declaration">
+		<div class="name">addRule()</div>
+		Add a rule into a stylesheet the Microsoft way
+		<br /><br /><a href="tests/addrules.html#addRule">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp no" colspan="3">No</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].addRule('pre', 'font: 14px verdana')</pre>
+	<p>Add the rule <code>pre {font: 14px verdana}</code> to the second style sheet in the document.</p>
+	</td>
+</tr>
+
+<!-- DELETERULE -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">deleteRule()</div>
+		Delete a rule from a stylesheet the W3C way
+		<br /><br /><a href="tests/addrules.html#deleteRule">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].deleteRule(1)</pre>
+	<p>Delete the second rule of the second style sheet in the document.</p>
+	</td>
+</tr>
+
+<!-- INSERTRULE -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">insertRule()</div>
+		Insert a rule into a stylesheet the W3C way
+		<br /><br /><a href="tests/addrules.html#insertRule">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>var x = document.styleSheets[1];
+x.insertRule('pre {font: 14px verdana}',x.cssRules.length)</pre>
+	<p>Insert the rule <code>pre {font: 14px verdana}</code> into the second style sheet in the document at the last position
+	(<code>length</code> of the cssRules array).</p>
+	<p>Unfortunately the second argument is required. It should default to <code>cssRules.length</code>.</p>
+	</td>
+</tr>
+
+<!-- REMOVERULE-->
+
+<tr>
+	<td rowspan="2" class="declaration">
+		<div class="name">removeRule()</div>
+		 Remove a rule from a stylesheet the Microsoft way
+		<br /><br /><a href="tests/addrules.html#removeRule">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp no" colspan="3">No</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].removeRule(1)</pre>
+	<p>Remove the second rule from the second style sheet in the document.</p>
+	</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+</table>
+
+<h3 id="properties">Style sheet properties</h3>
+
+<p>Style sheets and their rules have several properties. They aren't very interesting, and
+browser incompatibilities make sure that they won't be used much.</p>
+
+<table class="compatibility wide" cellspacing="5">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- CSSTEXT -->
+
+<tr>
+	<td class="declaration" rowspan="8">
+		<div class="name">cssText</div>
+		The CSS of a rule as a string.
+		<br /><br /><a href="tests/cssProps.html#cssText">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>x.style.cssText</pre>
+	<p>Returns the entire inline style of element <code>x</code>.</p>
+	</td>
+</tr>
+
+<tr>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="3">No</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssText</pre>
+	<p>Returns the entire content of the style sheet.</p>
+	</td>
+</tr>
+
+<tr>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1].cssText</pre>
+	<p>Returns the entire text of the rule (for instance <code>pre {font: 14px verdana;}</code>).</p>
+	<p>(Obviously, IE needs <code>rules</code> instead of <code>cssRules</code>.)</p>
+	</td>
+</tr>
+
+<tr>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1].style.cssText</pre>
+	<p>Returns all declarations of the rule (for instance <code>font: 14px verdana;</code>).</p>
+	<p>(Obviously, IE needs <code>rules</code> instead of <code>cssRules</code>.)</p>
+	</td>
+</tr>
+
+<!-- DISABLED -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">disabled</div>
+		Whether the stylesheet is disabled
+		<br /><br /><a href="tests/cssProps.html#disabled">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].disabled = true</pre>
+	<p>Disable the second style sheet of the document. (Setting it to <code>false</code> enables the
+	style sheet again).</p>
+	</td>
+</tr>
+
+<!-- HREF -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">href</div>
+		The href of a stylesheet
+		<br /><br /><a href="tests/cssProps.html#href">Test page</a>
+	</td>
+	<td class="comp yes" colspan="4">Yes+</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheet[0].href</pre>
+	<p>Get the <code>href</code> of the style sheet. This is a relative path in IE; a complete URL in all
+	other browsers.</p>
+	<ul>
+		<li>IE up to 8 allows you to change the <code>href</code>.</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- SELECTORTEXT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">selectorText</div>
+		The selector of a rule as a string
+		<br /><br /><a href="tests/cssProps.html#selectorText">Test page</a>
+	</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp incorrect">Incor<wbr>rect</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes+</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1].selectorText</pre>
+	<p>Get the selector text of the second rule in the second style sheet in the document.</p>
+	<p>Note that some browsers return UPPER CASE selector texts even when the style sheet contains
+	lower case selectors. Use <code>selectorText.toLowerCase()</code> for all your comparisons.</p>
+	<ul>
+		<li>Opera allows you to set the <code>selectorText</code>.</li>
+		<li>IE splits all comma selectors into several rules (<code>p#test, li</code> becomes two rules,
+		one for <code>p#test</code>, one for <code>li</code>). This is not counted as a bug in this test;
+		IE shows the correct <code>selectorText</code> according to its own rules.</li>
+		<li>IE9, however, persists in this behaviour even though it support for <code>cssRules</code> is
+		supposed to be standards compliant and thus return <code>p#test, ul</code>. What it returns,
+		however, is <code>p#test</code>. I assume this is a bug in the <code>selectorText</code>
+		implementation, and not in the actual style sheet (i.e. the rule <em>does</em> apply to both
+		<code>p#test</code> and <code>ul</code>.)</li>
+	</ul>
+	</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+
+</table>
+
+<h3 id="misc">Miscellaneous</h3>
+
+<p>Miscellaneous stuff. Generally not important.</p>
+
+<table class="compatibility wide" cellspacing="5">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- CREATESTYLESHEET-->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">create<wbr />StyleSheet()</div>
+		Create a style sheet
+		<br /><br /><a href="tests/cssMisc.html#createStyleSheet">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp no" colspan="3">No</td>
+	<td class="comp test">To be tested</td>
+	</tr>
+<tr>
+	<td colspan="20"><pre>document.createStyleSheet('extrastyle.css')</pre>
+	<p>Create an extra style (sheet) and append it to the styleSheets[] array.</p>
+	</td>
+</tr>
+
+<!-- GETPROPERTYPRIORITY -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">getProperty<wbr />Priority()</div>
+		Get the property priority (<code>!important</code> or not)
+		<br /><br /><a href="tests/cssMisc.html#getPropertyPriority">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1].style.getPropertyPriority('color')</pre>
+	<p>Returns <code>important</code> when the style is marked <code>!important</code>. Returns an empty string otherwise.</p>
+	<p>(Obviously, IE needs <code>rules</code> instead of <code>cssRules</code>.)</p>
+	</td>
+</tr>
+
+<!-- GETPROPERTYVALUE -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">getProperty<wbr />Value()</div>
+		Get the value of a style property
+		<br /><br /><a href="tests/cssMisc.html#getPropertyValue">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.getElementById('test').style.getPropertyValue('color')
+document.styleSheets[1].cssRules[1].style.getPropertyValue('color')</pre>
+	<p>Get the color declaration of the style object. This works on all style objects. Of course,
+	reading out <code>style.color</code> is much easier.</p>
+	</td>
+</tr>
+
+<!-- OWNERNODE -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">ownerNode</div>
+		The owner of a style sheet
+		<br /><br /><a href="tests/cssMisc.html#ownerNode">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].ownerNode</pre>
+	<p>Access the owner node of the style sheet, usually a <code>&lt;link&gt;</code> or a
+	<code>&lt;style&gt;</code> tag.</p>
+	</td>
+</tr>
+
+<!-- PARENTSTYLESHEET -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">parent<wbr />StyleSheet</div>
+		The stylesheet a declaration is part of
+		<br /><br /><a href="tests/cssMisc.html#parentStyleSheet">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1].parentStyleSheet</pre>
+	<p>Access the parent style sheet of the rule, which is once again <code>document.styleSheets[1]</code>.</p>
+	</td>
+</tr>
+
+<!-- REMOVEPROPERTY -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">remove<wbr />Property()</div>
+		Remove a style declaration entirely
+		<br /><br /><a href="tests/cssMisc.html#removeProperty">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incomplete" colspan="3">Incom<wbr />plete</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>document.styleSheets[1].cssRules[1].style.removeProperty('color')
+document.getElementById('test').style.removeProperty('color')</pre>
+	<p>Remove the color declaration from the second rule of the second style sheet on the page or the
+	element with ID="test".</p>
+	<ul>
+		<li>Opera refuses to remove the last remaining property of a rule.</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- SETPROPERTY -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">set<wbr />Property()</div>
+		Set a style property
+		<br /><br /><a href="tests/cssMisc.html#setProperty">Test page</a>
+	</td>
+	<td class="comp no" colspan="5">No</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="20"><pre>x.style.setProperty('color','#00cc00',null)
+document.styleSheets[1].cssRules[1].style.setProperty('color','#00cc00',null)</pre>
+	<p>Set the color of <code>x</code> or the second rule in the second style sheet to green.</p>
+	<p>As usual, the <code>null</code> is required. (Default values, anyone?) You can also use <code>important</code>
+	instead.</p>
+	</td>
+</tr>
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+</table>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/w3c_css.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:04 GMT -->
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/cms.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:08 GMT -->
+<head>
+<title>JavaScript - Edit text</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+<!--
+
+var editing  = false;
+
+if (document.getElementById && document.createElement) {
+	var butt = document.createElement('BUTTON');
+	var buttext = document.createTextNode('Ready!');
+	butt.appendChild(buttext);
+	butt.onclick = saveEdit;
+}
+
+function catchIt(e) {
+	if (editing) return;
+	if (!document.getElementById || !document.createElement) return;
+	if (!e) var obj = window.event.srcElement;
+	else var obj = e.target;
+	while (obj.nodeType != 1) {
+		obj = obj.parentNode;
+	}
+	if (obj.tagName == 'TEXTAREA' || obj.tagName == 'A') return;
+	while (obj.nodeName != 'P' && obj.nodeName != 'HTML') {
+		obj = obj.parentNode;
+	}
+	if (obj.nodeName == 'HTML') return;
+	var x = obj.innerHTML;
+	var y = document.createElement('TEXTAREA');
+//	y.appendChild(document.createTextNode(x));
+	var z = obj.parentNode;
+	z.insertBefore(y,obj);
+	z.insertBefore(butt,obj);
+	z.removeChild(obj);
+	y.value = x;
+	y.focus();
+	editing = true;
+	return false;
+}
+
+function saveEdit() {
+	var area = document.getElementsByTagName('TEXTAREA')[0];
+	var y = document.createElement('P');
+	var z = area.parentNode;
+	y.innerHTML = area.value;
+	z.insertBefore(y,area);
+	z.removeChild(area);
+	z.removeChild(document.getElementsByTagName('button')[0]);
+	editing = false;
+	return false;
+}
+
+
+document.onclick = catchIt;
+
+// -->
+</script>
+<style type="text/css">
+textarea {margin-left: 10%;
+	width: 75%;
+	height: 100px;}
+
+</style>
+</head>
+
+<body>
+
+<h2>Edit text</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See sections 8D and 8E of <a href="https://www.quirksmode.org/book/">the book</a> for an explanation of the methods and properties
+used in this script.</p>
+<p>The TEXTAREA behaves strangely in Explorer 5 on Mac: it falls over the other elements,
+instead of stretching up the page, and initially not all text is shown. Move your mouse up to see
+all the text. It doesn't register hard returns, either.</p>
+<p>Explorer and Opera refuse to accept block level elements inside the test paragraphs.</p>
+</div>
+
+<p class="intro">On this page I give a script for updating a page which can be very useful in a content
+management system. Click on any paragraph and you can edit the text. When you're done, press the button and
+the new text shows up normally.</p>
+
+<h3>Example</h3>
+
+<p>This entire page is the example. Click on any paragraph, edit it, then press 'Ready'. Your changes will
+show up in the page.</p>
+
+<script type="text/javascript">
+<!--
+if (!document.getElementById || !document.createElement)
+{
+	document.write('<p>Unfortunately your browser <em>can\'t handle</em> the script so nothing will happen.');
+}
+// -->
+</script>
+
+<h3>Problems</h3>
+
+<p>First of all some problems I encountered. I want to use a textarea as the edit field. First I
+didn't get the content into the TEXTAREA.
+An alert reader discovered that Mozilla needs the <code>value</code> to be set
+<em>after</em> inserting the textarea into the document.</p>
+
+<p>Besides, the content doesn't wrap nicely
+in Mozilla, it retains the hard returns from the source code. I experimented with several
+values of the <code>WRAP</code> attribute, but doing nothing gave the best result in the end.</p>
+
+<p>The worst problem is sending the altered text back to the server, something
+any content management system will want to do.<br />
+Readers have sent me various ingenious suggestions to do this.
+However, since it cannot be done through JavaScript (yet) I don&#8217;t treat the solution to
+this problem on my site. So <b>please don't mail me</b> that you found this or that way to do it:
+it's certainly possible, but I'm only interested in a pure JavaScript solution without any server
+side scripts.</p>
+
+<h3>The script</h3>
+
+<pre>
+var editing  = false;
+
+if (document.getElementById && document.createElement) {
+	var butt = document.createElement('BUTTON');
+	var buttext = document.createTextNode('Ready!');
+	butt.appendChild(buttext);
+	butt.onclick = saveEdit;
+}
+
+function catchIt(e) {
+	if (editing) return;
+	if (!document.getElementById || !document.createElement) return;
+	if (!e) var obj = window.event.srcElement;
+	else var obj = e.target;
+	while (obj.nodeType != 1) {
+		obj = obj.parentNode;
+	}
+	if (obj.tagName == 'TEXTAREA' || obj.tagName == 'A') return;
+	while (obj.nodeName != 'P' && obj.nodeName != 'HTML') {
+		obj = obj.parentNode;
+	}
+	if (obj.nodeName == 'HTML') return;
+	var x = obj.innerHTML;
+	var y = document.createElement('TEXTAREA');
+	var z = obj.parentNode;
+	z.insertBefore(y,obj);
+	z.insertBefore(butt,obj);
+	z.removeChild(obj);
+	y.value = x;
+	y.focus();
+	editing = true;
+}
+
+function saveEdit() {
+	var area = document.getElementsByTagName('TEXTAREA')[0];
+	var y = document.createElement('P');
+	var z = area.parentNode;
+	y.innerHTML = area.value;
+	z.insertBefore(y,area);
+	z.removeChild(area);
+	z.removeChild(document.getElementsByTagName('button')[0]);
+	editing = false;
+}
+
+document.onclick = catchIt;
+</pre>
+
+<h3>Explanation</h3>
+
+<p>We set a flag <code>editing</code> to false. This shows whether the user is currently editing
+a paragraph. Initially he isn't, of course.</p>
+
+<pre>
+var editing  = false;
+</pre>
+
+<h4>Create the button</h4>
+
+<p>Then we create the 'Ready' button that we'll need several times. For this we need the
+most advanced scripting, so first some <a href="../js/support.html">object detection</a>:</p>
+
+<pre>
+if (document.getElementById && document.createElement) {
+</pre>
+
+<p>If this is a modern browser,  create a BUTTON node</p>
+
+<pre>
+	var butt = document.createElement('BUTTON');
+</pre>
+
+<p>and its text</p>
+
+<pre>
+	var buttext = document.createTextNode('Ready!');
+</pre>
+
+<p>Append the text to the button so that it is shown</p>
+
+<pre>
+	butt.appendChild(buttext);
+</pre>
+
+<p>Finally add an onClick event that calls the function <code>saveEdit()</code>.</p>
+
+<pre>
+	butt.onclick = saveEdit;
+}
+</pre>
+
+<p>The button now resides in the variable <code>butt</code>. We can call it if we need it.</p>
+
+<h4>P to TEXTAREA</h4>
+
+<p>Later on we'll define a general onClick event for the entire pages. All these events
+are sent to the function <code>catchIt()</code>.</p>
+
+<pre>
+function catchIt(e) {
+</pre>
+
+<p>First of all, check if the user is currently editing a paragraph. If he is (<code>editing</code>
+is true) end the function.</p>
+
+<pre>
+	if (editing) return;
+</pre>
+
+
+<p>Support detection.</p>
+
+<pre>
+	if (!document.getElementById || !document.createElement) return;
+</pre>
+
+<p>Then we find the
+<a href="../js/events_properties.html">target</a> of the event,</p>
+
+<pre>
+	if (!e) var obj = window.event.srcElement;
+	else var obj = e.target;
+</pre>
+
+<p>Now we have the target, but a problem is that Mozilla considers the text node (and not the
+containing P) to be the target. Therefore we go up through the DOM tree as long as the current node is
+not a tag (as long as its nodeType is not 1).</p>
+
+<pre>
+	while (obj.nodeType != 1) {
+		obj = obj.parentNode;
+	}
+</pre>
+
+<p>Now we have ended up with a tag. If this is the textarea tag the user has clicked in the edit
+box to edit the text. If it's a link, it should be clickable as usual. In these cases nothing
+should happen so we end the function.</p>
+
+<pre>
+	if (obj.tagName == 'TEXTAREA' || obj.tagName == 'A') return;
+</pre>
+
+<p>Once again we go up through the DOM tree to find either a P or the HTML tag as the ultimate
+ancestor of the target of the click.</p>
+
+<pre>
+	while (obj.nodeName != 'P' && obj.nodeName != 'HTML') {
+		obj = obj.parentNode;
+	}
+</pre>
+
+<p>If we find the HTML tag the user has clicked outside a paragraph and nothing should happen.
+We end the function.</p>
+
+<pre>
+	if (obj.nodeName == 'HTML') return;
+</pre>
+
+<p>After this check we finally are certain that the user has clicked on a paragraph and that he wants
+to edit it. Take the innerHTML of the paragraph and store it.</p>
+
+<pre>
+	var x = obj.innerHTML;
+</pre>
+
+<p>Create a new TEXTAREA element and store it.</p>
+
+<pre>
+	var y = document.createElement('TEXTAREA');
+</pre>
+
+<p>Then take the parent node of the paragraph.</p>
+
+<pre>
+	var z = obj.parentNode;
+</pre>
+
+<p>The situation is now:</p>
+
+<pre>
+                        z
+                        |
+    ---------------------------------------
+    |                   |                 |
+  [more]                P               [more]
+</pre>
+
+<p>Insert the new TEXTAREA just before the paragraph in its parent node.</p>
+
+<pre>
+	z.insertBefore(y,obj);
+</pre>
+
+<p>Do the same for the 'Ready' button.</p>
+
+<pre>
+	z.insertBefore(butt,obj);
+</pre>
+
+<p>Now the tree looks like this:</p>
+
+<pre>
+                        z
+                        |
+    ---------------------------------------
+    |       |           |           |     |
+  [more] y(TEXTAREA)  butt(BUTTON)  P   [more]
+</pre>
+
+<p>Remove the paragraph itself. Now it seems as if the textarea and button have taken the place of
+the paragraph.</p>
+
+<pre>
+	z.removeChild(obj);
+</pre>
+
+<p>Only now, after inserting it, we can put the inner HTML of the P in the TEXTAREA. Doing this
+before insertion is impossible in Mozilla.</p>
+
+<pre>
+	y.value = x;
+</pre>
+
+<p>Put the focus on the textarea for user convenience</p>
+
+<pre>
+	y.focus();
+</pre>
+
+<p>and set <code>editing</code> to true: user is busy editing.</p>
+
+<pre>
+	editing = true;
+}
+</pre>
+
+<h4>TEXTAREA to P</h4>
+
+<p>When the user clicks on the 'Ready' button we should do the reverse. The function
+<code>saveEdit()</code> takes care of everything.</p>
+
+<pre>
+function saveEdit() {
+</pre>
+
+<p>Get the TEXTAREA (this assumes there is only one such field in the entire page).</p>
+
+<pre>
+	var area = document.getElementsByTagName('TEXTAREA')[0]
+</pre>
+
+<p>Create a new paragraph and store it.</p>
+
+<pre>
+	var y = document.createElement('P');
+</pre>
+
+<p>Find the parent node of the textarea: the paragraph should be appended to it.</p>
+
+<pre>
+	var z = area.parentNode;
+</pre>
+
+<p>Set the innerHTML of the new paragraph to the value of the textarea.</p>
+
+<pre>
+	y.innerHTML = area.value;
+</pre>
+
+<p>Then insert the new paragraph just before the textarea.</p>
+
+<pre>
+	z.insertBefore(y,area);
+</pre>
+
+<p>Remove the textarea.</p>
+
+<pre>
+	z.removeChild(area);
+</pre>
+
+<p>Remove the 'Ready' button (again, this assumes there is only one button on the page).</p>
+
+<pre>
+	z.removeChild(document.getElementsByTagName('button')[0]);
+</pre>
+
+<p>Finally, set <code>editing</code> to false: the user has stopped editing.</p>
+
+<pre>
+	editing = false;
+}
+</pre>
+
+<h4>Event</h4>
+
+<p>Outside and after the functions, set a general onclick event for the entire page calling
+the function <code>catchIt()</code>:</p>
+
+<pre>
+document.onclick = catchIt;
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/cms.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:08 GMT -->
+</html>

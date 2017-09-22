@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/forms.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+<head>
+<title>JavaScript - Introduction to Forms</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+</head>
+
+<body>
+
+<h2>Introduction to Forms</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 8J of <a href="https://www.quirksmode.org/book/">the book</a>. However, this page contains a more complete overview
+of how to write a basic form validation script.</p>
+</div>
+
+<p class="intro">On this page I give the code you need for checking user input in a form.
+Using these bits of code, you can write your own scripts to validate forms</p>
+
+<p>I can't give you a complete script, because each form and each check are different.
+You'll have to use the elements I explain on this page to build your own script.
+I created an <a href="formex.html">example form and script</a> that you can study to
+get the hang of it.</p>
+
+<p>On this page I discuss the
+<a class="page" href="#limits">limitations</a> of using JavaScript to check a form, then I'll explain the
+<a class="page" href="#onsubmit">onsubmit event handler</a>, followed by the few
+<a class="page" href="#methods">methods and properties</a> of the form itself.
+Then it's time for
+<a class="page" href="#access">accessing the form elements</a> and the specific syntax for accessing
+the user defined
+<a class="page" href="#value">value</a> of form elements.</p>
+
+<p class="smaller">See also Jeff Howden's excellent article
+<a href="http://www.evolt.org/article/rating/17/28553/index.html"
+	class="external" >Forms & JavaScript Living Together in Harmony</a>
+for some of the most common usability errors and their solutions.</p>
+
+<h3 id="limits">Limitations</h3>
+
+<p>First of all, you should have a clear idea of what happens when a user submits a
+form that has a JavaScript validation script:</p>
+
+<ol>
+<li>The form is checked by a JavaScript like the one described below.
+If the script finds a mistake the submission is halted here. The user sees an alert
+and is asked to re-enter some data.</li>
+<li>If nothing is wrong&#8212;or if JavaScript is disabled&#8212;the form is sent to the server and is processed by a CGI
+script.</li>
+<li>If the CGI script finds a mistake it generates some HTML with an error message
+and sends it back to the user. In this case the user has to go back to the form,
+re-enter some values and again submit it.</li>
+<li>If no mistakes are found, the CGI script does whatever it has to do with the data
+and directs the user to a Thank You page.</li>
+</ol>
+
+<p>As you see, the form is checked for mistakes <em>twice</em>: by the JavaScript
+and by the CGI script. The CGI check always works, since CGI is server side. The
+JavaScript check only works when the user has JavaScript enabled.
+It follows that the CGI check is the most reliable: it always works regardless of
+what browser is used. Then why use a JavaScript check too?</p>
+
+<p>The JavaScript check is very useful <em>in addition to</em> the CGI check because it
+can catch mistakes before the form is actually sent to the server. Thus the user doesn't have to
+use his <em>back</em> button to return to the form, something that may cause confusion, and then
+search for the incorrect form field, which may cause even more confusion.
+Therefore the JavaScript check is more user friendly than the CGI check.</p>
+
+<p>In addition, when you use JavaScript the
+server doesn't need to spend quite so much time in error handling and is thus a little
+quicker. This only matters if you have lots and lots of forms, but it's good to
+keep it in mind.</p>
+
+<p>So JavaScript is <em>not</em> a fail-safe method of catching mistakes, but it is very
+useful as an addition to CGI checks since it lightens the load on the server and is
+more user friendly.
+Therefore I recommend using <em>both</em> JavaScript form checks <em>and</em> CGI form checks. This
+way, you get both user friendliness and security.</p>
+
+<h3 id="onsubmit">onsubmit</h3>
+
+<p>When using JavaScript to check a form, the first thing you need is the <code>onsubmit</code> event handler.
+This event handler specifies a script that is executed when the user submits the form. That script is where
+you check whether certain fields have a value, whether the user has checked at least one checkbox,
+and any other checks you deem necessary.</p>
+
+<p>The general syntax is:</p>
+
+<pre>
+&lt;form action="something.pl" onsubmit="return checkscript()">
+</pre>
+
+<p>where <code>checkscript()</code> is the name of the script. This script should return either <code>true</code>
+or <code>false</code>. If <code>false</code> is returned, the form will not be submitted. If either <code>true</code>
+or <code>false</code> is returned the script stops.</p>
+
+<p>So the general script becomes something like:</p>
+
+<pre>
+function checkscript() {
+	if (some value is/is not something) {
+		// something is wrong
+		alert('alert user of problem');
+		<b>return false</b>;
+	}
+	else if (another value is/is not something) {
+		// something else is wrong
+		alert('alert user of problem');
+		<b>return false</b>;
+	}
+
+	// If the script makes it to here, everything is OK,
+	// so you can submit the form
+
+	<b>return true</b>;
+}
+</pre>
+
+<p>Of course this function can become much more complex if you have to check a complicated
+form with a lot of radio buttons and things. The general idea remains the same, however: You
+go through the elements, check whatever you want to check and as soon as you find any mistake, you <code>return false</code>, after
+which the script stops and the form is not submitted.</p>
+
+<p>Once you've found a mistake, you should notify the user of the problem. This used to be done by an <code>alert</code>,
+but nowadays you can <a href="https://www.quirksmode.org/dom/error.html">generate error messages</a> and insert them next to the form field.</p>
+
+
+<p>Only at the very end of the script, when you have checked all elements and encountered no mistakes,
+you <code>return true</code>, after which the form is submitted.</p>
+
+
+<h3 id="methods">Form methods and properties</h3>
+
+<p>JavaScript has a few built-in methods and properties for dealing with forms. Three of them
+are especially important:</p>
+
+<p>You can submit a form by using the <code>submit()</code> method. To submit the first form on
+the page, do</p>
+
+<pre>
+document.forms[0].submit()
+</pre>
+
+<p>Please note that when a form is submitted by JavaScript <b>the <code>onsubmit</code> event handler
+is never executed</b>.<br />
+To reset the form, do</p>
+
+<pre>
+document.forms[0].reset()
+</pre>
+
+<p>I assume, but have not tested, that the <code>onreset</code> event handler isn&#8217;t executed
+either if you reset the form through JavaScript.</p>
+
+<p>Finally, you can change the ACTION of a form if you want to:</p>
+
+<pre>
+document.forms[0].action = 'the_other_script.pl';
+</pre>
+
+<p>This can come in very handily if a form has to be submitted to another script in some
+cases.</p>
+
+<h3 id="access">Accessing the form elements</h3>
+
+<p>The form validation script needs to access the form in the HTML page to determine
+what values the user has filled in. So first we have to enter the form by means of the
+<a href="dom0.html">Level 0 DOM</a>.
+The general syntax for accessing a form element is:</p>
+
+<pre>
+document.forms[number].elements[number]
+</pre>
+
+<p>When the page is loaded, JavaScript makes an array <code>forms</code> in which it
+puts all the forms that are on the page. The first form is <code>forms[0]</code>, the
+second is <code>forms[1]</code> etc.</p>
+
+<p>Each form has another array in which JavaScript puts all the elements in the form.
+The first elements is <code>elements[0]</code>, the second <code>elements[1]</code> etc.
+Every <code>&lt;input&gt;, &lt;select&gt; and &lt;textarea&gt;</code> is an element.</p>
+
+<p>In some cases, it's better to use the names of the forms and elements. In HTML, you have
+to give a <code>name</code> to each form and each element, like:</p>
+
+<pre>
+&lt;form name="personal" action="something.pl" onsubmit="return checkscript()"&gt;
+&lt;input type=text size=20 name=name&gt;
+&lt;input type=text size=20 name=address&gt;
+&lt;input type=text size=20 name=city&gt;
+&lt;/form&gt;
+</pre>
+
+<p>Now you can access these elements by:</p>
+
+<pre>
+document.personal.name
+document.personal.address
+document.personal.city
+</pre>
+
+<p>The advantage of using names is that you can put all elements somewhere else in the page
+and still have a working script, while a script using numbers will have to be changed.
+After all, the input box <em>city</em> is <code>document.forms[0].elements[2]</code> in
+the example above, but when you suddenly put it at the top of the form, it becomes
+<code>document.forms[0].elements[0]</code> and you have to change the script.</p>
+
+<h3 id="value">Determining values</h3>
+
+<p>Of course, the most important thing is to find out what the user has filled in
+or checked in the form. At other times you might want to fill in something in the
+form.</p>
+
+<p>Below are snippets of scripts that help you access form elements. All of them are meant to
+send the user input to the variable <code>user_input</code>. After you've done that, you can check
+this value for whatever you want.</p>
+
+<ul>
+<li><a class="page" href="#stext">Texts, textareas and hidden fields</a></li>
+<li><a class="page" href="#sselect">Select boxes</a></li>
+<li><a class="page" href="#scheckbox">Checkboxes</a></li>
+<li><a class="page" href="#sradio">Radio buttons</a></li>
+</ul>
+
+<p class="smaller">If you'd like to study a practical example, see the <a href="formex.html">example form and script</a>.</p>
+
+
+<h4 id="stext">Texts, textareas and hidden fields</h4>
+
+<p>Very simple:</p>
+
+<pre>
+user_input = document.forms[0].text.value
+</pre>
+
+<p>where <code>text</code> is the name of the text field, textarea or hidden field.
+The <code>value</code> of this element gives the text, so we transfer it to <code>user_input</code>.</p>
+
+<p>Writing is also possible:</p>
+
+<pre>
+document.forms[0].text.value = 'The new value';
+</pre>
+
+<h4 id="sselect">Select boxes</h4>
+
+<p>Select boxes are simple too:</p>
+
+<pre>
+user_input = document.forms[0].select.value;
+</pre>
+
+<p>To change the selected option in a select box, you have to change its <code>selectedIndex</code>, like</p>
+
+<pre>
+document.forms[0].select.selectedIndex = 2;
+</pre>
+
+<p>Now the third option in the box is selected.</p>
+
+<h5>Old browsers</h5>
+
+<p>In old browsers, select boxes didn't yet have a <code>value</code> property. Back then, this was the
+way to find the value of a select box:</p>
+
+<pre>
+var selectBox = document.forms[0].select;
+user_input = selectBox.options[selectBox.selectedIndex].value
+</pre>
+
+<p>First, we need to find out which option the user has selected. <code>document.forms[0].select.selectedIndex</code>
+gives us the number of the selected option. JavaScript has created an array <code>options</code> which
+contains all options of the select box. So we ask for the selected option in this array and take the <code>value</code>
+of it, which we transfer to <code>user_input</code>.</p>
+
+<h4 id="scheckbox">Checkboxes</h4>
+
+<p>Checkboxes need a slightly different approach. We already know their values, but want to
+know whether the user has checked them. The <code>checked</code> property tells us. It can have
+two values: <code>true</code> or <code>false</code>.</p>
+
+<p>Now we do:</p>
+
+<pre>
+if (document.forms[0].checkbox.checked) {
+	user_input = document.forms[0].checkbox.name
+}
+</pre>
+
+<p>in which <code>checkbox</code> is the name of the checkbox.
+If the checkbox is <code>checked</code>, we take its <code>name</code>
+(or its <code>value</code>, if you need that bit of data)
+and transfer it to <code>user_input</code>.</p>
+
+<p>To check a checkbox, set its property <code>checked</code> to <code>true</code>:</p>
+
+<pre>
+document.forms[0].checkbox.checked = true
+</pre>
+
+<h4 id="sradio">Radio buttons</h4>
+
+<p>Unfortunately it's not possible to see at once which radio button in a group the user
+has checked. You need to go through all radio's and see which one's <code>checked</code>
+property is true.</p>
+
+<pre>
+for (i=0;i&lt;document.forms[0].radios.length;i++) {
+	if (document.forms[0].radios[i].checked) {
+		user_input = document.forms[0].radios[i].value;
+	}
+}
+</pre>
+
+<p>where <code>radios</code> is the name of the group of radio buttons.</p>
+
+<p>Note that <code>document.forms[0].radios</code> is an <em>array</em> filled with
+all radio buttons. Loop through all of them and see if it is <code>checked</code>.
+If one is, transfer the <code>value</code> of that radio button to <code>user_input</code>.</p>
+
+<code>document.forms[0].radios.length</code> gives the number of radio buttons. For each radio
+button, we see if it is
+
+<p>To check a radio button, set its property <code>checked</code> to <code>true</code>:</p>
+
+<pre>
+document.forms[0].radios[i].checked = true;
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/forms.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+</html>

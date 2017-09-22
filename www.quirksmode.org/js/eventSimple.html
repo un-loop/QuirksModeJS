@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/eventSimple.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+<head>
+<title>addEventSimple</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<script type="text/javascript">
+<!--
+
+function addEventSimple(obj,evt,fn) {
+	if (obj.addEventListener)
+		obj.addEventListener(evt,fn,false);
+	else if (obj.attachEvent)
+		obj.attachEvent('on'+evt,fn);
+}
+
+function removeEventSimple(obj,evt,fn) {
+	if (obj.removeEventListener)
+		obj.removeEventListener(evt,fn,false);
+	else if (obj.detachEvent)
+		obj.detachEvent('on'+evt,fn);
+}
+
+// -->
+</script>
+
+</head>
+<body>
+
+<h2>addEventSimple</h2>
+
+<div id="header"></div>
+
+<p class="intro">Here are the <code>addEventSimple</code> and <code>removeEventSimple</code> functions I use
+when I need a bit of unobtrusive event handling.</p>
+
+<pre>
+function addEventSimple(obj,evt,fn) {
+	if (obj.addEventListener)
+		obj.addEventListener(evt,fn,false);
+	else if (obj.attachEvent)
+		obj.attachEvent('on'+evt,fn);
+}
+
+function removeEventSimple(obj,evt,fn) {
+	if (obj.removeEventListener)
+		obj.removeEventListener(evt,fn,false);
+	else if (obj.detachEvent)
+		obj.detachEvent('on'+evt,fn);
+}
+</pre>
+
+<p>They're used like this:</p>
+
+<pre>
+addEventSimple(element,'click',functionname);
+addEventSimple(document,'load',functionname2);
+</pre>
+
+<p>Now the element <code>element</code> gets an onclick event handler that fires function <code>functionname</code>,
+while the document gets an onload event handler that fires function <code>functionname2</code>.</p>
+
+<p><strong>Caveat</strong>: The <code>this</code> keyword, which ought to refer to the element you've set the event
+handler on, doesn't work in Internet Explorer.</p>
+
+<h3>Explanation</h3>
+
+<p>See section 7C of <a href="https://www.quirksmode.org/book/">the book</a> for a complete explanation of these functions.</p>
+
+
+<div id="footer">
+<p class="smaller" id="validation">Invalid XHTML 1.0 because the table uses <code>wbr</code>.</p>
+<a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/eventSimple.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+</html>
+

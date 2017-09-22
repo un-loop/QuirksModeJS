@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/this.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:48 GMT -->
+<head>
+<title>Javascript - The this keyword</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+</head>
+
+<body>
+
+<h2>The this keyword</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See sections 5H and 7F of <a href="https://www.quirksmode.org/book/">the book</a>.</p>
+<p>This page has been translated into
+<a href="http://www.misfu.com/static/Javascript/this.html" class="external">French</a>,
+<a href="http://www.codeisart.ru/keyword-this-in-javascript/" class="external">Russian</a>,
+and <a href="http://www.cnblogs.com/georgewing/archive/2009/09/29/1576641.html" class="external">Chinese</a>.</p>
+</div>
+
+<p class="intro">One of the most powerful JavaScript keywords is <code>this</code>. Unfortunately
+it is hard to use if you don't exactly know how it works.</p>
+
+<p>Below I explain how to use it in
+<a href="introevents.html">event handling</a>.
+Later on I'll add some information about other uses of <code>this</code>.</p>
+
+
+<h3>Owner</h3>
+
+<p>The question that we'll discuss for the remainder of the page
+is: What does <code>this</code> refer to in the function <code>doSomething()</code>?</p>
+
+<pre>
+function doSomething() {
+   this.style.color = '#cc0000';
+}
+</pre>
+
+<p>In JavaScript <code>this</code> always refers to the &#8220;owner&#8221; of the function
+we're executing, or rather, to the object that a function is a method of.
+When we define our faithful function <code>doSomething()</code> in a page, its <em>owner</em>
+is the page, or rather, the <code>window</code> object (or global object) of JavaScript. An <code>onclick</code>
+property, though, is owned by the HTML element it belongs to.</p>
+
+<p class="smaller">This "ownership" is the result of JavaScript's object oriented approach. See the
+<a href="associative.html">Objects as associative arrays</a> page for some more
+information.</p>
+
+
+<pre>
+------------ window --------------------------------------
+|                                          / \           |
+|                                           |            |
+|                                          this          |
+|   ----------------                        |            |
+|   | HTML element | &lt;-- this         -----------------  |
+|   ----------------      |           | doSomething() |  |
+|               |         |           -----------------  |
+|          --------------------                          |
+|          | onclick property |                          |
+|          --------------------                          |
+|                                                        |
+----------------------------------------------------------
+</pre>
+
+<p>If we execute <code>doSomething()</code> without any more preparation the <code>this</code>
+keyword refers to the window and the function tries to change the <code>style.color</code> of the window. Since the
+window doesn't have a <code>style</code> object the function fails miserably and produces JavaScript errors.</p>
+
+<h3>Copying</h3>
+
+<p>So if we want to use <code>this</code> to its full extent we have to take care that the function that uses it
+is "owned" by the correct HTML element. In other words, we have to
+<em>copy</em> the function to our onclick property.
+<a href="events_tradmod.html">Traditional event registration</a> takes care of it.</p>
+
+<pre>
+element.onclick = doSomething;
+</pre>
+
+<p>The function is copied in its entirety to the <code>onclick</code> property (which now becomes
+a method). So if the event handler is executed <code>this</code> refers to the HTML element and its
+<code>color</code> is changed.</p>
+
+<pre>
+------------ window --------------------------------------
+|                                                        |
+|                                                        |
+|                                                        |
+|   ----------------                                     |
+|   | HTML element | &lt;-- this         -----------------  |
+|   ----------------      |           | doSomething() |  |
+|               |         |           -----------------  |
+|          -----------------------          |            |
+|          |copy of doSomething()|  &lt;-- copy function    |
+|          -----------------------                       |
+|                                                        |
+----------------------------------------------------------
+</pre>
+
+<p>The trick is of course that we can copy the function to several event handlers. Each time <code>this</code>
+will refer to the correct HTML element:</p>
+
+<pre>
+------------ window --------------------------------------
+|                                                        |
+|                                                        |
+|                                                        |
+|   ----------------                                     |
+|   | HTML element | &lt;-- this         -----------------  |
+|   ----------------      |           | doSomething() |  |
+|               |         |           -----------------  |
+|          -----------------------          |            |
+|          |copy of doSomething()|  &lt;-- copy function    |
+|          -----------------------          |            |
+|                                           |            |
+|   -----------------------                 |            |
+|   | another HTML element| &lt;-- this        |            |
+|   -----------------------     |           |            |
+|               |               |           |            |
+|          -----------------------          |            |
+|          |copy of doSomething()|  &lt;-- copy function    |
+|          -----------------------                       |
+|                                                        |
+----------------------------------------------------------
+</pre>
+
+<p>Thus you use <code>this</code> to the fullest extent. Each time the function is called,
+<code>this</code> refers to the HTML element that is currently handling the event, the HTML
+element that "owns" the copy of <code>doSomething()</code>.</p>
+
+<h3>Referring</h3>
+
+<p>However, if you use
+<a href="events_early.html">inline event registration</a></p>
+
+<pre>
+&lt;element onclick="doSomething()"&gt;
+</pre>
+
+<p>you do not copy the function! Instead, you refer to it, and the difference is crucial.
+The <code>onclick</code> property does not contain the actual function, but
+merely a function call:</p>
+
+<pre>
+doSomething();
+</pre>
+
+<p>So it says &#8220;Go to doSomething() and execute it.&#8221; When
+we arrive at <code>doSomething()</code> the <code>this</code> keyword once again refers to the global
+window object and the function returns error messages.</p>
+
+<pre>
+------------ window --------------------------------------
+|                                          / \           |
+|                                           |            |
+|                                          this          |
+|   ----------------                        |            |
+|   | HTML element | &lt;-- this         -----------------  |
+|   ----------------      |           | doSomething() |  |
+|               |         |           -----------------  |
+|          -----------------------         / \           |
+|          | go to doSomething() |          |            |
+|          | and execute it      | ---- reference to     |
+|          -----------------------       function        |
+|                                                        |
+----------------------------------------------------------
+</pre>
+
+
+<h3>The difference</h3>
+
+<p>If you want to use <code>this</code> for accessing the HTML element that is handling the event,
+you must make sure that the <code>this</code> keyword is actually written into the <code>onclick</code> property.
+Only in that case does it refer to the HTML element the event handler is registered
+to. So if you do</p>
+
+<pre>
+element.onclick = doSomething;
+alert(element.onclick)
+</pre>
+
+<p>you get</p>
+
+<pre>
+function doSomething()
+{
+	this.style.color = '#cc0000';
+}
+</pre>
+
+<p>As you can see, the <code>this</code> keyword is present in the <code>onclick</code> method.
+Therefore it refers to the HTML element.</p>
+
+<p>But if you do</p>
+
+<pre>
+&lt;element onclick="doSomething()"&gt;
+alert(element.onclick)
+</pre>
+
+<p>you get</p>
+
+<pre>
+function onclick()
+{
+	doSomething()
+}
+</pre>
+
+<p>This is merely a reference to function <code>doSomething()</code>. The <code>this</code>
+keyword is not present in the <code>onclick</code> method so it doesn't refer to the HTML element.</p>
+
+<h4>Examples - copying</h4>
+
+<p><code>this</code> is written into the <code>onclick</code> method in the following cases:</p>
+
+<pre>
+element.onclick = doSomething
+element.addEventListener('click',doSomething,false)
+element.onclick = function () {this.style.color = '#cc0000';}
+&lt;element onclick="this.style.color = '#cc0000';"&gt;
+</pre>
+
+<h4>Examples - referring</h4>
+
+<p>In the following cases <code>this</code> refers to the window:</p>
+
+<pre>
+element.onclick = function () {doSomething()}
+element.attachEvent('onclick',doSomething)
+&lt;element onclick="doSomething()"&gt;
+</pre>
+
+<p>Note the presence of <code>attachEvent()</code>. The main drawback of the
+<a href="events_advanced.html">Microsoft event registration model</a>
+is that <code>attachEvent()</code> creates a <em>reference</em> to the function and
+does not copy it. Therefore it is sometimes impossible to know which HTML currently handles
+the event.</p>
+
+<h4>Combination</h4>
+
+<p>When using inline event registration you can also send <code>this</code> to the function
+so that you can still use it:</p>
+
+<pre>
+&lt;element onclick="doSomething(this)"&gt;
+
+function doSomething(obj) {
+	// this is present in the event handler and is sent to the function
+	// obj now refers to the HTML element, so we can do
+	obj.style.color = '#cc0000';
+}
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/this.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:48 GMT -->
+</html>

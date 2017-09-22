@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/placejs.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:47 GMT -->
+<head>
+<title>JavaScript - Placing JavaScripts</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<script type="text/javascript" src="special.js"></script>
+</head>
+
+<body>
+
+<h2>Placing JavaScript in your pages</h2>
+
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 4D of <a href="https://www.quirksmode.org/book/">the book</a>. The <code>&lt;noscript&gt;</code> tag is treated
+in section 2F.</p>
+<p>JavaScript includes are not supported by Netscape 2 and Explorer 3.</p>
+<p><code>&lt;noscript&gt;</code> is not supported by Netscape 2.</p>
+<p>This page has been translated into <a href="http://www.misfu.com/static/Javascript/placejs.html" class="external">French</a>
+and <a href="http://wiki.ceviz.net/index.php/Quirksmode.org/Javascript_Yerleşimi"class="external">Turkish</a>.</p>
+</div>
+
+<p class="intro">You need to properly place a JavaScript in an HTML page to make sure the browser executes
+it. It isn't particularly difficult, but you do have to separate behavior (JavaScript) and structure (XHTML).</p>
+
+<p>Although there are two ways of doing this, using <a href="#include" class="page">JavaScript includes</a>
+is the best way because that makes sure your JavaScript code will reside outside your HTML file. This makes
+your pages easier to maintain, since they contain only XHTML. It also allows you to modify the behaviour of
+your entire site by editing one single file.</p>
+
+<p>You can also put a JavaScript <a href="#direct" class="page">directly</a> in
+your page, but this method is deprecated.
+We'll also take a short look at the <a href="#noscript" class="page">&lt;noscript&gt;</a> tag.</p>
+
+<a name="include"></a>
+<h3>JavaScript Includes</h3>
+
+<div class="floater">
+<p>JavaScript includes are not supported by Netscape 2 and Explorer 3.</p>
+<p>Included JavaScript files may not be refreshed in some browsers, no matter how often you hit <em>Reload</em>.
+Solution: enter the URL of the .js file in the location bar, load it, hit <em>Reload</em>, go back to the HTML page and reload it.</p>
+</div>
+
+<p>You should <em>include</em> a JavaScript file in your pages. This has
+several advantages:</p>
+
+<ol><li>By updating one file, you update your script on all pages.</li>
+<li>The pages themselves become slightly lighter, because the include file is
+cached by the browser, so it doesn't have to be reloaded every time the user
+loads a new page.</li>
+</ol>
+
+<p>I include a JavaScript file on every page on this site as follows:</p>
+
+<pre>
+&lt;script src="../quirksmode.js"&gt;&lt;/script&gt;
+</pre>
+
+<p>Now whenever the page is loaded, the browser also puts the script in the file
+<em>quirksmode.js</em> in the page. Note that you do <em>not</em> see the script in your source
+code, you just see the include tag. Nonetheless the functions and variables in the
+included file are available to scripts on each page.</p>
+
+<p>I use this include for scripts that I want available on each page, like the
+<a href="https://www.quirksmode.org/dom/toc.html">TOC</a> script. To view the include, download
+<a href="../quirksmode.js">http://www.quirksmode.org/quirksmode.js</a>.</p>
+
+<script type="text/javascript">
+<!--
+function doIt()
+{
+	if (self.testIt) testIt();
+	else alert('JavaScript Includes not supported!');
+}
+// -->
+</script>
+
+<p>On this page I include a special script that contains the function <code>testIt()</code>.
+<a href="javascript:doIt()">Try executing it</a> to test your browser's support of includes.</p>
+
+
+<h4>Avoiding errors in ancient browsers</h4>
+
+<p>Do <em>not</em> put a <code>&lt;script&gt;</code> tag in the included file, just the raw
+JavaScript code. <em>Always</em> place the include in the <code>&lt;head&gt;</code>. Netscape 3.01
+has grave trouble with code included anywhere else. In addition, configure the server
+to send MIME type <code>application/x-javascript</code> with the .js file. Any other type
+causes Netscape 3 (at least, maybe more browsers) to ask the user whether he wants to download
+or open the file, no doubt causing tons of confusion.</p>
+
+<p>Do <em>not</em> add an ID to a  <code>&lt;script&gt;</code> tag. While it is allowed in Explorer,
+adding 'ID' to the tag disables the tag in Netscape 4, so that the script isn't executed.</p>
+
+<p>If you want to make sure that browsers that don't support includes don't give error messages,
+you can do either of the following. Suppose you include the function <code>lastMod()</code> in each page.
+When you call it, first check if it exists:</p>
+
+<pre>
+if (self.lastMod) document.write(lastMod())
+</pre>
+
+<p>Another method would be</p>
+
+<pre>
+&lt;script&gt;
+function lastmod() {}
+&lt;/script&gt;
+&lt;script src="js.js"&gt;&lt;/script&gt;
+</pre>
+
+<p>First define an empty function <code>lastMod()</code>, if includes are supported it is overwritten by
+the actual function. Thus the function always exists, even if it does nothing in ancient browsers.</p>
+
+<a name="noscript"></a>
+<h3>&lt;noscript&gt;</h3>
+
+<div class="floater">
+<p><code>&lt;noscript&gt;</code> is not supported by Netscape 2.</p>
+</div>
+
+<p>Within the <code>&lt;noscript&gt;</code> tag you can put some HTML that will only be shown when the browser
+of your users does not support JavaScript or has JavaScript disabled. It's occasionally useful to say
+sorry to non-JavaScript users or to present an alternative to them.</p>
+
+<p>The tag works as follows: No-script browsers do not know it, so they ignore it and print out
+whatever's between them. Script browsers know it and don't show the bit inside the tag when
+JavaScript is enabled.</p>
+
+<p>Unfortunately Netscape 2 doesn't support this useful tag, so that Netscape 2 users will see
+both the script and the noscript version. There's nothing you can do about it. Fortunately Netscape
+2 isn't widely used any more.</p>
+
+<h3>The defer attribute</h3>
+
+<div class="floater">
+<p>Only in Explorer 4+ on Windows the <code>defer</code> attribute defers executing the script until
+the document has been parsed completely.</p>
+</div>
+
+<p>The <a href="http://www.w3.org/TR/html4/interact/scripts.html#h-18.2.1"
+	class="external" >W3C HTML 4.0 specification</a> specifies the <code>defer</code> attribute for
+script tags:</p>
+
+<pre>
+&lt;script language="javascript" type="text/javascript" defer&gt;
+</pre>
+
+<p>Originally, this is nothing more than a hint to the browser that the script inside the tags does not modify
+the content of the web page (by doing a <code>document.write</code>, for instance). Therefore the browser does
+not need to wait for the entire script to be parsed and evaluated, it can immediately go on parsing the HTML.
+On older systems this might save some parsing time.</p>
+
+<p>However, Explorer 4+ on Windows has slightly changed the meaning of <code>defer</code>. Any code inside
+deferred script tags is only executed when the page has been parsed entirely. For instance, take</p>
+
+<pre>
+&lt;body&gt;
+&lt;script language="javascript" type="text/javascript" defer&gt;
+&lt;!--
+alert(document.forms[0].elements.length);
+// --&gt;
+&lt;/script&gt;
+
+&lt;form&gt;
+&lt;input value="Bla"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+</pre>
+
+<p>Normally the <code>alert</code> would give an error: the document does not (yet) contain any form at the moment
+it is executed. By adding <code>defer</code> to the script tag, however, the alert is deferred until after parsing
+and correctly gives 1 as the length of the form.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr />
+
+<a name="direct"></a>
+<h3>Deprecated: Direct JavaScripts</h3>
+
+<div class="floater">
+<p>Do not use direct JavaScripts for the reasons explained in section 2C of <a href="https://www.quirksmode.org/book/">the book</a>.
+This section is only maintained for historical reasons.</p>
+</div>
+
+<p>The simplest method is to place your scripts directly in the page.</p>
+
+<h4>How to place</h4>
+
+<pre>
+&lt;script language="javascript" type="text/javascript"&gt;
+&lt;!--
+
+script goes here
+
+// --&gt;
+&lt;/script&gt;
+</pre>
+
+<p>First, you tell the browser that a script is coming, that it's a JavaScript and that
+the MIME-type is "text/javascript". Most validators protest against leaving the <code>TYPE</code>
+out, but browsers execute the code anyway.</p>
+
+<pre>
+&lt;script language="javascript" type="text/javascript"&gt;
+</pre>
+
+<p>Then you open an HTML-comment. This is to protect very old browsers that don't recognize the &lt;script&gt;-tag.
+They'll ignore the tags themselves, but they print out anything that's between them: the
+script itself. Since this is incomprehensible to most users and doesn't have anything to do
+with the content of the page, it's necessary to comment the script out.</p>
+
+<pre>
+&lt;!--
+</pre>
+
+<p>Then comes the script itself. After that it's necessary to close the HTML-comment again. However,
+if you'd just type</p>
+
+<pre class="wrong">
+--&gt;
+</pre>
+
+<p>browsers that do understand JavaScript will try to interpret this as a JavaScript command. Of course, it isn't, so they give
+<em>JavaScript Error Message Alerts</em>.<br />
+Therefore, it is necessary to put the HTML-end-comment after a JavaScript comment (<code>//</code>).</p>
+
+<pre>
+// --&gt;
+</pre>
+
+<p>Finally, end the script and return to normal HTML.</p>
+
+<pre>
+&lt;/script&gt;
+</pre>
+
+<h4>Where to place</h4>
+
+<p>Generally you place JavaScripts in the <code>&lt;head&gt;</code> of a page. Only when
+you want to write a message in the page, you'll have to place the script in the correct place in the HTML.</p>
+
+<p>Placing scripts in the <code>&lt;head&gt;</code> makes sure that any functions are loaded before the buttons,
+links or other things that call them are loaded. If you put your scripts at the very end of a page, it is possible that a user already
+sees part of the page including a button with a JavaScript function call, while the rest of the page hasn't loaded yet. Result: user pushes
+button and gets <em>JavaScript Error Message Alerts</em>, because the browser can't find the script (yet).</p>
+
+<p>Unless there's a good reason to do otherwise, place your scripts in the <code>&lt;head&gt;</code></p>
+
+
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/placejs.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:47 GMT -->
+</html>

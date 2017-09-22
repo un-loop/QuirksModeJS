@@ -1,0 +1,355 @@
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/innerhtml_old.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:19 GMT -->
+<head>
+<title>Javascript - W3C DOM vs. innerHTML, old</title>
+<link rel="stylesheet" href="../quirksmode.css">
+<link rel="up" href="contents.html">
+<link rel="intro" href="intro.html">
+<script src="../quirksmode.js"></script>
+<style>
+<!--
+td[id] {white-space: nowrap;}
+-->
+</style>
+<script language="javascript">
+<!--
+
+var times = new Array();
+for (var i=0;i<6;i++)
+{
+	times[i] = new Array();
+}
+var avgs = new Array();
+
+function w3cdom(flag)
+{
+	var time = new Date().getTime();
+	var n = document.getElementById('writeroot');
+	while (n.firstChild)
+		n.removeChild(n.firstChild)
+	var x = document.createElement('table');
+	if (!flag) document.getElementById('writeroot').appendChild(x);
+	x.setAttribute('border',1);
+	var y = document.createElement('tbody');
+	x.appendChild(y);
+	for (var i=0; i<50;i++)
+	{
+		var z = document.createElement('tr');
+		for (var j=0;j<50;j++)
+		{
+			var a = document.createElement('td');
+			a.appendChild(document.createTextNode(i+' '+j));
+			z.appendChild(a);
+		}
+		y.appendChild(z);
+	}
+	if (flag) document.getElementById('writeroot').appendChild(x);
+	var newtime = new Date().getTime();
+	if (flag) doTiming(0,time,newtime);
+	else doTiming(1,time,newtime);
+}
+
+function w3cdom2() {
+	var time = new Date().getTime();
+	var n = document.getElementById('writeroot');
+	while (n.firstChild)
+		n.removeChild(n.firstChild)
+    var d = document
+    var body = d.getElementsByTagName("BODY")[0]
+    var t = d.createElement("TABLE")
+    var y = d.createElement("TBODY")
+    t.appendChild(y)
+    t.setAttribute('border',1)
+
+    var r = d.createElement("TR")
+    var c = d.createElement("TD").appendChild(d.createTextNode("*")).parentNode
+    for (j=0; j<50; j++) r.appendChild(c.cloneNode(true))
+
+    for (i=0; i<50; i++) {
+        for (j=0; j<50; r.childNodes[j].firstChild.nodeValue = i+" "+(j++)) {}
+        y.appendChild(r.cloneNode(true))
+    }
+    document.getElementById('writeroot').appendChild(t)
+	var newtime = new Date().getTime();
+	doTiming(4,time,newtime);
+}
+
+function tablemethods()
+{
+	var time = new Date().getTime();
+	var n = document.getElementById('writeroot');
+	while (n.firstChild)
+		n.removeChild(n.firstChild)
+	var t = document.createElement('table').appendChild(document.createElement('tbody'));
+	for (var i=0;i<50;i++)
+	{
+		var r = t.insertRow(0);
+		for (var j=0;j<50;j++)
+			r.insertCell(0).appendChild(document.createTextNode(i+' '+j));
+	}
+    document.getElementById('writeroot').appendChild(t)
+	var newtime = new Date().getTime();
+	doTiming(5,time,newtime);
+}
+
+function inner()
+{
+	var time = new Date().getTime();
+	document.getElementById('writeroot').innerHTML = '';
+	var writestring = '<table border=1>';
+	for (var i=0; i<50;i++)
+	{
+		writestring += '<tr>';
+		for (var j=0;j<50;j++)
+		{
+			writestring += '<td>'+i+' '+j+'</td>';
+		}
+		writestring += '</tr>';
+	}
+	writestring += '</table>';
+	document.getElementById('writeroot').innerHTML = writestring;
+	var newtime = new Date().getTime();
+	doTiming(2,time,newtime);
+}
+
+function inner2()
+{
+	var time = new Date().getTime();
+	var store = new Array();
+	document.getElementById('writeroot').innerHTML = '';
+	store.push('<table border=1>');
+	for (var i=0; i<50;i++)
+	{
+		store.push('<tr>');
+		for (var j=0;j<50;j++)
+		{
+			store.push('<td>');
+			store.push(i);
+			store.push(j)
+			store.push('</td>');
+		}
+		store.push('</tr>');
+	}
+	store.push('</table>');
+	var writestring = store.join('');
+	document.getElementById('writeroot').innerHTML = writestring;
+	var newtime = new Date().getTime();
+	doTiming(3,time,newtime);
+}
+
+
+function doTiming(id,firsttime,lasttime)
+{
+	var time = lasttime - firsttime;
+
+	// First empty the innerHTML, then write the new value into it.
+	// This is for Explorer 5.1 Mac's sake, see the Writing into layers page
+
+	var u = document.getElementById('timing'+id).innerHTML + time + ' ms<br>';
+	document.getElementById('timing'+id).innerHTML = '';
+	document.getElementById('timing'+id).innerHTML = u;
+	times[id][times[id].length] = time;
+//	times[id].push(time);
+	var tmp = 0;
+	for (var i=0;i<times[id].length;i++)
+	{
+		tmp += times[id][i];
+	}
+	avgs[id] = Math.round(tmp/times[id].length);
+	document.getElementById('avg'+id).innerHTML = '';
+	document.getElementById('avg'+id).innerHTML = avgs[id] + ' ms';
+	tmp = avgs[id];
+	var fastest = id;
+	for (var i=0;i<avgs.length;i++)
+	{
+		if (avgs[i] < tmp)
+		{
+			fastest = i;
+			tmp = avgs[i];
+		}
+	}
+	for (var i=0;i<avgs.length;i++)
+	{
+		if (i == fastest)
+		{
+			document.getElementById('index'+i).innerHTML = '';
+			document.getElementById('index'+i).innerHTML = '100<br><b>Fastest<br>method</b>';
+		}
+		else if (avgs[i])
+		{
+			document.getElementById('index'+i).innerHTML ='';
+			document.getElementById('index'+i).innerHTML = Math.round((avgs[i]/tmp)*100);
+		}
+	}
+}
+
+// -->
+</script>
+</head>
+
+<body>
+
+<h2>W3C DOM vs. innerHTML, old</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>This page is no longer maintained. See <a href="innerhtml.html">the new experiment page</a> for up-to-date
+figures.</p>
+<p>The question for 2003: <a href="http://www.evolt.org/article/What_shall_we_do_with_the_W3C_DOM/4090/47311/"
+	class="external" >What shall we do with the W3C DOM?</a></p>
+
+</div>
+
+
+<p class="intro">This is a test page intended to find out which method of generating large amounts
+of content is fastest in the browsers. Of course the results differ significantly for the various
+browsers.</p>
+
+<p id="toc"></p>
+
+<p>Overall conclusion: None</p>
+
+<!-- ol>
+<li>Pure W3C DOM
+	<ol>
+		<li>Create normally
+		<li>Create in documentFragment
+	</ol>
+<li>innerHTML
+	<ol>
+		<li>concatenation
+		<li>push
+	</ol>
+<li>Table methods
+</ol>
+
+<p>Remove table first</p>
+
+<hr -->
+
+<h3>Experiment</h3>
+
+<p>Each of the four links in the table generates a new, huge table of 50 x 50 TD's. The
+questions before the house today is: which method is faster?</p>
+
+<p>If you wish me to test another method, please send me a script that's as simple as possible and
+that looks like the scripts I already use. I'll add it to the page.</p>
+
+<p>I use five techniques, three using the pure W3C DOM and two using innerHTML.</p>
+
+<ol>
+<li>In the first W3C DOM example I create a table outside the document. Then I append a TBODY
+and the various TR's and TD's. At the end of the script I append the TABLE to the document.</li>
+<li>The second W3C DOM example is the same, except that I append the TABLE to the document
+immediately after I create it.</li>
+<li>In the third W3C DOM example (written by <a href="http://html.conclase.net/"
+	class="external" >Juan R. Pozo</a>) I don't use intermediary variables. Not
+<pre>
+var a = document.createElement('TR');
+x.appendChild(a);
+</pre>
+but
+<pre>
+x.appendChild(document.createElement('TR'));
+</pre></li>
+<li>The fourth W3C DOM example uses the <code>insertRow()</code> and <code>insertCell()</code>
+methods. This script has by far the shortest number of lines.</li>
+<li>In the first innerHTML example I concatenate a huge string which at the end is written into
+the innerHTML of the document.</li>
+<li>In the second innerHTML example I <code>push</code> small strings (<code>'&lt;/td&gt;'</code>
+and such) into an array. At the end I join this array to one string and write it into the innerHTML
+of the document.</li>
+</ol>
+
+<p><a href="#" onClick="document.getElementById('writeroot').innerHTML = ''; return false">Remove test table</a>.</p>
+
+
+<table class="data" border=1 cellpadding=5 cellspacing=2>
+	<tr valign=top>
+		<th>Test it</th>
+		<th>Method</th><th>Time</th><th>Average time</th><th>Index</th>
+			<th>Browsers</th>
+	</tr>
+	<tr valign=top>
+		<td>1) <a href="javascript:w3cdom(true)">Test</a></td>
+		<td>W3C DOM, append table after building its tree.</td>
+		<td id="timing0"></td>
+		<td id="avg0"></td>
+		<td id="index0"></td>
+		<td></td>
+	</tr>
+	<tr valign=top>
+		<td>2) <a href="javascript:w3cdom(false)">Test</a></td>
+		<td>W3C DOM, append table immediately.</td>
+		<td id="timing1"></td>
+		<td id="avg1"></td>
+		<td id="index1"></td>
+		<td>Overall this is the slowest method:<br>
+		Opera 7 (7 times slower)<br>
+		Mozilla 1.1 (2.5 times slower)<br>
+		Explorer 5 Mac (nearly 100 times)<br>
+		Konqueror (10 times slower)</td>
+	</tr>
+	<tr valign=top>
+		<td>3) <a href="javascript:w3cdom2()">Test</a></td>
+		<td>W3C DOM, don't use intermediary variables.</td>
+		<td id="timing4"></td>
+		<td id="avg4"></td>
+		<td id="index4"></td>
+		<td>This is the fastest method <b>Konqueror</b>.</td>
+	</tr>
+	<tr valign=top>
+		<td>4) <a href="javascript:tablemethods()">Test</a></td>
+		<td>W3C DOM table methods</td>
+		<td id="timing5"></td>
+		<td id="avg5"></td>
+		<td id="index5"></td>
+		<td>This is the fastest method in <b>Opera 7</b>.<br>
+		This is the slowest method in Explorer 6 Windows (40 times slower). It doesn't
+		work in Explorer Mac and Safari.</td>
+	</tr>
+	<tr valign=top>
+		<td>5) <a href="javascript:inner()">Test</a></td>
+		<td>innerHTML with concatenation</td>
+		<td id="timing2"></td>
+		<td id="avg2"></td>
+		<td id="index2"></td>
+		<td>This is the fastest method in <b>Mozilla 1.1</b> and
+		<b>Explorer 5 Mac</b> and the slowest method in Safari (8 times slower).</td>
+	</tr>
+	<tr valign=top>
+		<td>6) <a href="javascript:inner2()">Test</a></td>
+		<td>innerHTML with push</td>
+		<td id="timing3"></td>
+		<td id="avg3"></td>
+		<td id="index3"></td>
+		<td>This is the fastest method in <b>Explorer 6 Windows</b> and <b>Safari</b>.<br>
+		<code>push()</code> is not supported by Explorer 5.0 Windows and 5.x Mac.</td>
+	</tr>
+</table>
+
+<p><a href="#" onClick="document.getElementById('writeroot').innerHTML = ''; return false">Remove test table</a>.</p>
+
+<div id="writeroot">
+</div>
+
+<p>Some random browser facts:</p>
+
+<ul>
+<li>Mozilla is the browser with the least difference between the methods. The slowest (2) is only
+2.5 as slow as the fastest (4).</li>
+<li>Explorer 5 Mac really can't handle the W3C DOM. Generating the table costs at least 10 seconds,
+and sometimes substantially more time.</li>
+<li>Explorer 5 Mac and Opera 7 take a lot of time removing the old table. This may skew test results.</li>
+</ul>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/innerhtml_old.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:19 GMT -->
+</html>

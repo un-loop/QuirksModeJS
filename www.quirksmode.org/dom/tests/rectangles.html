@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/rectangles.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:21 GMT -->
+<head>
+<title>DOM tests - rectangles</title>
+<link rel="stylesheet" href="../../quirksmode.css">
+<script src="../../quirksmode.js"></script>
+<style type="text/css">
+<!--
+
+textarea {
+	width: 100%;
+	height: 350px;
+}
+
+div#test {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: .8;
+	filter: alpha(opacity=80);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	background-color: #ffffff;
+	border: 1px solid #cc0000;
+	visibility: hidden;
+	z-index: 15;
+}
+
+div#test:hover {
+	overflow: visible;
+	z-index: 20;
+	opacity: .4;
+	filter: alpha(opacity=40);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+}
+
+
+-->
+</style>
+
+<script language="javascript">
+<!--
+var test;
+function init() {
+	document.onclick = calculateRects;
+	writeroot = document.getElementById('offsetTree');
+	test = document.getElementById('test');
+
+	// for iPhone
+
+	var all = document.getElementsByTagName('*')
+	for (var i=0;i<all.length;i++) {
+		all[i].onclick = calculateRects;
+		all[i].onclick = null;
+	}
+}
+
+var writeroot,oldTgt,oldOffset;
+
+function calculateRects(e) {
+	while (toBeRemoved.length)
+		document.body.removeChild(toBeRemoved.shift());
+
+	var evt = e || window.event;
+	var tgt = evt.target || evt.srcElement;
+	if (tgt.nodeName == 'BODY') return;
+	try {
+		var rect = tgt.getClientRects();
+	} catch (e) {
+		alert('Not supported by this browser');
+		return;
+	}
+	var writestring = rect.length + ' rectangles found.\n';
+	for (var i=0;i<rect.length;i++) {
+		writestring += '\nRectangle ' + (i+1) + ':\n';
+		writestring += 'top: ' + rect[i].top + '\n';
+		writestring += 'left: ' + rect[i].left + '\n';
+		writestring += 'bottom: ' + rect[i].bottom + '\n';
+		writestring += 'right: ' + rect[i].right + '\n';
+		setTestRectangle(rect[i],i);
+	}
+
+	var rect2 = tgt.getBoundingClientRect();
+	writestring += '\nBounding rectangle:\n';
+	writestring += 'top: ' + rect2.top + '\n';
+	writestring += 'left: ' + rect2.left + '\n';
+	writestring += 'bottom: ' + rect2.bottom + '\n';
+	writestring += 'right: ' + rect2.right + '\n';
+	writeroot.value = writestring;
+	if (document.getElementById('bounding').checked)
+		setTestRectangle(rect2,'Bounding');
+}
+
+var toBeRemoved = [];
+
+function setTestRectangle(obj,i) {
+	var testRect = test.cloneNode(true);
+	testRect.style.left = obj.left + 'px';
+	testRect.style.top = obj.top + 'px';
+	testRect.style.height = (obj.bottom - obj.top) + 'px';
+	testRect.style.width = (obj.right - obj.left) + 'px';
+	testRect.style.visibility = 'visible';
+	testRect.innerHTML = i+1;
+	document.body.appendChild(testRect);
+	toBeRemoved.push(testRect);
+}
+
+// -->
+</script>
+
+</head>
+
+<body class="testpage">
+
+<h2>DOM tests - rectangles</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Reported rectangles:</p>
+<textarea id="offsetTree"></textarea>
+<p><input type="checkbox" id="bounding" /> <label for="bounding">Show bounding rectangle</label></p>
+</div>
+
+<p class="intro">On this page I test the rectangle methods.</p>
+
+<p>Click on any element to calculate its rectangles. Make sure the page is <strong>scrolled all the way up</strong> before
+doing the test.</p>
+
+<h3>Tests</h3>
+
+<p>This is a paragraph <em>with a very long <code>&lt;em&gt;</code> element that should wrap to the
+next line, so that we can test inline elements that sprawl over several lines. The point of rectangles is that one is
+formed for every inline box in the element; that is, one for every line this <code>&lt;em&gt;</code> stretches. The <code>boundingRectangle</code>
+is the sum of these rectangles</em>.</p>
+
+<p>In my browsers the <code>&lt;em&gt;</code> in the previous paragraph wraps over five lines, so browsers should
+report five rectangles. However, IE5.5 reports 9 and IE6/7 14.</p>
+
+<p>In addition, if you click on a block-level element such as this paragraph, browsers should report one rectangle:
+the paragraph itself. However, if you click on the text IE5-7 incorrectly report one rectangle per paragraph line.</p>
+
+<div id="test">Test rectangle</div>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/rectangles.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:21 GMT -->
+</html>

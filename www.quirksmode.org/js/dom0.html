@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/dom0.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+<head>
+<title>JavaScript - Level 0 DOM</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<link rel="next" href="../dom/intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+<h2>Level 0 DOM</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 8J of <a href="https://www.quirksmode.org/book/">the book</a>.</p>
+<p>This page has been <a href="http://www.misfu.com/static/Javascript/dom0.html" class="external">translated into French</a>.</p>
+</div>
+
+<p class="intro">The <em>Document Object Model</em> (DOM) is the model that describes how all elements in an HTML page,
+like input fields, images, paragraphs etc., are related to the topmost structure: the <code>document</code> itself.
+By calling the element by its proper DOM name, we can influence it.</p>
+
+<p>This page treats some DOM history and then describes the Level 0 DOM.</p>
+
+<p>First of all a little
+<a href="#intro" class="page">introduction</a> to the Document Object Model, followed by a bit of
+<a href="#history" class="page">history</a>. Then we'll take a look at
+<a href="#access" class="page">accessing elements</a> through the Level 0 DOM and
+<a href="#use" class="page">how to use</a> the Level 0 DOM.</p>
+
+
+<h3 id="intro">Document Object Model</h3>
+
+<p>The Document Object Model has been around since browsers support JavaScript. From Netscape 2 onwards, web programmers wanted
+to access bits of HTML and change its properties. For instance, when you write a
+mouseover script you want to go to a certain image on
+the page and change its <code>src</code> property. When you do this, the browser reacts by changing the image
+on the screen.</p>
+
+<p>The function of the Document Object Model is to provide this kind of access to HTML elements on
+your page. Exactly what elements you can access in which way and exactly what you can change depends on the browser.
+Each higher browser version gives you more freedom to reach any element you like and change anything you
+like.</p>
+
+<h3 id="history">DOM history</h3>
+
+<p>There are three DOM levels:</p>
+
+<ol>
+<li>The Level 0 DOM, supported from Netscape 2 onwards by all browsers.<br />
+This DOM is treated <a href="#use" class="page">below</a> on this page.</li>
+<li>The two Intermediate DOMs, supported by Netscape 4 and Explorer 4 and 5.<br />
+Note that the use of these DOMs is not necessary any more; I advise you to ignore them.</li>
+<li>The Level 1 DOM, or W3C DOM, supported by Mozilla and Explorer 5.<br />
+This DOM is treated in its <a href="../dom/intro.html">own section</a>.</li>
+</ol>
+
+<p>Now let's take a look at the origins and development of the Document Object Model.</p>
+
+<h4>Level 0 DOM</h4>
+
+<p>The Level 0 DOM was invented by Netscape at the same time JavaScript was invented and was first
+implemented in Netscape 2. It offers access to a few HTML elements, most importantly forms and (later)
+images.</p>
+
+<p>For reasons of <em>backward compatibility</em> the more advanced browsers, even those who support the
+Level 1 DOM, still also support the old, faithful Level 0 DOM. Not supporting it would mean
+that the most common scripts suddenly wouldn't work any more. So even though the Level 0 DOM doesn't
+entirely fit into the new DOM concepts, browsers will continue to support it.</p>
+
+<p>For the same reason Microsoft was at first forced to copy the Netscape DOM for Explorer 3.
+They wanted a real competitor for Netscape and having it produce lots of error messages on every
+page that contained JavaScript would have been strategically unsound.</p>
+
+<p>Therefore the Level 0 DOM is really unified: all browsers that support parts of it support these
+parts in the same way. With the later DOMs this situation changed.</p>
+
+<h4>Intermediate DOMs</h4>
+
+<p>When the Version 4 browsers were released, the hype
+of the day was DHTML so both browsers had to support it. DHTML needs
+access to layers, separate parts of a page that can be moved across the page. Not surprisingly in
+view of their increasing competition, Netscape and Microsoft chose to create their own, proprietary
+DOMs to provide access to layers and to change their properties (their position on the page, for instance).
+Netscape created the layer model and the DOM <code>document.layers</code>, while Microsoft used
+<code>document.all</code>.</p>
+
+<p>Fortunately, nowadays these intermediate DOMs are not important any more. You can safely forget them.</p>
+
+<h4>Level 1 DOM</h4>
+
+<p>Meanwhile <a href="http://www.w3.org/" class="external">W3C</a> had developed the Level 1 DOM specification. The Document
+Object Model W3C proposed was at first written for XML documents, but since HTML is after all
+a sort of XML, it could serve for browsers too.</p>
+
+<p>Besides, the Level 1 DOM is a real advance. For the first
+time, a DOM was not only supposed to give an exact model for the entire HTML (or XML) document, it
+is also possible to change the document on the fly, take out a paragraph and change the layout of a
+table, for instance.</p>
+
+<p>Since both Netscape and Microsoft had
+participated in the specification of the new DOM, since both browser vendors wanted to support
+XML in their version 5 browser and since public pressure groups like the
+<a href="http://www.webstandards.org/" class="external">Web Standards Project</a> exhorted them to behave
+sensibly just this once, both decided to implement the Level 1 DOM.</p>
+
+<p>Of course, this doesn't mean that Mozilla and Explorer 5 are the same. Again for reasons of
+<em>backward compatibility</em> Microsoft decided to continue support of <code>document.all</code> so
+that Explorer 5 now supports two DOMs <span class="smallink">(three if you count the Level 0 DOM)</span>.<br />
+On the other hand, the core of Mozilla is being built by
+the open source <a href="http://www.mozilla.org/" class="external">Mozilla Project</a>
+and the leaders of this project have decided to completely ditch the old <code>document.layers</code>
+DOM of Netscape 4 and have Mozilla support only the Level 1 DOM.</p>
+
+<p>See the <a href="../dom/intro.html">Level 1 DOM</a> page for more information.</p>
+
+<h3 id="access">Accessing elements</h3>
+
+<p>Each DOM gives access to HTML elements in the document. It requires you, the web programmer, to
+invoke each HTML element by its <em>correct name</em>. If you have done so, you can influence the element
+(read out bits of information or change the content or layout of the HTML element). For instance, if you want to
+influence the image with <code>name="first"</code> you have to invoke it by its proper name</p>
+
+<pre>
+document.images['first']
+</pre>
+
+<p>and you are granted access. The Level 0 DOM supports the following nodeLists:</p>
+
+<ul>
+	<li><code>document.images[]</code>, which grants access to all images on the page.</li>
+	<li><code>document.forms[]</code>, which grants access to all forms on the page.</li>
+	<li><code>document.forms[].elements[]</code>, which grants access to all form fields in one form, whatever their
+	tag name. This nodeList is unique to the Level 0 DOM; the W3C DOM does not have a similar construct.</li>
+	<li><code>document.links[]</code>, which grants access to all links (<code>&lt;a href&gt;</code>) on the page.</li>
+	<li><code>document.anchors[]</code>, which grants access to all anchors (<code>&lt;a name&gt;</code>) on the page.</li>
+
+</ul>
+
+<h3 id="use">How to use the Level 0 DOM</h3>
+
+<p>When the browser concludes that an HTML document has been <em>completely loaded</em>, it starts
+making arrays for you. It creates the array <code>document.images[]</code> and puts all images on the
+page in it, it creates the array <code>document.forms[]</code> and puts all forms on the page in it etc.</p>
+
+<p>This means that you now have access to all forms and images, you just have to go through the array
+in search of the exact image or form that you want to influence. This can be done in two ways: by
+<em>name</em> or by <em>number</em>.</p>
+
+<p>Suppose you have this HTML document:</p>
+
+<pre>
+-------------------------------------------
+|                document                 |
+| --------         -------------------    |
+| |img   |         |   second image  |    |
+| --------         |                 |    |
+|                  -------------------    |
+|  -------------------------------------  |
+|  |             form                  |  |
+|  | ---------------------             |  |
+|  | |      address      |             |  |
+|  | ---------------------             |  |
+|  -------------------------------------  |
+-------------------------------------------
+</pre>
+
+<h4>document.images</h4>
+
+<p>The first image has <code>name="thefirst"</code>, the second has <code>name="thesecond"</code>. Then the
+first image can be accessed by either of these two calls:</p>
+
+<pre>
+document.images['thefirst']
+document.images[0]
+</pre>
+
+<p>The second one can be accessed by either of these calls:</p>
+
+<pre>
+document.images['thesecond']
+document.images[1]
+</pre>
+
+<p>The first call is by name, simply fill in the name
+<span class="smallink">(between quotes, it's a <a href="strings.html">string</a>!)</span>
+within the <code>[]</code> and you're ready.</p>
+
+<p>The second call is by number. Each image gets a number in the <code>document.images</code> array, in
+order of appearance in the source code. So the first image on a page is <code>document.images[0]</code>,
+the second one is <code>document.images[1]</code> etc.</p>
+
+<h4>document.forms</h4>
+
+<p>The same goes for forms. Suppose the form on the page has <code>name="contactform"</code>, then you
+can reach it by these two calls:</p>
+
+<pre>
+document.forms['contactform']
+document.forms[0]
+</pre>
+
+<p>But in the case of forms, usually you don't want to access just the form, but a specific form field.
+No problem, for each form the browser automatically creates the array <code>document.forms[].elements[]</code>
+that contains all elements in the form.</p>
+
+<p>The form above holds as first element an <code>&lt;input name="address"&gt;</code>. You can
+access it by these four calls:</p>
+
+<pre>
+document.forms['contactform'].elements['address']
+document.forms['contactform'].elements[0]
+document.forms[0].elements['address']
+document.forms[0].elements[0]
+</pre>
+
+<p>These four calls are completely interchangeable, it's allowed to first use one, then another. It depends
+on your script exactly which method of access you use.</p>
+
+<h3>Doing what you need to do</h3>
+
+<p>Once you have correctly accessed a form field or an image through the Level 0 DOM, you'll have to do
+what you want to do. Images are usually accessed to create a
+mouseover effect that changes the property <code>src</code> of
+an image:</p>
+
+<pre>
+document.images['thefirst'].src = 'another_image.gif';
+</pre>
+
+<p>Usually you want to access forms to check what a user has filled in. For instance to read out
+what the user has filled in check the property <em>value</em>:</p>
+
+<pre>
+x = document.forms[0].elements[0].value;
+</pre>
+
+<p>and then check <code>x</code> for whatever is necessary. See the
+<a href="forms.html">introduction to forms</a> for details on how to access specific
+form fields (checkboxes, radio buttons etc.).</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/dom0.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:53 GMT -->
+</html>

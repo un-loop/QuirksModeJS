@@ -1,0 +1,5 @@
+<div id="TOC"></div>
+<div id="siteNav">
+	<!-- span id="menuLink">show site navigation</span -->
+	<p id="waitMessageNav">Loading site navigation; please wait...</p>
+</div>

@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/changess.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:08 GMT -->
+<head>
+<title>JavaScript - Change style sheet</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+<!--
+
+@import url("test.css");
+
+p,h2,h3 {
+	padding-right: 10px;
+}
+
+pre.test + * {
+	margin-right: 20%;
+}
+
+pre.test {
+	background-color: #ffffff;
+}
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+
+function init() {
+	document.getElementById('writeroot').innerHTML = getAllRules();
+}
+
+function getAllRules()
+{
+	if (document.styleSheets)
+	{
+		var theRules = new Array();
+		if (document.styleSheets[1].cssRules)
+			theRules = document.styleSheets[1].cssRules
+		else if (document.styleSheets[1].rules)
+			theRules = document.styleSheets[1].rules
+		else
+			return "Your browser doesn't support rules[] or cssRules[]";
+
+		var returnstring = '';
+		for (var i=0;i<theRules.length;i++)
+		{
+			returnstring += i + ' = ' + theRules[i].selectorText + '<br />';
+		}
+		return returnstring;
+	}
+	else
+		return "Your browser doesn't support document.styleSheets";
+}
+
+
+function changeIt() {
+	if (!document.styleSheets) return;
+	var theRules = new Array();
+	if (document.styleSheets[1].cssRules)
+		theRules = document.styleSheets[1].cssRules
+	else if (document.styleSheets[1].rules)
+		theRules = document.styleSheets[1].rules
+	else return;
+	theRules[theRules.length-1].style.backgroundColor = '#EEF0F5';
+}
+
+// -->
+</script>
+</head>
+
+<body>
+
+<h2>Change style sheet</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 9D of <a href="https://www.quirksmode.org/book/">the book</a>.</p>
+<p>Opera 8 and lower don't support the <code>styleSheets[]</code> array.</p>
+<!-- p>Safari cannot access the <code>styleSheets[]</code> array until the page has been completely
+loaded. All other browsers allow access at any time after the style sheets have been written into
+the page.</p -->
+</div>
+
+<p class="intro">On this page I try to change the background colour of a PRE, not by accessing the
+element directly but by changing the entire style sheet of the page. Unfortunately browser incompatibilities
+are so severe that this script isn't really usable in practice yet.</p>
+
+<p>Please note the difference between traditional
+<a href="../js/introdh.html">DHTML</a> and this example script.
+While in DHTML you change the styles of one specific HTML element on the page (usually identified
+by an ID), this example changes the style sheet of the entire document.</p>
+
+<p>See also the
+<a href="w3c_css.html">W3C DOM - CSS</a> compatibility table.</p>
+
+<h3 id="def">Definitions</h3>
+
+<p>A page contains one or more <em>style sheets</em> which in turn contain one or more <em>rules</em>
+which contain the actual style declarations. These are the styles in this page:</p>
+
+<pre>
+&lt;link rel="stylesheet" href="../quirksmode.css"&gt;
+&lt;style&gt;
+&lt;!--
+@import url("test.css");
+
+p,h2,h3 {
+	padding-right: 10px;
+}
+
+pre.test + * {
+	margin-right: 20%;
+}
+
+pre.test {
+	background-color: #ffffff;
+}
+--&gt;
+&lt;/style&gt;
+</pre>
+
+<p>The purpose of our test script will be to change the white background colour of the <code>pre.test</code>
+to its normal value <code>#EEF0F5</code>.</p>
+
+<h4>Style sheet</h4>
+
+<p>All linked and embedded style sheets are available through the <code>document.styleSheets</code> array.
+<code>quirksmode.css</code>, the general style sheet for the entire site, is
+<code>document.styleSheets[0]</code>. The special style block I added to this page is
+<code>document.styleSheets[1]</code>. We're going to do our tests on this special block of styles.</p>
+
+<h4>cssRules[] and rules[]</h4>
+
+<div class="floater">
+	<p><code>cssRules</code> is supported by Explorer Mac, Mozilla, Safari, and Opera.</p>
+	<p><code>rules</code> is supported by Explorer (Win and Mac), and Safari.</p>
+</div>
+
+<p>A rule is one set of style declarations for one or more elements. There are two ways to access these rules. W3C insists on the <code>cssRules</code> array while
+Microsoft has decided on the <code>rules</code> array. Both arrays work with index numbers, the first
+rule is <code>(css)Rules[0]</code>, the second one <code>[1]</code> etc.</p>
+
+<p>Workaround:</p>
+
+<pre>
+var theRules = new Array();
+if (document.styleSheets[1].cssRules)
+	theRules = document.styleSheets[1].cssRules
+else if (document.styleSheets[1].rules)
+	theRules = document.styleSheets[1].rules
+</pre>
+
+<p>Now <code>theRules</code> contains all style rules.</p>
+
+<h4>Number of rules</h4>
+
+<p>This is the style sheet:</p>
+
+<pre>
+@import url("test.css");
+
+p,h2,h3 {
+	padding-right: 10px;
+}
+
+pre.test + * {
+	margin-right: 20%;
+}
+
+pre.test {
+	background-color: #ffffff;
+}
+</pre>
+
+<p>Now at first you'd say that the special
+test style sheet has four rules: <code>@import</code>, then <code>p,h2,h3</code>, then
+<code>pre.test + *</code> and finally <code>pre.test</code>.
+Unfortunately that is not always the case. Here are the selectors of the rules according to your browser:</p>
+
+<pre id="writeroot">
+</pre>
+
+<ul class="spacing">
+<li><b>Safari</b> sees 4 rules:
+	<ol start="0">
+	<li><code>undefined</code></li>
+	<li><code>P</code></li>
+	<li><code>PRE.test[CLASS~="test"] + *</code></li>
+	<li><code>PRE.test[CLASS~="test"]</code></li>
+	</ol>
+Note: UPPER case.</li>
+<li><b>Explorer 7 beta 3</b> sees 5 rules:
+	<ol start="0">
+	<li><code>P</code></li>
+	<li><code>H2</code></li>
+	<li><code>H3</code></li>
+	<li><code>PRE.test + *</code></li>
+	<li><code>PRE.test</code></li>
+	</ol>
+Note: UPPER case.</li>
+<li><b>Explorer Mac</b> also sees 5 rules:
+	<ol start="0">
+	<li><code>P</code></li>
+	<li><code>H2</code></li>
+	<li><code>H3</code></li>
+	<li><code>PRE.test *</code> (note the absence of the <code>+</code>)</li>
+	<li><code>PRE.test</code></li>
+	</ol>
+Note: UPPER case.</li>
+<li><b>Mozilla 1.7.12</b> and <b>Opera 9</b> see the correct 4 rules:
+	<ol start="0">
+	<li><code>undefined</code></li>
+	<li><code>p, h2, h3</code></li>
+	<li><code>pre.test + *</code></li>
+	<li><code>pre.test</code></li>
+	</ol>
+Note: lower case.</li>
+</ul>
+
+<p>A fine mess.</p>
+
+<ol class="spacing">
+
+<li>According to Explorer, the <code>p,h2,h3</code> rule is not one rule but three separate
+ones, while Safari sees it as a rule for <code>P</code> only. As far as I understand the
+<a href="http://www.w3.org/TR/1998/REC-CSS2-19980512/syndata.html#q8"
+	class="external"
+	>spec</a> both variations are incorrect behaviour.<br />
+<q>"The selector consists of everything up to (but not including) the first left curly brace ({)."</q>.</li>
+
+<li>Explorer Mac changes the selector to <code>pre.test *</code>,
+which has a completely different meaning. Serious, very serious.</li>
+
+<li>Finally the <code>pre.test</code> is reasonably well supported, except that Safari adds unnecessary
+selection syntax.</li>
+
+</ol>
+
+<p>So to access the <code>pre.test</code> rule Safari and Mozilla 1.75 need <code>cssRules[3]</code>, Explorer <code>rules[4]</code>
+and older Mozilla's <code>cssRules[5]</code>. Lovely, isn't it?</p>
+
+<h4>No keys</h4>
+
+<p>So we encounter serious problems when trying to access the rule by index number.
+What I'd rather do is access them by keys, where the selector is the key. Something like:</p>
+
+
+<pre class="wrong">
+document.styleSheets[1].cssRules['PRE.test']
+</pre>
+
+<p>so that I can access the rule of the PRE regardless of where in the style sheet it is. It
+does not seem to have occurred to either W3C or the browser vendors that web developers have a
+need for such a way of accessing rules. All documentation is completely silent on this point.</p>
+
+<p>This failure means that it's nearly impossible to access the rule you want.</p>
+
+<h4>Style declarations</h4>
+
+<p>Let's pretend we have accessed the desired rule. Now we change one of its style declarations. The general
+syntax for this is</p>
+
+<pre>
+rule.style.color = '#0000cc';
+</pre>
+
+<p>The W3C approved way is</p>
+
+<pre>
+rule.style.setProperty('color','#00cc00',null);
+</pre>
+
+<p>Since it is vastly simpler I prefer the <code>style.color</code> syntax above <code>setProperty()</code>.</p>
+
+<h3 id="ex">Example</h3>
+
+
+<p>Try <a href="#" onclick="changeIt(); return false"
+	class="page">changing</a> the background colour of the PRE's below.</p>
+
+<pre class="test">
+Test PRE
+</pre>
+
+<h4>The script</h4>
+
+<p>To avoid the rules problems noted above I use the fact that the <code>pre.test</code> rule is the last
+rule in the stylesheet. It's an ugly kludge, but it's the only way to get a proper cross-browser test case.</p>
+
+<pre class="test">
+function changeIt() {
+	if (!document.styleSheets) return;
+	var theRules = new Array();
+	if (document.styleSheets[1].cssRules)
+		theRules = document.styleSheets[1].cssRules
+	else if (document.styleSheets[1].rules)
+		theRules = document.styleSheets[1].rules
+	else return;
+	theRules[theRules.length-1].style.backgroundColor = '#EEF0F5';
+}
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/changess.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:09 GMT -->
+</html>

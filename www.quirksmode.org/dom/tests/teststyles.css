@@ -1,0 +1,94 @@
+
+body {
+	max-width: 100%;
+}
+
+div.testHTML,div.testHTML div {
+	border: 1px solid #666666;
+	padding: 1em;
+	margin: 10px 0;
+}
+
+div.testHTML div {
+	padding: 0.3em;
+}
+
+div.testHeaders h4 {
+	display: inline;
+	cursor: pointer;
+	color: #666666;
+	font-size: 100%;
+	margin: 0;
+	padding: 0.3em;
+	line-height: 150%;
+}
+
+div.testHeaders h4:hover,div.testHeaders h4:focus {
+	color: #3B5F9B;
+	text-decoration: underline;
+}
+
+h4#active {
+	background-color: #3B5F9B;
+	color: #ffffff;
+	display: block;
+	margin-top: 1em;
+	padding-bottom: 0;
+	padding-left: 1em;
+	cursor: default;
+}
+
+h4#active:after {
+	content: " tests";
+}
+
+
+h4#active:hover {
+	text-decoration: none;	
+}
+
+div.testHeaders h4:after {
+	content: ' ';  /* to get true inline effect */
+}
+
+h4#active {
+	z-index: 40;
+}
+
+div.testDiv {
+	border: 3px solid #3B5F9B;
+	padding: 1em;	
+}
+
+div.testDiv p {
+	margin-bottom: 0;
+	margin-top: 1.2em;
+}
+
+pre.testScript {
+	position: relative;
+	cursor: pointer;
+	background-color: #ffffff;
+	padding: 0.7em 0;
+	width: 100%;
+}
+
+pre.testScript + pre.testScript {
+	margin-top: -1px;
+}
+
+pre.testScript:hover {
+	z-index: 2;
+	color: #3B5F9B;
+	border-color: #3B5F9B;
+}
+
+table#test th,table#test td {
+	border: 1px solid #000000;
+}
+
+@media all and (max-width: 600px) {
+	div.floater {
+		float: none;
+	}
+}

@@ -1,0 +1,241 @@
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/stylesheets.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:19 GMT -->
+<head>
+<title>W3C DOM tests - styleSheets</title>
+<link rel="stylesheet" href="../../quirksmode.css">
+<link rel="stylesheet" href="teststyles.css">
+<link rel="stylesheet" href="specialstyle.css">
+<link rel="stylesheet" href="importtest.css">
+<script src="../../quirksmode.js"></script>
+<script language="javascript">
+<!--
+
+
+function splitBrowsers()
+{
+	if (document.styleSheets[2].cssRules)
+		return document.styleSheets[2].cssRules;
+	else
+		return document.styleSheets[2].rules;
+}
+
+function dSS()
+{
+	alert(document.styleSheets.length)
+}
+
+function cssRu()
+{
+	alert(document.styleSheets[2].cssRules.length)
+}
+
+function Ru()
+{
+	alert(document.styleSheets[2].rules.length)
+}
+
+function getColor()
+{
+	var theRules = splitBrowsers();
+	alert(theRules[0].style.color);
+}
+
+function getColorKey()
+{
+	var theRules = splitBrowsers();
+	alert(theRules['h2'].style.color);
+}
+
+function setColor()
+{
+	var theRules = splitBrowsers();
+	theRules[0].style.color = '#0000cc';
+}
+
+function getselT()
+{
+	var theRules = splitBrowsers();
+	alert(theRules[0].selectorText);
+}
+
+function getcssT()
+{
+	var theRules = splitBrowsers();
+	alert(theRules[0].cssText);
+}
+
+function getcssT2()
+{
+	alert(document.styleSheets[2].cssText)
+}
+
+function getcssT3()
+{
+	var theRules = splitBrowsers();
+	alert(theRules[0].style.cssText);
+}
+
+function getHref()
+{
+	alert(document.styleSheets[2].href)
+}
+
+function setHref()
+{
+	document.styleSheets[0].href = '../../js/oldstyles.css'
+}
+
+function getOwner()
+{
+	alert(document.styleSheets[2].ownerNode.nodeName)
+}
+
+function getParentRule()
+{
+	var theRules = splitBrowsers();
+	alert(theRules[1].parentRule)
+}
+
+function getParentSS()
+{
+	var theRules = splitBrowsers();
+	alert(theRules[1].parentStyleSheet)
+}
+
+function disAble()
+{
+	document.styleSheets[2].disabled = true
+}
+
+function disAbleTest()
+{
+	alert(document.styleSheets[2].disabled)
+}
+
+function testImport()
+{
+	alert(document.styleSheets[3].imports.length)
+}
+
+// -->
+</script>
+
+</head>
+
+<body>
+
+<h2>styleSheets</h2>
+
+<div id="header"></div>
+
+<p class="intro">On this page I test style sheet access.</p>
+
+<p>This page links to four style sheets - you'll note that some elements have different colors than
+elsewhere on this site:</p>
+
+<ol>
+<li>To the usual <code>quirksmode.css</code> which I use throughout my entire site</li>
+<li>To <code>testsyles.css</code>, special styles for all W3C DOM tests</li>
+<li>To <code>specialstyle.css</code>, a test sheet for most tests on this page</li>
+<li>To <code>importtest.css</code>, which in turn imports <code>import.css</code>. This style
+sheet is for the test of the <code>imports</code> property.</li>
+</ol>
+
+<h3>Test elements</h3>
+
+
+<div class="tests">
+<pre>This is a test pre.</pre>
+</div>
+
+<h3>Test scripts</h3>
+
+<p>In these tests I make sure each browser uses cssRules or rules, whichever array it supports.
+Obviously, the only exceptions are the tests that check for support of <code>rules</code>
+or <code>cssRules</code>.</p>
+
+<h4>document.styleSheets</h4>
+
+
+<p>Test <a href="javascript:dSS()">alert(document.styleSheets.length)</a></p>
+
+<p>Correct: 4</p>
+
+<h4>rules and cssRules</h4>
+
+<p>Test <a href="javascript:cssRu()">alert(document.styleSheets[2].cssRules.length)</a><br>
+Test <a href="javascript:Ru()">alert(document.styleSheets[2].rules.length)</a></p>
+
+<p>Correct: 4</p>
+
+<h4>imports</h4>
+
+<p>Test <a href="javascript:testImport()">alert(document.styleSheets[3].imports.length)</a></p>
+
+<p>Correct: 1</p>
+
+
+<h4>selectorText</h4>
+
+<p>Test <a href="javascript:getselT()">alert(document.styleSheets[2].{cssrules}[0].selectorText)</a><br>
+</p>
+
+<p>Correct: pre</p>
+
+
+
+<h4>cssText</h4>
+
+<p>Test <a href="javascript:getcssT2()">alert(document.styleSheets[2].cssText)</a><br>
+Test <a href="javascript:getcssT()">alert(document.styleSheets[2].{cssrules}[0].cssText)</a><br>
+Test <a href="javascript:getcssT3()">alert(document.styleSheets[2].{cssrules}[0].style.cssText)</a><br>
+</p>
+
+<h4>{css}rules.style</h4>
+
+<p>
+Test <a href="javascript:getColor()">alert(document.styleSheets[2].{cssrules}[0].style.color)</a><br>
+Test <a href="javascript:getColorKey()">alert(document.styleSheets[2].{cssrules}['h2'].style.color)</a><br>
+Test <a href="javascript:setColor()">document.styleSheets[2].{cssrules}[0].style.color = '#0000cc'</a><br>
+</p>
+
+<p>{cssrule}[0]: pre</p>
+
+<h4>href</h4>
+
+<p>
+Test <a href="javascript:getHref()">alert(document.styleSheets[2].href)</a><br>
+Test <a href="javascript:setHref()">document.styleSheets[0].href = '../../js/oldstyles.css'</a><br>
+</p>
+
+<p>Correct: specialstyle.css</p>
+
+
+<h4>Disabled</h4>
+
+<p>
+Test <a href="javascript:disAbleTest()">alert(document.styleSheets[2].disabled)</a><br>
+Test <a href="javascript:disAble()">document.styleSheets[2].disabled = true</a>
+</p>
+
+<h4>Miscellaneous</h4>
+
+<p>
+Test <a href="javascript:getOwner()">alert(document.styleSheets[2].ownerNode.nodeName)</a><br>
+Test <a href="javascript:getParentRule()">alert(document.styleSheets[2].{cssrules}[1].parentRule)</a><br>
+Test <a href="javascript:getParentSS()">alert(document.styleSheets[2].{cssrules}[1].parentStyleSheet)</a><br>
+</p>
+
+
+
+
+
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/stylesheets.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:20 GMT -->
+</html>

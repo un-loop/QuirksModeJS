@@ -1,0 +1,80 @@
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/stylesheet_change.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:20 GMT -->
+<head>
+<title>W3C DOM tests - styleSheets</title>
+<link rel="stylesheet" href="../../quirksmode.css">
+<link rel="stylesheet" href="specialstyle.css">
+<script src="../../quirksmode.js"></script>
+<script language="javascript">
+<!--
+
+var x;
+function init () {
+	x = document.getElementById('test');
+}
+
+function delRule()
+{
+	document.styleSheets[1].deleteRule(0)
+}
+
+function insRule()
+{
+	document.styleSheets[1].insertRule('pre {border: 1px solid #000000}',document.styleSheets[1].cssRules.length);
+}
+
+function addR()
+{
+	document.styleSheets[1].addRule('pre','border: 1px solid #000000');
+}
+
+function remRule()
+{
+	document.styleSheets[1].removeRule(0)
+}
+
+// -->
+</script>
+
+</head>
+
+<body>
+
+<h2>Changing style sheets</h2>
+
+<div id="header"></div>
+
+
+<p>This page links to two style sheets. First to the usual <code>js.css</code> which I use
+throughout all my sites, then to a special style sheet for these test pages. You'll notice that
+some tags have a different colour than usual.</p>
+
+<pre>
+&lt;link rel="stylesheet" href="../js.css"&gt;
+&lt;link rel="stylesheet" href="specialstyle.css"&gt;
+</pre>
+
+<p id="test">This is element x.</p>
+
+
+
+<p><code>x</code> is <code>document.styleSheets[1]</code>.</p>
+
+<p>
+Test <a href="javascript:delRule()">x.deleteRule(0)</a><br>
+Test <a href="javascript:insRule()">x.insertRule('pre {border: 1px solid #000000}',x.cssRules.length);</a><br>
+</p>
+
+<p>
+Test <a href="javascript:addR()">x.addRule('pre','border: 1px solid #000000');</a><br>
+Test <a href="javascript:remRule()">x.removeRule(0);</a><br>
+</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/stylesheet_change.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:20 GMT -->
+</html>

@@ -1,0 +1,804 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/w3c_cssom.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:16 GMT -->
+<head>
+<title>W3C DOM Compatibility - CSS Object Model View</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+
+<body>
+
+
+<h2>W3C DOM Compatibility - CSS Object Model View</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+
+<p>Last major update on <span class="lastUpdate">20 July 2010</span>.</p>
+<p>This page has been translated into <a href="http://www.costeamarian.com/translations/dom/w3c_cssom.html" class="external">Romanian</a>.</p>
+
+<p><a href="https://www.quirksmode.org/m/w3c_cssom.html">Mobile table</a>.</p>
+
+</div>
+
+<p class="intro">These compatibility tables detail support for the
+<a href="http://www.w3.org/TR/cssom-view/" class="external">W3C CSSOM View specification</a> in all modern browsers.</p>
+
+<p class="accent">Want these Tables updated? Join the <a href="https://www.quirksmode.org/blog/archives/2011/06/donation_drive.html">donation drive</a>.</p>
+
+<ol>
+	<li><a href="#windowview" class="page">WindowView properties</a>.</li>
+	<li><a href="#screenview" class="page">ScreenView properties</a>.</li>
+	<li><a href="#documentview" class="page">DocumentView and ElementView methods</a>.</li>
+	<li><a href="#elementview" class="page">ElementView properties</a>.</li>
+	<li><a href="#mousepos" class="page">Mouse position</a>.</li>
+</ol>
+
+<h3 id="windowview">WindowView properties</h3>
+
+<p>These properties hold the dimensions of the entire browser window.</p>
+
+<table class="compatibility wide" cellspacing="7">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- INNERWIDTH/HEIGHT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">innerWidth and innerHeight</div>
+		The dimensions of the viewport (interior of the browser window)
+		<br /><br /><a href="tests/windowview.html#innerWidth%20and%20innerHeight">Test page</a>
+	</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>window.innerWidth
+window.innerHeight</pre>
+	<p>See <a href="https://www.quirksmode.org/mobile/tableViewport_desktop.html">more recent test results</a>.</p>
+	</td>
+</tr>
+
+<!-- OUTERWIDTH/HEIGHT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">outerWidth and outerHeight</div>
+		The dimensions of the entire browser window (including taskbars and such)
+		<br /><br /><a href="tests/windowview.html#outerWidth%20and%20outerHeight">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>window.outerWidth
+window.outerHeight</pre>
+	<ul>
+
+	</ul>
+	</td>
+</tr>
+
+<!-- PAGEXYOFFSET  -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">pageXOffset and pageYOffset</div>
+		The amount of pixels the entire pages has been scrolled
+		<br /><br /><a href="tests/windowview.html#pageXOffset%20and%20pageYOffset">Test page</a>
+	</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>window.pageXOffset
+window.pageYOffset</pre>
+	<p>See <a href="https://www.quirksmode.org/mobile/tableViewport_desktop.html">more recent test results</a>.</p>
+	</td>
+</tr>
+
+<!-- SCREENX/SCREENY -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">screenX and screenY</div>
+		The position of the browser window on the screen
+		<br /><br /><a href="tests/windowview.html#screenX%20and%20screenY">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incorrect" colspan="3">Incor<wbr />rect</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>window.screenX
+window.screenY</pre>
+	<ul>
+		<li>Opera calculates the coordinates of the specific tab window relative to the
+		encompassing browser window. This is understandable given its way of working with windows,
+		but strictly speaking it's a bug. It should give the coordinates of the encompassing browser
+		window relative to the screen.</li>
+	</ul>
+	</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+</table>
+
+<h3 id="screenview">ScreenView properties</h3>
+
+<p>These properties hold information about the screen.</p>
+
+<table class="compatibility wide" cellspacing="7">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- AVAILWIDTH/HEIGHT-->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">availWidth and availHeight</div>
+		The available width and height on the screen (excluding OS taskbars and such)
+		<br /><br /><a href="tests/screenview.html#availWidth/Height">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>screen.availWidth
+screen.availHeight</pre>
+	</td>
+</tr>
+
+<!-- COLORDEPTH -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">colorDepth</div>
+		The color depth (in bits) of the screen
+		<br /><br /><a href="tests/screenview.html#color">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incorrect" colspan="2">Incor<wbr>rect</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>screen.colorDepth</pre>
+	<ul>
+		<li>Firefox 3.6 return 24, while my system is clearly 32; all other browsers agree on
+		that. This bug has occurred before,
+		in a far earlier version of Firefox. Can&#8217;t remember which one.<br>
+		There was something about Firefox being &#8220;really&#8221; right because of an alpha channel
+		or something, but as long as all other browsers on the same computer report 32 I continue
+		to see Firefox as the culprit here.<br>
+		Besides, these properties are only ever used in web browser statistics programs, and there people
+		have grown used to the &#8220;32&#8221; even though they don&#8217;t understand what it means.
+		Nobody ever uses it in the wild.</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- PIXELDEPTH -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">pixelDepth</div>
+		Usually same as colorDepth
+		<br /><br /><a href="tests/screenview.html#color">Test page</a>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incorrect" colspan="2">Incor<wbr>rect</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>screen.pixelDepth</pre>
+	<p>The difference between colorDepth and pixelDepth is only important on (older?) Unix machines, where old X-clients
+	may allow applications to define their own color scheme. If that&#8217;s the case, colorDepth matches the color depth
+	of the application and pixelDepth the color depth of the monitor. In all other cases they&#8217;re equal.</p>
+	</td>
+</tr>
+
+
+<!-- WIDTH/HEIGHT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">width and height </div>
+		The width and height of the screen
+		<br /><br /><a href="tests/screenview.html#width/height">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>screen.width
+screen.height</pre>
+	</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+</table>
+
+<h3 id="documentview">DocumentView and ElementView methods</h3>
+
+
+<table class="compatibility wide" cellspacing="7">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- ELEMENTFROMPOINT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">elementFromPoint()</div>
+		Returns the element located at the given coordinates
+		<br /><br /><a href="tests/elementfrompoint.html">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp incorrect">Incor<wbr>rect</td>
+	<td class="comp yes" colspan="1">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incorrect">Incor<wbr>rect</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>document.elementFromPoint(100,100)</pre>
+	<p>Which coordinates does <code>elementFromPoint()</code> need? The standard seems to be
+	<code>clientX/Y</code>.</p>
+
+	<ul>
+		<li>Safari 4 and Opera 10.10 need <code>pageX/Y</code>.</li>
+	</ul>
+	<p>This method is a godsend for <a href="../js/dragdrop.html">drag and drop scripts</a>. When the user drops the dragged element,
+	figure out what element is located at the drop point and go on from there. No more complicated calculations
+	necessary.</p>
+
+	<p>However, you need to temporarily hide the dragged object. By definition it's the topmost element on
+	the requested coordinates, and we need to know what's underneath it. The basic trick is:</p>
+
+	<pre>
+releaseElement: function(e) { // called onmouseup
+	var evt = e || window.event;
+	draggedObject.style.display = 'none';
+	var receiver = document.elementFromPoint(evt.clientX,evt.clientY);
+	if (receiver.nodeType == 3) { // Opera
+		receiver = receiver.parentNode;
+	}
+	draggedObject.style.display = '';
+	</pre>
+
+	<p>Now <code>receiver</code> contains the element the user dropped the dragged element on.</p>
+
+
+	</td>
+</tr>
+
+<!-- GETBOUNDINGCLIENTRECT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">getBoundingClientRect()</div>
+		Gets the encompassing rectangle
+		<br /><br /><a href="tests/rectangles.html">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp almost" colspan="4">Almost</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.getBoundingClientRect()</pre>
+	<p>Returns an object that contains the <code>top</code>, <code>left</code>, <code>right</code>,
+	and <code>bottom</code> (all relative to the top left of the viewport) of the combined rectangle
+	of element <code>x</code>. Essentially, the browser calculates all rectangles (see below <code>getClientRects()</code>),
+	and <code>getBoundingClientRect()</code> returns the lowest (top, left) or highest (bottom, right) values found.</p>
+	<p>IE handles this correctly, provided you accept its incorrect calculation of the individual rectangles.</p>
+	<ul>
+		<li>Firefox doesn't round the top/bottom coordinates.</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- GETCLIENTRECTS -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">getClientRects()</div>
+		Gets the several rectangles of an element
+		<br /><br /><a href="tests/rectangles.html">Test page</a>
+	</td>
+	<td class="comp buggy" colspan="3">Buggy</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp almost" colspan="4">Almost</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.getClientRects()</pre>
+	<p>Returns a list with Rectangle objects that contain the <code>top</code>, <code>left</code>, <code>right</code>,
+	and <code>bottom</code> (all relative to the top left of the viewport) of the rectangles
+	of element <code>x</code>.</p>
+	<p>The trick here is, that an inline element such as an <code>&lt;em&gt;</code> contains one rectangle for every
+	inline box (line), and that all these rectangles are returned.
+	<ul>
+		<li>IE5-7 returns far too many rectangles for the first test paragraphs. The correct number is 5 (for 5 lines),
+		but IE5.5 returns 9 and IE6/7 14. IE8b2 gets this right.</li>
+		<li>Furthermore, IE5-7 also split up a block-level element such as a <code>&lt;p&gt;</code> into one rectangle
+		per line. This is incorrect: a block-level element should be reported as one rectangle.</li>
+		<li>Finally, in IE 5-7 the rectangles are off by about two pixels. <a href="http://ejohn.org/blog/getboundingclientrect-is-awesome/"
+		class="external">According to John Resig</a> this is caused by the (invisible, but nonetheless present) borders
+		of the <code>&lt;html&gt;</code> element.</li>
+		<li>Firefox doesn't round the top/bottom coordinates.</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- SCROLLINTOVIEW -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">scrollIntoView()</div>
+		<p>Makes an element scroll into view</p>
+		<p>(Not part of the specification)</p>
+		<br /><br /><a href="tests/scrollintoview.html">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.scrollIntoView()</pre>
+	<p>Element <code>x</code> scrolls into view.</p>
+	<p>Essentially element <code>x</code> behaves as if it's the target of an <code>#hash</code>: it scrolls
+	to the topmost, leftmost position allowed.</p>
+	<ul>
+		<li>Safari iPhone handles the Y-coordinate correctly, but it also scrolls to the left edge of the page,
+		which can make this method hard to use when the user has zoomed in.</li>
+	</ul>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+
+</table>
+
+<h3 id="elementview">ElementView properties</h3>
+
+<p>These properties give information about the dimensions of an Element node (HTML tag).</p>
+
+<table class="compatibility wide" cellspacing="7">
+	<col />
+	<col span="5" class="IE" />
+	<col span="4" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Chrome" />
+	<col span="3" class="Op" />
+	<col span="1" class="Rest" />
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- CLIENTLEFT/TOP-->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">clientLeft and clientTop</div>
+		The position of the upper left corner of the content field relative to the upper left
+		corner of the entire element (including borders)
+		<br /><br /><a href="tests/elementdimensions.html">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.clientLeft
+x.clientTop</pre>
+	</td>
+</tr>
+
+<!-- CLIENTWIDTH/HEIGHT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">clientWidth and clientHeight</div>
+		The width and height of the content field, excluding border and scrollbar, but including padding
+		<br /><br /><a href="tests/elementdimensions.html">Test page</a>
+	</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.clientWidth
+x.clientHeight</pre>
+	<p>See <a href="https://www.quirksmode.org/mobile/tableViewport_desktop.html">more recent test results</a>.</p>
+	</td>
+</tr>
+
+<!-- OFFSETLEFT/TOP -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">offsetLeft and offsetTop</div>
+		The left and top position of the element relative to its offsetParent.
+		<br /><br /><a href="tests/offset.html">Test page</a>
+	</td>
+	<td class="comp incorrect" colspan="3">Incor<wbr />rect</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.offsetLeft
+x.offsetTop</pre>
+<ul>
+	<li>When calculating <code>offsetTop</code>, IE5-7 does not count elements with <code>position: relative</code>
+	as offsetParents, and moves on to the next offsetParent in the chain. <code>offsetLeft</code> is calculated
+	correctly.</li>
+</ul>
+	</td>
+</tr>
+
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+<!-- OFFSETPARENT -->
+
+<tr id="offsetParent">
+	<td class="declaration" rowspan="2">
+		<div class="name">offsetParent</div>
+		The ancestor element relative to which the <code>offsetLeft/Top</code> are calculated.
+		<br /><br /><a href="tests/offset.html">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.offsetParent</pre>
+	<p>When calculating the <code>offsetParent</code> of <code>x</code> the browser moves up the DOM tree to <code>x</code>'s
+	ancestors until it encounters one of the following elements. That element becomes <code>x</code>'s <code>offsetParent</code>.</p>
+	<ul>
+		<li><code>&lt;body&gt;</code></li>
+		<li>An element with a <a href="https://www.quirksmode.org/css/position.html"><code>position</code></a> other than <code>static</code>.</li>
+		<li>A <code>&lt;table&gt;</code>, <code>&lt;th&gt;</code> or <code>&lt;td&gt;</code>, but <strong>only</strong> if <code>x</code>
+		has <code>position: static</code>.</li>
+	</ul>
+
+	<p>The <code>&lt;body&gt;</code> element does not have an <code>offsetParent</code>. Nonetheless
+	the <code>&lt;html&gt;</code> element sometimes enters the <code>offsetParent</code> chain, though
+	never as the <code>offsetParent</code> of the <code>&lt;body&gt;</code>.</p>
+
+	<p>In IE and Opera
+	elements with <code>position: fixed</code> do not have an <code>offsetParent</code>.</p>
+
+	</td>
+</tr>
+
+<!-- OFFSETWIDTH/HEIGHT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">offsetWidth and offsetHeight</div>
+		The width and height of the entire element, including borders
+		<br /><br /><a href="tests/elementdimensions.html">Test page</a>
+	</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.offsetWidth
+x.offsetHeight</pre>
+	<p>See <a href="https://www.quirksmode.org/mobile/tableViewport_desktop.html">more recent test results</a>.</p>
+	</td>
+</tr>
+
+<!-- SCROLLTOP/LEFT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">scrollLeft and scrollTop</div>
+		The amount of pixels the element has scrolled. Read/write.
+		<br /><br /><a href="tests/elementdimensions.html">Test page</a>
+	</td>
+	<td class="comp yes" colspan="5">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="3">Yes</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.scrollLeft
+x.scrollTop
+x.scrollTop = 20</pre>
+	</td>
+</tr>
+
+<!-- SCROLLWIDTH/HEIGHT -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">scrollWidth and scrollHeight</div>
+		The width and height of the entire content field, including those parts that are
+		currently hidden.<br />
+		If there's no hidden content it should be equal to clientX/Y.
+		<br /><br /><a href="tests/elementdimensions.html">Test page</a>
+	</td>
+	<td class="comp incorrect" colspan="3">Incor<wbr />rect</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incorrect" colspan="2">Incor<wbr />rect</td>
+	<td class="comp almost" colspan="1">Almost</td>
+	<td class="comp test">To be tested</td>
+</tr>
+<tr>
+	<td colspan="25"><pre>x.scrollWidth
+x.scrollHeight</pre>
+
+<p>When you scroll the element all the way down, <code>scrollHeight</code> should be equal to scrollTop + clientHeight.</p>
+<p>If the element has no scrollbars <code>scrollWidth/Height</code> should be equal to <code>clientWidth/Height</code>.</p>
+
+<ul>
+	<li>When the element has no scrollbars IE makes the <code>scrollHeight</code> equal to the actual
+	height of the content; and not the height of the element. <code>scrollWidth</code> is correct, except
+	in IE8, where it&#8217;s 5 pixels off.</li>
+	<li>Opera gives odd, incorrect values.</li>
+</ul>
+</td>
+</tr>
+
+	<tr class="compheader">
+		<th>Selector</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8</th>
+		<th>IE9 pr3</th>
+		<th>FF 3.0</th>
+		<th>FF 3.5</th>
+		<th>FF 3.6</th>
+		<th>FF 4b1</th>
+		<th>Saf 4.0 Win</th>
+		<th>Saf 5.0 Win</th>
+		<th>Chrome 4</th>
+		<th>Chrome 5</th>
+		<th>Opera 10.10</th>
+		<th>Opera 10.53</th>
+		<th>Opera 10.60</th>
+		<th>Konqueror 4.x</th>
+	</tr>
+
+</table>
+
+
+<h3 id="mousepos">Mouse position</h3>
+
+	<p>See <a href="https://www.quirksmode.org/mobile/tableViewport_desktop.html">more recent test results</a>.</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/w3c_cssom.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:18 GMT -->
+</html>

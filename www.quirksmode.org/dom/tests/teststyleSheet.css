@@ -1,0 +1,6 @@
+
+@import url('testImport.css');
+
+p#test,ul {
+	color: #00cc00;
+}

@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/events_pairs.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:51 GMT -->
+<head>
+<title>Javascript - Event pairs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="introevents.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<style type="text/css">
+<!--
+
+td.declaration strong {
+	font-size: 140%;
+}
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+var W3CDOM = (document.createElement && document.getElementsByTagName);
+
+var mouseOvers = new Array();
+var mouseOuts = new Array();
+
+function init()
+{
+	if (!W3CDOM) return;
+	var nav = document.getElementById('mouseovers');
+	var imgs = nav.getElementsByTagName('a');
+	for (var i=0;i<imgs.length;i++)
+	{
+		imgs[i].onmouseover = imgs[i].onfocus = mouseGoesOver;
+		imgs[i].onmouseout = imgs[i].onblur = mouseGoesOut;
+		var suffix = imgs[i].firstChild.src.substring(imgs[i].firstChild.src.lastIndexOf('.'));
+		mouseOuts[i] = new Image();
+		mouseOuts[i].src = imgs[i].firstChild.src;
+		mouseOvers[i] = new Image();
+		mouseOvers[i].src = imgs[i].firstChild.src.substring(0,imgs[i].firstChild.src.lastIndexOf('.')) + "_omo" + suffix;
+		imgs[i].number = i;
+	}
+}
+
+function mouseGoesOver()
+{
+	this.firstChild.src = mouseOvers[this.number].src;
+}
+
+function mouseGoesOut()
+{
+	this.firstChild.src = mouseOuts[this.number].src;
+}
+// -->
+</script>
+
+</head>
+
+<body>
+
+<h2>Event pairs</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 7B of <a href="https://www.quirksmode.org/book/">the book</a>.</p>
+</div>
+
+<p class="intro">In order to make our JavaScript-driven pages more accessible to users who cannot or do
+not want to use the mouse, we should take care to define not only mouse events like <code>mouseover</code>
+and <code>click</code>, but also alternative, non-mouse events that make sure our scripts are also executed
+when the user tabs to a link.</p>
+
+<h3>Limitations of the tests</h3>
+
+<p>This page tries to find out which non-mouse events we should use to emulate mouse events. Note that this
+series of tests does <strong>not</strong> cover screen readers. Since I don't have any available, I cannot test
+anything. These tests are solely targeted at graphic desktop browsers where the users do not use a mouse.</p>
+
+<p>I suppose the tests could also be used for browsers on mobile phones, but since I don't have any available
+I cannot run these tests, either. More data on mobile phone performance will be gratefully received, though.</p>
+
+
+<h3>Summary</h3>
+
+<p>Unfortunately we cannot create strict guidelines for pairing one mouse event with one non-mouse event.
+There is no one-to-one relationship, since non-mouse events work differently from mouse events. Therefore
+the recommendations below will probably work in a majority of cases, but not in all.</p>
+
+<p>That said, these are the results of my test:</p>
+
+<ul>
+	<li><code>mouseover</code>: pair with <code>focus</code></li>
+	<li><code>mouseout</code>: pair with <code>blur</code></li>
+	<li><code>click</code>: pairing not necessary</li>
+	<li><code>dblclick</code>: don't know</li>
+	<li><code>mousedown</code>: <code>keydown</code> is the least bad option</li>
+	<li><code>mouseup</code>: <code>keyup</code> is the least bad option</li>
+	<li><code>mousemove</code>: impossible to emulate without a mouse</li>
+</ul>
+
+<p>If a page <strong>must</strong> be perfectly accessible for non-mouse users, we are severely
+limited in our choice of elements to apply event handlers to. In practice we go back to the Netscape 3 era,
+where event handlers were only possible on links and form fields.</p>
+
+<p>More research is clearly necessary.</p>
+
+<h3>Preparations</h3>
+
+<p>In most browsers users can go through the page by pressing the Tab button. When they do, the focus jumps
+to the next link or form field on the page. This always works in Explorer Windows and Mozilla. In Safari
+you might have to press F1 once to enable keyboard shortcuts.</p>
+
+<p>Opera uses a slightly different system. Jumping from link to link is done by using Ctrl + Arrow Up/Down.
+Despite this different key combination I will still call it "tabbing".</p>
+
+
+<h3>Example: traditional mouseovers</h3>
+
+<p>As an example I recoded my <a href="mouseov.html">mouseover script</a> to be more accessible. Tabbing
+over the links also fires the mouseover effect.</p>
+
+<ul id="mouseovers">
+<li><a href="intro.html"><img src="pix/mo_home.gif" width="80" alt="Home - example for accessible mouseover"
+	height="50" border="0" /></a></li>
+<li><a href="placejs.html"><img src="pix/mo_place.gif" width="80"  alt="Place - example for accessible mouseover"
+	height="50" border="0" /></a></li>
+</ul>
+
+<p>How did I do that? First and most important, I connected the mouseover and mouseout scripts to two events,
+and not just one:</p>
+
+<pre>
+imgs[i].onmouseover = imgs[i].onfocus = mouseGoesOver;
+imgs[i].onmouseout = imgs[i].onblur = mouseGoesOut;
+</pre>
+
+<p>Now the functions are called when the uses mouses over and out of the links, but also when he tabs into
+or out of them.</p>
+
+<p>Nonetheless, adding a few events is not enough. My original script works by setting the <code>onmouseover</code>
+and <code>onmouseout</code> directly on the image. Unfortunately it is impossible to tab to an image: tabs
+only work for form fields and links. Therefore I had to re-assign my events to the image's parent node: the
+link.</p>
+
+<p>This simple example doesn't change when we re-assign the events, but more complicated scripts might
+suffer from the inability to define accessible events on, say, a <code>&lt;div&gt;</code>.</p>
+
+<p>To remain perfectly accessible, we can only define
+events on links and form fields, just like we did back in 1998. Although many scripts on the 'Net
+probably use links for defining event handlers on, advanced functionalities like my <a href="https://www.quirksmode.org/dom/cms.html">Edit text</a>
+script may remain inaccessible to non-mouse users, since they use <code>click</code> events on paragraphs.</p>
+
+
+<div id="footer">
+<p class="smaller" id="validation">Invalid XHTML 1.0 because the table uses &lt;wbr /&gt;</p>
+</div>
+
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/events_pairs.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/error.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:11 GMT -->
+<head>
+<title>W3C DOM - Form error messages</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<style type="text/css">
+<!--
+form#example label,form#example input {
+	display: block;
+	width: 150px;
+	float: left;
+	margin-bottom: 10px;
+}
+
+form#example label {
+	text-align: right;
+	width: 75px;
+	padding-right: 20px;
+}
+
+form#example p {
+	clear: left;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+form#example span.error {
+	display: block;
+	float: left;
+	margin-left: 20px;
+	color: #cc0000;
+	font-weight: 600;
+}
+
+form#example input.error {
+	border: 1px solid #cc0000;
+	background-color: #ffffff;
+}
+
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+
+var W3CDOM = (document.getElementsByTagName && document.createElement);
+
+function init ()
+{
+	document.forms['example'].onsubmit = function () {
+		return validate()
+	}
+}
+
+function validate() {
+	validForm = true;
+	firstError = null;
+	errorstring = '';
+	var x = document.forms['example'].elements;
+	for (var i=0;i<x.length;i++) {
+		if (!x[i].value)
+			writeError(x[i],'This field is required');
+	}
+	if (x['email'].value.indexOf('@') == -1)
+		writeError(x['email'],'This is not a valid email address');
+	if (!W3CDOM)
+		alert(errorstring);
+	if (firstError)
+		firstError.focus();
+	if (validForm)
+		alert('All data is valid!');
+	return false; // I return false anyway to prevent actual form submission. Don't do this at home!
+}
+
+function writeError(obj,message) {
+	validForm = false;
+	if (obj.hasError) return;
+	if (W3CDOM) {
+		obj.className += ' error';
+		obj.onchange = removeError;
+		var sp = document.createElement('span');
+		sp.className = 'error';
+		sp.appendChild(document.createTextNode(message));
+		obj.parentNode.appendChild(sp);
+		obj.hasError = sp;
+	}
+	else {
+		errorstring += obj.name + ': ' + message + '\n';
+		obj.hasError = true;
+	}
+	if (!firstError)
+		firstError = obj;
+}
+
+function removeError() {
+	this.className = this.className.substring(0,this.className.lastIndexOf(' '));
+	this.parentNode.removeChild(this.hasError);
+	this.hasError = null;
+	this.onchange = null;
+}
+
+// -->
+
+</script>
+
+</head>
+
+<body>
+
+<h2>Form error messages</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Form Error Messages is part of Form Validation, one of the eight example scripts in <a href="https://www.quirksmode.org/book/">the book</a>.</p>
+</div>
+
+<p class="intro">This page details a way of showing form validation error messages that is far
+superior to the silly alerts most forms use.</p>
+
+<p>In my opinion alerts should only be used if the browser doesn't support a better way of displaying
+form error messages. Instead, the W3C DOM allows us to write error messages next to the form field they
+apply to. This is clearly the superior method, so we only use alerts if the browser doesn't support
+advanced scripting.</p>
+
+<h3>Example</h3>
+
+<p>Try this example form. Every field is required. In addition, I check if the "email" field contains
+a "@". If it doesn't, the value is not a valid email address and an error message is shown.</p>
+
+<form name="example" id="example" action="https://www.quirksmode.org/cgi-bin/show_params.cgi">
+<p><label for="name">name</label>
+<input size="20" name="name" id="name" /></p>
+<p><label for="address">address</label>
+<input size="20" name="address" id="address" /></p>
+<p><label for="city">city</label>
+<input size="20" name="city" id="city" /></p>
+<p><label for="email">e-mail</label>
+<input size="20" name="email" id="email" /></p>
+<p><input type="submit" value="Submit form" /></p>
+</form>
+
+<h3 style="clear: both">The script</h3>
+
+<pre>
+var W3CDOM = (document.getElementsByTagName && document.createElement);
+
+window.onload = function () {
+	document.forms[0].onsubmit = function () {
+		return validate()
+	}
+}
+
+function validate() {
+	validForm = true;
+	firstError = null;
+	errorstring = '';
+	var x = document.forms[0].elements;
+	for (var i=0;i&lt;x.length;i++) {
+		if (!x[i].value)
+			writeError(x[i],'This field is required');
+	}
+	if (x['email'].value.indexOf('@') == -1)
+		writeError(x['email'],'This is not a valid email address');
+	if (!W3CDOM)
+		alert(errorstring);
+	if (firstError)
+		firstError.focus();
+	if (validForm)
+		alert('All data is valid!');
+	return false;
+}
+
+function writeError(obj,message) {
+	validForm = false;
+	if (obj.hasError) return;
+	if (W3CDOM) {
+		obj.className += ' error';
+		obj.onchange = removeError;
+		var sp = document.createElement('span');
+		sp.className = 'error';
+		sp.appendChild(document.createTextNode(message));
+		obj.parentNode.appendChild(sp);
+		obj.hasError = sp;
+	}
+	else {
+		errorstring += obj.name + ': ' + message + '\n';
+		obj.hasError = true;
+	}
+	if (!firstError)
+		firstError = obj;
+}
+
+function removeError()
+{
+	this.className = this.className.substring(0,this.className.lastIndexOf(' '));
+	this.parentNode.removeChild(this.hasError);
+	this.hasError = null;
+	this.onchange = null;
+}
+</pre>
+
+<h3>Explanation</h3>
+
+<p>First we check W3C DOM support. The example script on this page works (somewhat) in Explorer
+on Mac, but don't be surprised if this browser craps out in a real web page. Its W3C DOM engine
+is simply not good enough to support this script in all circumstances.</p>
+
+<p>Then we create an <code>onsubmit</code> event handler for the form that calls the function
+<code>validate()</code> (see also the <a href="../js/forms.html">Introduction to forms</a>).</p>
+
+
+<pre>
+var W3CDOM = (document.getElementsByTagName && document.createElement);
+
+window.onload = function () {
+	document.forms[0].onsubmit = function ()	{
+		return validate()
+	}
+}
+</pre>
+
+<h4>validate()</h4>
+
+<p>We assume that the form is valid (<code>validForm = true</code>), we set <code>firstError</code> to <code>null</code>.
+Eventually the latter property will refer to the first invalid field, so we can set the focus on it.
+Then we create a string <code>errorstring</code>, which will eventually contain all error messages. This string is only
+for non-W3C DOM browsers.</p>
+
+<pre>
+function validate() {
+	validForm = true;
+	firstError = null;
+	errorstring = '';
+</pre>
+
+<p>The core of the <code>validate()</code> function works pretty much as always (see the
+<a href="../js/formex.html">example form</a> for an example). Check the form fields for
+any sort of error you wish. When you find an error, call the <code>writeError()</code> function and
+hand it the faulty form field and an error message.</p>
+
+<pre>
+	var x = document.forms[0].elements;
+	for (var i=0;i&lt;x.length;i++) {
+		if (!x[i].value)
+			writeError(x[i],'This field is required');
+	}
+	if (x['email'].value.indexOf('@') == -1)
+		writeError(x['email'],'This is not a valid email address');
+</pre>
+
+<p>If the browser does <em>not</em> support the W3C DOM, generate an alert with <code>errorstring</code>.
+You might want to rewrite this bit to show an alert for each error message.</p>
+
+<pre>
+	if (!W3CDOM)
+		alert(errorstring);
+</pre>
+
+<p>As a service to the user, put the focus on the first faulty field you found.</p>
+
+<pre>
+	if (firstError)
+		firstError.focus();
+</pre>
+
+<p>Finally, return <code>validForm</code>. If still <code>true</code> (no errors found) the form
+is submitted, if <code>false</code> the form submission is halted.</p>
+
+<pre>
+	return validForm;
+}
+</pre>
+
+<h4>writeError()</h4>
+
+<p>The <code>writeError()</code> function tries to write the error message next to the form field.
+If it fails, because the browser doesn't support the W3C DOM enough, it appends the error message
+to <code>errorstring</code>.</p>
+
+<p>The function is handed a form field object and an error message.</p>
+
+<pre>
+function writeError(obj,message)
+{
+</pre>
+
+<p>First we set <code>validForm</code> to <code>false</code>: the form is not valid and should not be
+submitted.</p>
+
+<pre>
+	validForm = false;
+}
+</pre>
+
+<p>Then we check if this form field already has an error message. If it does, return to the main
+<code>validate()</code> function. I don't want to show two or more messages for the same field.</p>
+
+<pre>
+	if (obj.hasError) return;
+</pre>
+
+<p>Check if the browser supports the W3C DOM.</p>
+
+<pre>
+	if (W3CDOM) {
+</pre>
+
+<p>If it does, we can start the magic. First of all add <code>error</code> to the <code>className</code>
+of the form field. Specify the styles of faulty form fields in CSS.</p>
+
+<pre>
+		obj.className += ' error';
+</pre>
+
+<p>Next, set an <code>onchange</code> event handler for the <code>removeError()</code> function. See
+below.</p>
+
+<pre>
+		obj.onchange = removeError;
+</pre>
+
+<p>Create a <code>&lt;span&gt;</code> tag to hold the error message and give it a <code>class="error"</code>.
+Again, specify the presentation of the error message in CSS.</p>
+
+<pre>
+		var sp = document.createElement('span');
+		sp.className = 'error';
+</pre>
+
+<p>Append a text node with the error message to the <code>&lt;span&gt;</code>.</p>
+
+<pre>
+		sp.appendChild(document.createTextNode(message));
+</pre>
+
+<p>Append the entire <code>&lt;span&gt;</code> to the parent node of the form field (in my case, every
+label/field pair is contained in a <code>&lt;p&gt;</code>).</p>
+
+<pre>
+		obj.parentNode.appendChild(sp);
+</pre>
+
+<p>Finally, set an <code>hasError</code> property for the form field. This property serves both to
+indicate that this form field has an associated error message, and to point to this error message for
+easy future removal.</p>
+
+<pre>
+		obj.hasError = sp;
+	}
+</pre>
+
+<p>For JavaScriptually challenged browsers we append the name of the form field and the error message
+to <code>errorstring</code>. This string is alerted at the end of the validation (see above). Also
+set <code>hasError</code>. It still indicates that the form field already has an associated error
+message.</p>
+
+<pre>
+	else {
+		errorstring += obj.name + ': ' + message + '\n';
+		obj.hasError = true;
+	}
+</pre>
+
+<p>If <code>validForm</code> is still <code>true</code> (if this is the first error message we found),
+set the <code>firstError</code> variable to point to this form field. <code>validate()</code> uses
+this information to put the focus on the first faulty form field.</p>
+
+<pre>
+	if (validForm)
+		firstError = obj;
+</pre>
+
+<h4>removeError()</h4>
+
+<p>Every faulty form field has an <code>onchange</code> event handler that points to this function.
+If the user changes a faulty form field, I politely
+assume he has corrected the error. Therefore the error message should disappear.</p>
+
+<p>First remove the <code>error</code> from the form field's class name. This removes the special
+error styles.</p>
+
+<pre>
+function removeError() {
+	this.className = this.className.substring(0,this.className.lastIndexOf(' '));
+</pre>
+
+<p>Secondly, remove the error message. The <code>hasError</code> property points to the <code>&lt;span&gt;</code>
+containing the message, so we remove it from the form field's <code>parentNode</code>.</p>
+
+
+<pre>
+	this.parentNode.removeChild(this.hasError);
+</pre>
+
+<p>Finally a bit of house cleaning. Set the <code>hasError</code> property to <code>null</code> (form
+field has no more associated error messages) and remove the <code>onchange</code> event handler.</p>
+
+<pre>
+	this.hasError = null;
+	this.onchange = null;
+}
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/error.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:11 GMT -->
+</html>

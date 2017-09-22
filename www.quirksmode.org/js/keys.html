@@ -1,0 +1,661 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/keys.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+<head>
+<title>JavaScript - Detecting keystrokes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+<!--
+
+document.defaultAction = true;
+
+function init() {
+	var x = document.getElementById('testForm').getElementsByTagName('input');
+	for (var i=0;i<x.length;i++) {
+		x[i].onclick = setEvents;
+		if (x[i].checked)
+			x[i].onclick();
+	}
+	writeroot = document.getElementById('writeroot');
+	document.getElementById('emptyWriteroot').onclick = function () {
+		writeroot.innerHTML = '';
+		return false;
+	}
+}
+
+function setEvents() {
+	if (this.id == 'default') {
+		document.defaultAction = !this.checked;
+		return;
+	}
+	var eventHandler = (this.checked) ? detectEvent : empty;
+	document['on'+this.id] = eventHandler;
+}
+
+function detectEvent(e) {
+	var evt = e || window.event;
+	writeData(evt.type);
+	writeData('keyCode is ' + evt.keyCode);
+	writeData('charCode is ' + evt.charCode);
+	writeData('');
+	return document.defaultAction;
+}
+
+function empty() {
+	// nothing
+}
+
+var writeroot;
+
+function writeData(msg) {
+	writeroot.innerHTML += msg + '<br />';
+}
+
+// -->
+</script>
+<style type="text/css">
+#writeroot {
+	height: 300px;
+	overflow: auto;
+	border: 1px solid #2EB2DC;
+}
+
+</style>
+
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+</head>
+
+<body>
+
+<h2>Detecting keystrokes</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>iCab doesn't support the key events at all.</p>
+<p>Many thanks to Hallvord Steen for his <a href="http://www.hallvord.com/opera/keyevents.htm" class="external">summary</a>
+of the key events in Windows browsers; his page saved me quite a bit of work.</p>
+</div>
+
+<p class="intro">Detecting the user's keystrokes turns out to be a rather specialised branch of event handling.
+This page details some of the more obnoxious problems, and gives the inevitable compatibility table.</p>
+
+<p>The first problem is that there is no standard for key events; the <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/events.html#Events-eventgroupings-keyevents"
+class="external">specification</a> says:</p>
+
+<blockquote>
+An event module designed for use with keyboard input devices will be included in a later version of the DOM specification.
+</blockquote>
+
+<p>As we all know, browser vendors start experimenting when there's no official standard, and these experiments, though
+occasionally useful, also cause incompatibilities. The key events are no exception: there are currently two properties that
+give information about the pressed keys, and although there's some justification for this duplication, not all browsers
+support them in the same way.</p>
+
+<p>In addition, there are a few important differences between the keydown and keyup events on one hand, and the keypress
+event on the other.</p>
+
+<p>Finally, there are important differences between Windows and Mac. In general, detecting keys on Mac is much, much more
+difficult than on Windows.</p>
+
+<h3>keyCode and charCode</h3>
+
+<p>The two properties are <code>keyCode</code> and <code>charCode</code>.
+Put (too) simply, <code>keyCode</code> says something
+about the actual keyboard key the user pressed, while <code>charCode</code> gives the ASCII value of the resulting character. These
+bits of information need not be the same; for instance, a lower case 'a' and an upper case 'A' have the same <code>keyCode</code>,
+because the user presses the same key, but a different <code>charCode</code> because the resulting character is different.</p>
+
+<p>Explorer and Opera do not support <code>charCode</code>. However, they give the character information in <code>keyCode</code>,
+but only onkeypress. Onkeydown and -up <code>keyCode</code> contains key information.</p>
+
+
+<h3>Alphanumeric keys</h3>
+
+<p>Let's start with a simple example. The lower case 'a' has ASCII value 97, while the upper case 'A' has ASCII value
+65. In both cases the user presses the same key on the keyboard, which has key code 65 (equal to upper case ASCII, as you see).</p>
+
+<h4>keyCode</h4>
+
+
+<table class="compatibility wide" cellspacing="5">
+	<col />
+	<col span="4" class="IE" />
+	<col span="2" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Op" />
+	<col span="1" class="Rest" />
+	<tr class="compheader">
+		<th>Method or property</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8b1</th>
+		<th>FF 2</th>
+		<th>FF 3b5</th>
+		<th>Saf 3.0 Win</th>
+		<th>Saf 3.1 Win</th>
+		<th>Opera 9.26</th>
+		<th>Opera 9.5b</th>
+		<th>Konqueror 3.5.7</th>
+	</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">keydown or keyup</div>
+		<p>Theory: Key code</p>
+	</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="11">
+		<p>The only case that all browsers agree on.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">keypress</div>
+		<p>Theory: ASCII</p>
+	</td>
+	<td class="comp yes" colspan="4">Yes</td>
+	<td class="comp incorrect" colspan="2">Incor<wbr />rect</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="11">
+	<ul>
+		<li>Firefox always gives 0</li>
+	</ul>
+	</td>
+</tr>
+</table>
+
+<h4>charCode</h4>
+
+<table class="compatibility wide" cellspacing="5">
+	<col />
+	<col span="4" class="IE" />
+	<col span="2" class="FF" />
+	<col span="2" class="Saf" />
+	<col span="2" class="Op" />
+	<col span="1" class="Rest" />
+	<tr class="compheader">
+		<th>Method or property</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>IE8b1</th>
+		<th>FF 2</th>
+		<th>FF 3b5</th>
+		<th>Saf 3.0 Win</th>
+		<th>Saf 3.1 Win</th>
+		<th>Opera 9.26</th>
+		<th>Opera 9.5b</th>
+		<th>Konqueror 3.5.7</th>
+	</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">keydown or keyup</div>
+		<p>Theory: 0</p>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="11">
+	<ul>
+		<li>Safari 3.0 returns the ASCII value.</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">keypress</div>
+		<p>Theory: ASCII</p>
+	</td>
+	<td class="comp no" colspan="4">No</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp yes" colspan="2">Yes</td>
+	<td class="comp no" colspan="2">No</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="11">
+	</td>
+</tr>
+</table>
+
+
+
+<p>Therefore, onkeydown/up <code>keyCode</code> always holds the key code. onkeypress you can find the actual character
+the user typed by <code>evt.charCode || evt.keyCode</code>.</p>
+
+<h3>Punctuation keys</h3>
+
+<p>I decided not to test the punctuation keys. I suspect that these keys are dependant not only on browser and
+operating system, but also on keyboard configuration and the official system language. I work on a Dutch Windows,
+but with a US 101 keyboard configuration, and I wouldn't be surprised if that matters a lot in punctuation keys
+experiments.</p>
+
+<p>For instance, <code>shift + ,</code> causes a <code>&lt;</code> character to appear in my applications, but the
+ASCII value returned by my test script belongs to the <code>?</code>. When I discovered that I decided not to risk
+my sanity by performing further punctuation character experiments.</p>
+
+<h3>Special keys</h3>
+
+<p>The special keys encompass all those keys that don't cause a character to appear, but execute a certain function.
+For instance, shift, escape, pageDown, and enter are all special keys.</p>
+
+<p>Some general caveats:</p>
+
+<ul>
+	<li>Generally, Mac is less reliable than Windows, and some keys cannot be detected.</li>
+	<li>Explorer doesn't fire the keypress event for delete, end, enter, escape, function keys, home, insert, pageUp/Down and tab.</li>
+	<li>Onkeypress, Safari gives weird <code>keyCode</code> values in the 63200 range for delete, end, function keys, home and pageUp.Down. The
+	onkeydown and -up values are normal.</li>
+	<li>Alt, Cmd, Ctrl and Shift cannot be detected on Mac, except in Opera. However, you can always use the <code>altKey</code>,
+	<code>ctrlKey</code>, and <code>shiftKey</code> properties.</li>
+</ul>
+
+<p>If you need to detect these keys, do yourself a favour and search for their <code>keyCode</code> onkeydown/up, and ignore
+both onkeypress and <code>charCode</code>.</p>
+
+<table class="compatibility" cellspacing="7">
+<tr class="compheader">
+	<th>Property</th>
+	<th>Explorer 5-7</th>
+	<th>Firefox 2.0 Windows</th>
+	<th>Firefox 2.0 Mac</th>
+	<th>Safari 1.3</th>
+	<th>Opera 9 Windows</th>
+	<th>Opera 9 Mac</th>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">alt: 18</div>
+		The keypress event does not fire
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp incomplete">Incom<wbr />plete</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+	<p>Opera on Mac also fires the keypress event, but does not repeat. Opera on Windows fires a keyup event
+	only the second time you press the key (when the focus is removed from the browser toolbar).</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">arrow keys: 37-40</div>
+		37: left<br />
+		38: up<br />
+		39: right<br />
+		40: down<br />
+		The keypress event does not fire
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>The keypress event fires in Safari and Opera. However, onkeypress Safari gives very weird keyCodes: 63232-5,
+		and the order doesn't coincide with the normal key order.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">backspace: 8</div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6"><p>The single key that's supported exactly the same by all browsers.</p></td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">caps lock: 20</div>
+		The keypress event does not fire
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="6"><p>Undetectable on Mac, even in Opera.</p></td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">cmd</div>
+		Mac only
+	</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp incorrect">17</td>
+</tr>
+<tr>
+	<td colspan="6"><p>Only Opera detects this key, but gives it a <code>keyCode</code> of 17, which is usually
+	reserved for the Ctrl key.</p></td>
+</tr>
+<tr class="compheader">
+	<th>Property</th>
+	<th>Explorer 5-7</th>
+	<th>Firefox 2.0 Windows</th>
+	<th>Firefox 2.0 Mac</th>
+	<th>Safari 1.3</th>
+	<th>Opera 9 Windows</th>
+	<th>Opera 9 Mac</th>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">ctrl: 17</div>
+		The keypress event does not fire
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+</tr>
+<tr>
+	<td colspan="6"><p>Opera Mac gives <code>keyCode</code> 0.</p></td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">delete: 46</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+		<p>Safari gives <code>keyCode</code> 63272 onkeypress.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">end: 35</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+		<p>Safari gives <code>keyCode</code> 63275 onkeypress.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">enter: 13</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">escape: 27</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+	</td>
+</tr>
+<tr class="compheader">
+	<th>Property</th>
+	<th>Explorer 5-7</th>
+	<th>Firefox 2.0 Windows</th>
+	<th>Firefox 2.0 Mac</th>
+	<th>Safari 1.3</th>
+	<th>Opera 9 Windows</th>
+	<th>Opera 9 Mac</th>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">f1 - f12: 112-123</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+		<p>Safari gives <code>keyCode</code>s 63236-47 onkeypress.</p>
+		<p>Opera Mac only gives the correct <code>keyCode</code> onkeypress; onkeydown and -up it's 0.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">help</div>
+		Mac only
+	</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp incorrect">6</td>
+	<td class="comp incorrect">45</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp incorrect">5 or 63</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Safari fires only the keyup event.</p>
+		<p>Opera gives 5 onkeydown and -up; 63 onkeypress.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">home: 36</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+		<p>Safari gives <code>keyCode</code> 63273 onkeypress.</p>
+	</td>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">insert: 45</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+	</td>
+</tr>
+<tr class="compheader">
+	<th>Property</th>
+	<th>Explorer 5-7</th>
+	<th>Firefox 2.0 Windows</th>
+	<th>Firefox 2.0 Mac</th>
+	<th>Safari 1.3</th>
+	<th>Opera 9 Windows</th>
+	<th>Opera 9 Mac</th>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">num lock: 144</div>
+		The keypress event does not fire
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">12</td>
+	<td class="comp incorrect">12</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">27</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Chaos on Mac. Mozilla and Safari give 12, Opera 27.</p>
+		<p>Safari gives 63289 onkeypress.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">page up / down: 33-34</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+		<p>Safari gives <code>keyCode</code> 63276-7 onkeypress.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">shift: 16</div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6"><p>Not in Mozilla Mac and Safari.</p></td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">tab: 9</div>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="6">
+		<p>Explorer doesn't fire the keypress event.</p>
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">windows (start): 91</div>
+		Windows only<br />
+		The keypress event does not fire
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp untestable">Untest<wbr />able</td>
+</tr>
+<tr>
+	<td colspan="6"><p>Mozilla also fires the keypress event.</p></td>
+</tr>
+<tr class="compheader">
+	<th>Property</th>
+	<th>Explorer 5-7</th>
+	<th>Firefox 2.0 Windows</th>
+	<th>Firefox 2.0 Mac</th>
+	<th>Safari 1.3</th>
+	<th>Opera 9 Windows</th>
+	<th>Opera 9 Mac</th>
+</tr>
+</table>
+
+<h3>Test</h3>
+
+<form id="testForm">
+
+<input type="checkbox" id="keydown" /> <label for="keydown">keydown</label><br />
+<input type="checkbox" id="keypress" /> <label for="keypress">keypress</label><br />
+<input type="checkbox" id="keyup" /> <label for="keyup">keyup</label><br />
+<input type="checkbox" id="default" /> <label for="default">Suppress default action</label><br />
+
+
+<button id="emptyWriteroot">Remove messages</button>
+
+</form>
+
+<p id="writeroot"></p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/keys.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:52 GMT -->
+</html>

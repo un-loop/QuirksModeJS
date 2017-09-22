@@ -1,0 +1,469 @@
+
+BODY {
+	margin-left: 0px;
+	margin-top: 10px;
+	background: #ffffff;
+}
+
+/* Links */
+
+a {	
+	color: #6666CC;
+	font-weight: 300;
+	text-decoration: underline;
+}
+
+a:visited {color: #9966cc;}
+
+a.external,a.external:visited {
+	color: #990000;
+	font-weight: 600;
+}
+
+a.page:link, a.page:visited {
+	color: #666666;
+	font-weight: 300;
+	text-decoration: underline;
+}
+
+a:hover,a.page:hover,a.external:hover {
+	text-decoration: underline;
+	color: #cc0000;
+}
+
+h4 a {color: #0000cc;}
+
+p.intro a {color: #CC6600;}
+
+/* Block level elements - general */
+
+P,OL,UL,DL {
+	font: 13px verdana, arial, helvetica, sans-serif;
+	color: #666666;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+OL,UL { margin-left: 13%;
+	margin-top: 3px;
+}
+
+UL UL,OL UL,UL OL,OL OL {margin-left: 3%;}
+
+TD,INPUT,SELECT,TEXTAREA {color: #666666;}
+
+H2 {
+	font: 40px verdana, arial, helvetica, sans-serif;
+	text-align: center;
+	color: #336699;
+	padding: 0px;
+	margin-top: 15px;
+	margin-left: 10%;
+	margin-right: 10%;
+	padding-left: 65px;
+	padding-right: 65px;
+	background-image: url(pix/ppklogo.html);
+	background-repeat: no-repeat;
+	background-position: right top;
+}
+
+
+H3 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 15px;
+	color: #ffffff;
+	font-weight: 700;
+	background-color: #3399cc;
+	border: 1px solid #000000;
+	border-left-width: 20px;
+	margin-left: 5%;
+	padding: 5px;
+	padding-left: 15px;
+	margin-top: 60px;
+	margin-bottom: 10px;
+	width: 40%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+	/* H5: Minor internal headers;
+	some things are different from the H3 */
+H5 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 13px;
+	color: #ffffff;
+	font-weight: 700;
+	background-color: #3399cc;
+	border: 1px solid #000000;
+	border-left-width: 10px;
+	margin: 10px;
+	margin-left: 7%;
+	padding-left: 10px;
+	width: 30%;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+}
+
+PRE {margin-left: 15%;
+	color: #660000;
+	font: 13px courier,monospace;
+	font-weight: 300;
+}
+
+	/* H4: The Home link at the bottom
+	of each page */
+
+H4 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 14px;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+
+/* Block level elements - specific cases */
+
+		/* The special style for the
+		introductory paragraph below
+		the page header */
+
+.intro,.new {
+	font: 14px verdana, arial, helvetica, sans-serif;
+	color: #CC6600;
+	border: none;
+	padding: 0px;
+	margin-left: 10%;
+	margin-right: 10%;
+	font-weight: 300;
+}
+
+.new {
+	border: 1px solid #000000;
+	padding: 5px;
+	color: #666666;
+}
+
+P.intro:first-letter {
+	margin: 0px;
+	font-size: 125%;
+}
+
+.info,.compat{
+	font: 13px courier,monospace;
+	font-weight: 300;
+	color: #666666;
+	padding-left: 5px;
+	padding: 5px;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+p.quote {
+	color: #333333;
+	margin-left: 12%;
+	text-indent: 25px;
+	margin-top: 25px;
+	}
+
+div.compat pre {
+	margin-left: 5%; 
+	font-size: 10px;
+	margin-top: 1px;
+	margin-bottom: 1px;
+}
+
+p.sponsor {
+	font-size: 10px;
+	width: 170px;
+}
+
+
+pre.wrong {color: #666666;}
+
+.smallink {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 11px;
+}
+
+p.smallink,ul.smallink,ol.smallink {
+	padding-left: 35px;
+	margin-right: 10%;
+}
+
+
+.contents {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 16px;
+	color: #666666;
+	margin-top: 10px;
+	text-align: center;
+	margin-left: 10%;
+	margin-right: 15%;
+}
+
+div#toc {
+	position: fixed;
+	right: 0px;
+	max-width: 20%;
+	top: 0px;
+	padding-bottom: 10px;
+	font-size: 10px;
+	z-index: 20;
+	padding: 10px;
+	font: 12px arial,helvetica;
+	background-color: #eeeeee;
+	border: 1px solid #cccccc;
+}
+
+div#toc a {
+	color: #666666;
+	font-size: 12px;
+	z-index: 20;
+}
+
+div#toc ul {
+	display: none;
+	font-size: 10px;
+	margin: 0px;
+	padding: 0px;
+	margin-left: 20px;
+}
+
+div#toc li {
+	margin: 0px;
+	padding: 0px;
+	margin-top: 5px;
+}
+
+
+
+/* Data tables. For some silly reason the class data must be
+	added to a DIV around the table, and not the table itself,
+	or Netscape 4 won't show any styles except for the bgcolor 
+	In newer pages I ignore this fact. Too Bad For Netscape 4 */
+
+
+.data th,.data td.methprop{
+	font: 14px verdana,arial,helvetica;
+	background-color: #3399cc;
+	border: 1px solid #000000;
+	font-weight: 600;
+	color: #ffffff;
+}
+
+
+.data td {
+	font: 13px verdana,arial,helvetica;
+	vertical-align: top;
+	color: #666666;
+	}
+
+td.methprop {
+	font-size: 13px;
+	text-align: right;
+}
+
+
+th.smallheaders {font-size: 11px;
+	padding: 2px;
+	font-weight: 300;
+	height: 29px;
+}
+
+td.header {
+	border: 1px solid #000000;
+	font-size: 11px;
+	line-height: 140%;
+	border-bottom-width: 10px;
+	padding: 10px;
+	padding-top: 0px;
+	width: 150px;
+}
+
+div.eventname {
+	font-size: 15px;
+	text-align: right;
+	color: #ffffff;
+	font-weight: 700;
+	background-color: #3399cc;
+	border: 1px solid #000000;
+	margin-left: -10px;
+	margin-right: -10px;
+	padding: 5px;
+	border-bottom-width: 2px;
+	margin-bottom: 10px;
+}
+
+div.group {
+	font-size: 70%;
+}
+
+td.methprop a,.data th a   {
+	color: #ffffff;
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+td.methprop a:hover {
+	text-decoration: underline;
+	color: #cc0000;
+}
+
+.data td.methprop a:visited, .data th a:visited {
+	color: #dddddd;
+}
+
+td.notok {
+	background-color: #cc6666;
+	font-weight: 600;
+	color: #ffffff;
+	border: 1px solid #000000;
+}
+
+td.ok {
+	background-color: #66cc66;
+	font-weight: 600;
+	color: #ffffff;
+	border: 1px solid #000000;
+}
+
+td.neither {
+	border: 1px solid #990000;
+	font-size: 12px;
+	line-height: 140%;
+}
+
+td.crash {
+	border: 1px solid #990000;
+}
+
+td ul,td ol,td li {
+	margin: 0px;
+	padding: 0px;
+	margin-left: 5px;
+	padding-left: 5px;
+}
+
+td ol {
+	margin-left: 7px;
+}
+
+td ul {margin-top: 20px;
+}
+
+ul li {
+	margin-bottom: 7px;
+}
+
+.data b {
+	color: #ffffff;
+	font-weight: 600;
+	font-size: 13px;
+	background-color: #000000;
+	display: block;
+	margin-right: -10px;
+	padding: 3px;
+	border: 3px ridge;
+	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.data td.header b {
+	margin-right: -15px;
+}
+
+.data b span {
+	text-transform: none;
+}
+
+li.lastimportant {
+	margin-bottom: 15px;
+}
+
+td pre {
+	margin-left: 10px;
+}
+
+/* Inline elements */
+em {
+	color: #000000;
+	font-style: normal;
+}
+
+code {
+	font-size: 100%;
+	font-family: monospace;
+	letter-spacing: 0.5px;
+}
+
+p code {color: #333333;}
+
+p.intro code {color: inherit;}
+
+a code {
+	color: inherit;
+}
+.intro em {
+	color: #993300;
+	font-style: normal;
+}
+
+
+/* Defines the horizontal rules */
+p.hr {
+	border-width: thin none none none;
+	border-top: 1px solid;
+	border-color: #cccccc;
+	padding: 5px;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-bottom: -15px;
+	}
+
+/* Defines the red bullet around the class=info */
+
+.reddot {
+	color:#FF0033;
+	font-size: 16px;
+	}
+
+/* Defines the 'last change' */
+.last {
+	font-family: courier,monospace;
+	font-size: 13px;
+	color: #666666;
+	text-align: right;
+	}
+
+.compat {font-size: 13px;}
+
+.compat b {font-weight: 600;}
+
+/* For the Browsers pages */
+
+ul.info {font: 11px verdana,arial,helvetica;
+        margin-right: 25%;}
+ul li {margin-bottom: 0px;}
+
+.os {
+        color: #000000;}
+
+.notyet, a.notyet:hover {text-decoration: line-through;
+        color: #000000;}
+        
+ul.buglist {
+	font-size: 13px; 
+	margin-right: 10%; 
+	padding: 0px;
+}
+
+ul.buglist li {
+	margin-bottom: 20px;
+}
+
+ul.buglist pre {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}

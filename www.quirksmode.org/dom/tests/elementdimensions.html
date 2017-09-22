@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/elementdimensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:21 GMT -->
+<head>
+<title>Element dimensions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../quirksmode.css" />
+<link rel="up" href="intro.html" />
+<script type="text/javascript" src="../../quirksmode.js"></script>
+<style type="text/css">
+
+div#test {
+	width: 200px;
+	height: 200px;
+	border: 10px solid #AF0078;
+	padding: 5px;
+	overflow: auto;
+}
+
+div#test pre {
+	overflow: visible;
+	margin: 0;
+	border-left: none;
+	padding-left: 0;
+}
+
+div#controls,div#test {
+	float: left;
+}
+
+div#controls {
+	margin-left: 20px;
+}
+
+div#controls span {
+	display: block;
+	zoom: 1;
+	cursor: pointer;
+}
+
+</style>
+<script type="text/javascript">
+<!--
+
+var origContent,smallContent;
+
+function init() {
+	var x = document.getElementById('controls').getElementsByTagName('span');
+	for (var i=0;i<x.length;i++)
+	{
+		x[i].checkProp = x[i].firstChild.nodeValue;
+		x[i].onclick = checkProperty;
+	}
+	origContent = document.getElementById('test').innerHTML;
+	smallContent = '<p>Hardly any content.</p>';
+	document.getElementById('switchC').onclick = switchContent;
+	document.getElementById('switchC').current = 'orig';
+}
+
+function checkProperty() {
+	var propValue = document.getElementById('test')[this.checkProp];
+	if (this.checkProp == 'offsetParent')
+		propValue = propValue.nodeName;
+	this.innerHTML = this.checkProp + ': ' + propValue;
+}
+
+function switchContent() {
+	var newContent = (this.current == 'orig') ? 'small' : 'orig';
+	document.getElementById('test').innerHTML = window[newContent + 'Content'];
+	this.current = newContent;
+	return false;
+}
+
+// -->
+</script>
+
+</head>
+<body>
+
+<h2>Element dimensions</h2>
+
+<div id="header"></div>
+
+<p class="intro">All HTML elements have six property pairs that allow you to read out their
+dimensions. This page tests and explains these property pairs.</p>
+
+<div id="test">
+This is the test DIV.<br />
+It has these styles:
+<pre>
+width: 200px;
+height: 200px;
+border: 10px solid #AF0078;
+padding: 5px;
+overflow: auto;
+</pre>
+
+Its total visible width and height are therefore
+230 pixels (200 width + 10 padding + 20 border).
+<br /><br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+This is the test DIV.<br />
+</div>
+
+
+<div id="controls">
+<span>clientLeft</span>
+<span>clientTop</span>
+<span>clientWidth</span>
+<span>clientHeight</span>
+<span>offsetWidth</span>
+<span>offsetHeight</span>
+<span>offsetLeft</span>
+<span>offsetTop</span>
+<span>offsetParent</span>
+<span>scrollLeft</span>
+<span>scrollTop</span>
+<span>scrollWidth</span>
+<span>scrollHeight</span>
+
+</div>
+
+<p style="clear: both"><a href="#" id="switchC">Switch content</a></p>
+
+
+<div id="footer">
+<p class="smaller" id="validation">Invalid XHTML 1.0 because the table uses <code>wbr</code>.</p>
+<a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/elementdimensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:21 GMT -->
+</html>
+

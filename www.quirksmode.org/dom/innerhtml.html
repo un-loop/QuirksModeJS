@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/innerhtml.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:07 GMT -->
+<head>
+<title>Javascript - Benchmark - W3C DOM vs. innerHTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<script type="text/javascript" language="javascript">
+<!--
+
+var times = new Array();
+for (var i=0;i<6;i++)
+{
+	times[i] = new Array();
+}
+var avgs = new Array();
+
+// Overhead scripts
+
+function doTiming(id,firsttime,lasttime)
+{
+	var time = lasttime - firsttime;
+
+	// First empty the innerHTML, then write the new value into it.
+	// This is for Explorer 5.1 Mac's sake, see the Writing into layers page
+
+	var u = document.getElementById('timing'+id).innerHTML + time + ' ms<br />';
+	document.getElementById('timing'+id).innerHTML = '';
+	document.getElementById('timing'+id).innerHTML = u;
+	times[id][times[id].length] = time;
+	var tmp = 0;
+	for (var i=0;i<times[id].length;i++)
+	{
+		tmp += times[id][i];
+	}
+	avgs[id] = Math.round(tmp/times[id].length);
+	document.getElementById('avg'+id).innerHTML = '';
+	document.getElementById('avg'+id).innerHTML = avgs[id] + ' ms';
+	tmp = avgs[id];
+	var fastest = id;
+	for (var i=0;i<avgs.length;i++)
+	{
+		if (avgs[i] < tmp)
+		{
+			fastest = i;
+			tmp = avgs[i];
+		}
+	}
+	for (var i=0;i<avgs.length;i++)
+	{
+		if (i == fastest)
+		{
+			document.getElementById('index'+i).innerHTML = '';
+			document.getElementById('index'+i).innerHTML = '100<br /><b>Fastest<br />script</b>';
+		}
+		else if (avgs[i])
+		{
+			document.getElementById('index'+i).innerHTML ='';
+			document.getElementById('index'+i).innerHTML = Math.round((avgs[i]/tmp)*100);
+		}
+	}
+}
+
+function removeTable()
+{
+	document.getElementById('writeroot').innerHTML = '';
+}
+
+/* W3CDOM 1: Create all elements as needed */
+
+function w3cdom1()
+{
+	removeTable();
+	var time1 = new Date().getTime();
+	var x = document.createElement('table');
+	var y = x.appendChild(document.createElement('tbody'));
+	for (var i=0;i<50;i++)
+	{
+		var z = y.appendChild(document.createElement('tr'));
+		for (var j=0;j<50;j++)
+		{
+			var a = z.appendChild(document.createElement('td'));
+			a.appendChild(document.createTextNode('*'));
+		}
+	}
+	document.getElementById('writeroot').appendChild(x);
+	var time2 = new Date().getTime();
+	doTiming(1,time1,time2);
+}
+
+/* W3CDOM 2: Create elements once, then clone */
+
+function w3cdom2()
+{
+	removeTable();
+	var time1 = new Date().getTime();
+	var x = document.createElement('table');
+	var y = x.appendChild(document.createElement('tbody'));
+	var tr = document.createElement('tr');
+	var td = document.createElement('td');
+	var ast = document.createTextNode('*');
+	for (var i=0;i<50;i++)
+	{
+		var z = y.appendChild(tr.cloneNode(true));
+		for (var j=0;j<50;j++)
+		{
+			var a = z.appendChild(td.cloneNode(true));
+			a.appendChild(ast.cloneNode(true));
+		}
+	}
+	document.getElementById('writeroot').appendChild(x);
+	var time2 = new Date().getTime();
+	doTiming(2,time1,time2);
+}
+
+/* TABLE METHODS */
+
+function tableMethods()
+{
+	removeTable();
+	var time1 = new Date().getTime();
+	var x = document.createElement('table');
+	var y = x.appendChild(document.createElement('tbody'));
+	for (var i=0;i<50;i++)
+	{
+		var z = y.insertRow(0);
+		for (var j=0;j<50;j++)
+		{
+			var a = z.insertCell(0).appendChild(document.createTextNode('*'));
+		}
+	}
+	document.getElementById('writeroot').appendChild(x);
+	var time2 = new Date().getTime();
+	doTiming(3,time1,time2);
+}
+
+/* INNERHTML 1: concatenate one string */
+
+function inner1()
+{
+	removeTable();
+	var time1 = new Date().getTime();
+	var string = '<table><tbody>';
+	for (var i=0;i<50;i++)
+	{
+		string += '<tr>';
+		for (var j=0;j<50;j++)
+		{
+			string += '<td>*</td>';
+		}
+		string += '</tr>';
+	}
+	string += '</tbody></table>';
+	document.getElementById('writeroot').innerHTML = string;
+	var time2 = new Date().getTime();
+	doTiming(4,time1,time2);
+}
+
+/* INNERHTML 2: push and join */
+
+function inner2()
+{
+	removeTable();
+	var time1 = new Date().getTime();
+	var string = new Array();
+	string.push('<table><tbody>');
+	for (var i=0;i<50;i++)
+	{
+		string.push('<tr>');
+		for (var j=0;j<50;j++)
+		{
+			string.push('<td>*</td>');
+		}
+		string.push('</tr>');
+	}
+	string.push('</tbody></table>');
+	var writestring = string.join('');
+	document.getElementById('writeroot').innerHTML = writestring;
+	var time2 = new Date().getTime();
+	doTiming(5,time1,time2);
+}
+// -->
+</script>
+</head>
+
+<body>
+
+<h2>Benchmark - W3C DOM vs. innerHTML</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Section 8F of <a href="https://www.quirksmode.org/book/">the book</a> discusses <code>innerHTML</code> and when it's preferable
+to "real" W3C DOM methods.</p>
+</div>
+
+<p class="intro">This is a test page intended to find out which method of generating large amounts
+of content is fastest in the browsers. Of course the results differ significantly from
+browser to browser.</p>
+
+<p>Each of the test scripts creates a 50x50 table, all of whose cells are filled with one character, <code>*</code>.
+Then the time your browser needs is measured and compared to the time it needed to execute the other methods.</p>
+
+<h3>Experiments</h3>
+
+<p>Key:</p>
+
+<table cellspacing="7">
+	<tr>
+		<td class="comp yes">100</td>
+		<td class="comp almost">Fast</td>
+		<td class="comp incomplete">OK</td>
+		<td class="comp buggy">Slow</td>
+		<td class="comp no">Very slow</td>
+	</tr>
+	<tr>
+		<td>index 100</td>
+		<td>index 101-200</td>
+		<td>index 201-500</td>
+		<td>index 500-5000</td>
+		<td>index 5001+</td>
+	</tr>
+</table>
+
+<p>I did each test 5 times, and then used the index values for judging the relative speed of the various methods.
+<br />I added the rough index for each script. Of course the fastest script has index 100 by definition.</p>
+
+<table class="compatibility wide" cellspacing="5" style="margin-right: -30em">
+	<col span="4" />
+	<col span="3" class="IE" />
+	<col span="2" class="FF" />
+	<col span="5" class="Rest" />
+	<tr class="compheader">
+		<th>Method</th>
+		<th>Time</th>
+		<th>Average time</th>
+		<th>Index</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>FF 2</th>
+		<th>FF 3b3</th>
+		<th>Safari 3.0 Win</th>
+		<th>Opera 9.5b</th>
+		<th>Konqueror 3.5.7</th>
+	</tr>
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">W3C DOM 1</div>
+		Create all elements as they're needed
+		<br /><br /><a href="javascript:w3cdom1()">Test now</a>
+	</td>
+	<td rowspan="2" id="timing1"></td>
+	<td rowspan="2" id="avg1"></td>
+	<td rowspan="2" id="index1"></td>
+	<td class="comp incomplete">310</td>
+	<td class="comp no" colspan="2">3600</td>
+	<td class="comp incomplete">300</td>
+	<td class="comp incomplete">270</td>
+	<td class="comp incomplete">300</td>
+	<td class="comp incomplete">390</td>
+	<td class="comp incomplete">350</td>
+</tr>
+<tr>
+	<td colspan="8"><a href="innerhtml_old.html">Earlier experiments</a> clearly show that the fastest way
+	to generate the table with pure W3C DOM methods is to use as little intermediary variables as possible and to append
+	the table only after it has been created completely.
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">W3C DOM 2</div>
+		Create elements once, then clone
+		<br /><br /><a href="javascript:w3cdom2()">Test now</a>
+	</td>
+	<td rowspan="2" id="timing2"></td>
+	<td rowspan="2" id="avg2"></td>
+	<td rowspan="2" id="index2"></td>
+	<td class="comp incomplete">275</td>
+	<td class="comp no" colspan="2">3500</td>
+	<td class="comp incomplete">275</td>
+	<td class="comp incomplete">185</td>
+	<td class="comp incomplete">275</td>
+	<td class="comp incomplete">340</td>
+	<td class="comp almost">160</td>
+</tr>
+<tr>
+	<td colspan="8">The next experiment creates only one <code>tr</code> element, one <code>td</code> element
+	and one text nodes and clones them as often as necessary.
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">Table methods</div>
+		Use W3C DOM table methods
+		<br /><br /><a href="javascript:tableMethods()">Test now</a>
+	</td>
+	<td rowspan="2" id="timing3"></td>
+	<td rowspan="2" id="avg3"></td>
+	<td rowspan="2" id="index3"></td>
+	<td class="comp no">6500</td>
+	<td class="comp no" colspan="2">9300</td>
+	<td class="comp incomplete">350</td>
+	<td class="comp incomplete">220</td>
+	<td class="comp incomplete">250</td>
+	<td class="comp incomplete">350</td>
+	<td class="comp incomplete">250</td>
+</tr>
+<tr>
+	<td colspan="8">The next experiment uses the W3C DOM table methods.
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">innerHTML 1</div>
+		Concatenate a string
+		<br /><br /><a href="javascript:inner1()">Test now</a>
+	</td>
+	<td rowspan="2" id="timing4"></td>
+	<td rowspan="2" id="avg4"></td>
+	<td rowspan="2" id="index4"></td>
+	<td class="comp almost">175</td>
+	<td class="comp almost" colspan="2">180</td>
+	<td class="comp almost">110</td>
+	<td class="comp yes">100</td>
+	<td class="comp almost">120</td>
+	<td class="comp yes">100</td>
+	<td class="comp incomplete">225</td>
+</tr>
+<tr>
+	<td colspan="8">
+	</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">innerHTML 2</div>
+		Push strings into array, then join array
+		<br /><br /><a href="javascript:inner2()">Test now</a>
+	</td>
+	<td rowspan="2" id="timing5"></td>
+	<td rowspan="2" id="avg5"></td>
+	<td rowspan="2" id="index5"></td>
+	<td class="comp yes" colspan="3">100</td>
+	<td class="comp yes">100</td>
+	<td class="comp almost">110</td>
+	<td class="comp yes">100</td>
+	<td class="comp almost">115</td>
+	<td class="comp yes">100</td>
+</tr>
+<tr>
+	<td colspan="8">Natively Explorer 5 doesn't support the <code>push</code> method. My <code>quirksmode.js</code>
+	file contains functions that mimic this behaviour, though. The test uses these functions.
+	</td>
+</tr>
+	<tr class="compheader">
+		<th>Method</th>
+		<th>Time</th>
+		<th>Average time</th>
+		<th>Index</th>
+		<th>IE 5.5</th>
+		<th>IE 6</th>
+		<th>IE 7</th>
+		<th>FF 2</th>
+		<th>FF 3b3</th>
+		<th>Safari 3.0 Win</th>
+		<th>Opera 9.5b</th>
+		<th>Konqueror 3.5.7</th>
+	</tr>
+
+
+
+
+</table>
+
+<h4>Absolute numbers</h4>
+
+<p>Below you find the execution times of the fastest scripts in each browser. Of course these numbers
+depend heavily on the computer you use, so I doubt you'll find the same values when you perform the tests.</p>
+
+<p>Windows:</p>
+
+<ol>
+<li>Opera: 20 ms (unchanged)</li>
+<li>Explorer 6: 67 ms</li>
+<li>Explorer 5: 83 ms</li>
+<li>Mozilla: <del>145 ms</del> 116 ms</li>
+</ol>
+
+<p>Mac:</p>
+
+<ol>
+<li>Explorer: 228 ms</li>
+<li>Mozilla: 340 ms</li>
+<li>Safari: <del>581 ms</del> 593 ms</li>
+<li>iCab: 7,500 ms</li>
+</ol>
+
+<h3>Discussion</h3>
+
+<p>The most obvious conclusion of these tests is that <code>innerHTML</code> is faster than "real" W3C DOM
+methods in all browsers. The W3C DOM table methods are slow to very slow, especially in Explorer.</p>
+
+<p>More than once people said that creating elements only once and then cloning them when necessary leads
+to a dramatic performance improvement. These tests don't show anything of that kind. Although in most browsers
+cloning is minimally faster than creating, the difference between the two methods is small.</p>
+
+<h4>Explorer Windows</h4>
+
+<p>What amazes me most is the huge difference between Explorer 5 and 6. Although
+6 executes the innerHTML scripts slightly faster than 5, it is incomparably slower in executing all other
+scripts. Where 5 shows an index number of around 300 for the "real" W3C DOM scripts, 6 shows an index of
+about 3000! Maybe this is caused by my running multiple Explorers on one computer, I don't know. Explorer
+5.5 is quite close to 5.0.</p>
+
+<p>According to a reader, Explorer 6.0 needs more time for every row it adds, so that if I'd create a table with
+100 rows, all other browsers would require about twice the time they need now, but Explorer 6 would take far more time.
+This explanation fits the available data, though I'm not sure <em>why</em> the Explorer team would have done this.</p>
+
+<p>Explorer 7 beta 3: Little change. The slow methods appear to be slightly slower than in 6.</p>
+
+<h4>Mozilla</h4>
+
+<p>Mozilla 1.4: Rather to my surprise Mozilla is the slowest browser on Windows when we compare its
+fastest script to the fastest scripts of the other browsers.
+On the other hand it shows the least difference between the methods, its slowest script is
+only 3 times slower than its fastest.</p>
+
+<p>Changes for Mozilla 1.75: Has become marginally faster, and the two innerHTML methods have traded
+places: now the push-innerHTML method is marginally faster than the concatenation-innerHTML method.</p>
+
+<h4>Opera</h4>
+
+<p>Opera 7.20 is by far the quickest browser on Windows, leaving Explorer and Mozilla to eat its
+dust. Although its slowest script has an index of about 450, it's still faster than Mozilla's fastest script
+and roughly equal to Explorer fastest script.<br />
+Opera's performance has changed considerably since I did my <a href="innerhtml_old.html">earlier experiments</a>.
+Then the W3C table methods were fastest, now they're the slowest method.</p>
+
+<p>Changes for Opera 8: The slow methods have become marginally slower. Overall there's little change, and
+Opera remains by far the fastest Windows browser.</p>
+
+<p>Changes for Opera 9: The slow methods have once again become marginally slower when compared to the fastest.</p>
+
+<h4>Explorer Mac</h4>
+
+<p>Explorer Mac is a very slow browser when it comes to W3C DOM scripts. Its good score
+on the innerHTML tests surprises me. When we try anything else, though, Explorer Mac becomes mired in its
+bad W3C DOM implementation. It takes about 20 seconds to execute any "real" W3C DOM script, coming to a huge
+index of more than 9000.</p>
+
+<h4>Safari</h4>
+
+<p>Although Safari 1.0 keeps up very well, I noticed that it becomes gradually slower when you
+perform a test more than once. I suspect there's still a slight bug somewhere (garbage collection?) that causes
+its performance to degrade over the long run. On the other hand, it might be a problem of my specific Safari
+install.</p>
+
+<p>Changes for Safari 1.3: Especially W3C DOM method 1 becomes much, much slower when you run the test twice or
+more. My own test figures for W3C DOM 1: 430, 1258, 2182, 3129 and 4058 ms. As you see Safari grinds down rather in a hurry.<br />
+Other than that the difference between the methods is becoming larger. Safari 1.0 had a Fast score for
+W3C DOM 1 and 2 (ie. not more than twice as slow as the fastest method), but in 1.3 they
+have slowed down to 3 or 4 times as slow as the fastest method. The concatenation-innerHTML method has speeded
+up remarkably, though. Where in 1.0 it was the slowest method (3 times as slow), it has now climbed to 1.8
+times as slow. W3C DOM 1 is now the slowest method (index 373).</p>
+
+<h4>iCab</h4>
+
+<p>Extremely slow. This is clearly something that has to be improved in a future version. In addition, the more
+tests you do the slower the scripts become.</p>
+
+<h3>The test table</h3>
+
+<p><a href="javascript:removeTable()">Remove</a></p>
+
+<div id="writeroot">
+</div>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/innerhtml.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:08 GMT -->
+</html>

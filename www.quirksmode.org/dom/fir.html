@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/fir.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:09 GMT -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DOM -  Image replacement</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<script type="text/javascript">
+<!--
+function init()
+{
+	var test = new Image();
+	var tmp = new Date();
+	var suffix = tmp.getTime();
+	test.src = 'pix/fir_assumptionsd41d.gif?'+suffix;
+	test.onload = imageReplacement;
+}
+
+function imageReplacement()
+{
+	replaceThem(document.getElementsByTagName('h3'));
+}
+
+function replaceThem(x)
+{
+	var replace = document.createElement('img');
+	for (var i=0;i<x.length;i++)
+	{
+		if (x[i].id)
+		{
+			var y = replace.cloneNode(true);
+			y.src = 'pix/' + x[i].id + '.gif';
+			y.alt = x[i].firstChild.nodeValue;
+			x[i].replaceChild(y,x[i].firstChild);
+		}
+	}
+}
+// -->
+</script>
+</head>
+
+<body>
+
+<h2>Image replacement</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>There don't seem to be any browser incompatibilities.</p>
+<p>See <a href="http://shauninman.com/mentary/past/ifr_an_fir_alternative.php"
+	class="external">Shaun Inman's IFR</a> for another technique, this one using Flash.</p>
+</div>
+
+<p class="intro">Recently there has been much discussion about the "Fahrner Image Replacement". Although
+I liked the concept, I disliked the countless CSS variants that have popped up, because they are inherently
+unsafe and hacky. I feel we should use JavaScript instead of CSS. This page explains my script.</p>
+
+<p>The idea of FIR is simple: Initially a page is served with text as the content of its headers. However,
+some clever (or not so clever) hacks are applied that hide this text and show an image instead. Theoretically
+browsers that can't handle advanced CSS, as well as screen readers, should not execute the replacement.
+Therefore the headers would remain accessible under all circumstances.</p>
+
+<h3 id="fir_assumptions">Assumptions</h3>
+
+<p>Unfortunately all CSS variants are making assumptions about screen reader behaviour.
+Joe Clark has <a href="http://www.alistapart.com/articles/fir/"
+	class="external">admirably summarized</a> the problem and his research. Screen readers turn out to
+support the CSS bits that everyone assumed they wouldn't support, so they hide the text. They can't show
+the image either, so accessibility is severely compromised. Clark's conclusion is that any
+CSS variant is inherently unsafe.</p>
+
+<p>When I read a question about using JavaScript to enhance FIR, I realized that everyone was approaching
+this problem from the wrong way. We shouldn't use CSS at all to replace text by images. Instead, such a
+replacement job is a typical JavaScript task. In fact, it's ridiculously easy.</p>
+
+<p>Nonetheless I'm not any better than the myriad CSS hackers who have preceded me:
+I make assumptions about screen readers.
+Although to me my assumption seems safer than all others, it may still be totally wrong. That's the chance
+you take when writing code for user agents you can't test in.</p>
+
+<p class="accent">My assumption: Screen readers do not download images.</p>
+
+<h3 id="fir_example">Example</h3>
+
+<p>All <code>h3</code> texts on this page are replaced by images, if your browser allows it.
+The images are not examples of rarified design beauty. That's because I'm not a designer.</p>
+
+<p>If you switch off images your browser will show normal <code>h3</code>s.</p>
+
+<h3 id="fir_script">The script</h3>
+
+<p>I add an <code>id</code> attribute to any <code>h3</code> that should be affected. It contains
+the source of the image to be displayed instead of the text. This script assumes that every <code>h3</code>
+with an <code>id</code> should be replaced by an image.</p>
+
+<pre>
+&lt;h3 id="fir_script"&gt;The script&lt;/h3&gt;
+</pre>
+
+<p>This <code>h3</code> expects the image <code>pix/fir_script.gif</code> for a replacement.</p>
+
+<p>Then I run this script <code>onload</code>.</p>
+
+<pre>
+function init()
+{
+	var W3CDOM = (document.createElement && document.getElementsByTagName);
+	if (!W3CDOM) return;
+	var test = new Image();
+	var tmp = new Date();
+	var suffix = tmp.getTime();
+	test.src = 'pix/fir_assumptions.gif?'+suffix;
+	test.onload = imageReplacement;
+}
+
+function imageReplacement()
+{
+	replaceThem(document.getElementsByTagName('h3'));
+}
+
+function replaceThem(x)
+{
+	var replace = document.createElement('img');
+	for (var i=0;i&lt;x.length;i++)
+	{
+		if (x[i].id)
+		{
+			var y = replace.cloneNode(true);
+			y.src = 'pix/' + x[i].id + '.gif';
+			y.alt = x[i].firstChild.nodeValue;
+			x[i].replaceChild(y,x[i].firstChild);
+		}
+	}
+}
+</pre>
+
+
+<h3 id="fir_explanation">Explanation</h3>
+
+<p>onload you should run the function <code>init()</code>.</p>
+
+<pre>
+function init()
+{
+</pre>
+
+<p>The first thing we do is checking for W3C DOM support. If it's absent we stop the script.</p>
+
+<pre>
+	var W3CDOM = (document.createElement && document.getElementsByTagName);
+	if (!W3CDOM) return;
+</pre>
+
+<h4>Detecting image support</h4>
+
+<p>Detecting W3C DOM support is not enough, though. We also have to see if the browser supports images. If
+it doesn't our script shouldn't run, since it would create all kinds of odd effects.</p>
+
+<p>Therefore we generate an image and set its <code>src</code>. This is a classic
+preloading trick: the browser now fetches the image. This is the only support detection we need.
+<b>If this test image loads succesfully, the browser supports images</b>. I <em>assume</em>
+that a browser that doesn't support images doesn't download them, either.</p>
+
+<p>So we activate the main image replacement routine only when this image has been loaded, ie. after its
+<code>load</code> event has taken place.</p>
+
+<p>A browser problem here. If you return to this page by using the Back button, Explorer on Windows does
+<em>not</em> fire the <code>onload</code> event of cached images. Therefore we have to make sure that it
+fetches a new image every time by adding a suffix that contains the current time in milliseconds.</p>
+
+<p>I don't like this feature of the script, it causes unnecessary HTTP requests, but at the moment I don't
+see a way around it.</p>
+
+<pre>
+	var test = new Image();
+	var tmp = new Date();
+	var suffix = tmp.getTime();
+	test.src = 'pix/fir_assumptions.gif?'+suffix;
+	test.onload = imageReplacement;
+}
+</pre>
+
+<p>A reader suggested setting a <a href="../js/cookies.html">cookie</a> to keep track of the browser's
+image handling. If cookies are turned off, we default back to the suffix. Good idea!</p>
+
+<h4>Defining the target elements</h4>
+
+<p>Once the test image has been loaded, it's safe to do wholesale image replacement. The function
+<code>imageReplacement</code> is called. It's an intermediate function to allow you to define several
+areas of the document where images should be replaced. This example script just replaces <code>h3</code>s.</p>
+
+<pre>
+function imageReplacement()
+{
+	replaceThem(document.getElementsByTagName('h3'));
+}
+</pre>
+
+<p>However, if you'd also like to replace, say, all links in <code>div id="nav"</code>, do</p>
+
+<pre>
+function imageReplacement()
+{
+	replaceThem(document.getElementsByTagName('h3'));
+	replaceThem(document.getElementById('nav').getElementsByTagName('a'));
+}
+</pre>
+
+<h4>Image replacement</h4>
+
+<p>The function <code>replaceThem()</code> handles the actual image replacement. It is handed an array
+which it searches for elements with an <code>id</code>. If it finds one, the script replaces the
+element's <code>firstChild</code> (the text node containing the text) for an image with a name that's
+similar to the <code>id</code>.</p>
+
+<p>To be on the safe side I also set the <code>alt</code> attribute. Theoretically it's unnecessary, since
+images will shown only when the browser supports images, but better safe than sorry.</p>
+
+<pre>
+function replaceThem(x)
+{
+	var replace = document.createElement('img');
+	for (var i=0;i&lt;x.length;i++)
+	{
+		if (x[i].id)
+		{
+			var y = replace.cloneNode(true);
+			y.src = 'pix/' + x[i].id + '.gif';
+			y.alt = x[i].firstChild.nodeValue;
+			x[i].replaceChild(y,x[i].firstChild);
+		}
+	}
+}
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/fir.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:09 GMT -->
+</html>

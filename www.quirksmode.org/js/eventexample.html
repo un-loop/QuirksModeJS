@@ -1,0 +1,488 @@
+
+<!-- DO NOT ADD A DOCTYPE.
+	It messes things up in Netscape 6.2 (and doubtless in other browsers as well) -->
+
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/eventexample.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:55 GMT -->
+<head>
+<title>Event example</title>
+<link rel="stylesheet" href="../quirksmode.css">
+<link rel="up" href="contents.html">
+<style>
+
+body,td {	font: 12px arial,helvetica;}
+
+#container {
+	position: relative;
+	margin-left: -20px;
+}
+
+#ev1,#ev2,#ev3,#ev4 {
+	position: absolute;
+	top: 30px;
+	left: 20px;
+	color: #666666;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #000000;
+	background-color: #ffffff;
+}
+
+
+#ev1 {width: 250px; height: 250px;}
+#ev2 {width: 200px; height: 200px;}
+#ev3 {width: 150px; height: 150px;}
+#ev4 {width: 100px; height: 100px;}
+
+td.keeptrack {color: #DEE7F7;}
+
+table.data {width: 50%;}
+
+</style>
+<script>
+<!--
+
+// Arrays of possible properties
+
+var theTargets = new Array(
+	'target',
+	'relatedTarget',
+	'currentTarget',
+	'originalTarget',
+	'srcElement',
+	'fromElement',
+	'toElement'
+);
+
+var theMouse = new Array(
+	'clientX',
+	'clientY',
+	'x',
+	'y',
+	'layerX',
+	'layerY',
+	'screenX',
+	'screenY',
+	'offsetX',
+	'offsetY',
+	'pageX',
+	'pageY',
+	'which',
+	'button',
+	'detail',
+	'wheelDelta'
+);
+
+var theKeys = new Array(
+	'modifiers',
+	'which',
+	'keyCode',
+	'charCode',
+	'isChar',
+	'shiftKey',
+	'shiftLeft',
+	'metaKey',
+	'altKey',
+	'altLeft',
+	'ctrlKey',
+	'ctrlLeft'
+);
+
+var theType = new Array(
+	'type',
+	'eventPhase',
+	'bubbles',
+	'cancelable',
+	'cancelBubble',
+	'detail',
+	'returnValue',
+	'timeStamp',
+	'view'
+);
+
+// add event registrations in various ways
+
+function addEvents(method,capture)
+{
+
+	// Support detection
+
+	if ((method == 'listener' && !document.addEventListener)
+		||
+		(method == 'attach' && !document.attachEvent))
+	{
+		alert('Your browser doesn\'t support this event registration model');
+		return;
+	}
+
+	var infostring;
+
+	// If keyup: add to document, not to layers
+
+	if (method == 'keyup')
+	{
+			document.onkeyup = clicktest;
+			infostring = 'keyup added to document';
+	}
+
+	// else add event to layers 1-3
+
+	else
+	{
+		for (var i=1;i<4;i++)
+		{
+			if (method == 'mouseover' && i != 3) continue;
+			var x = new getObj('ev'+i);
+			switch (method) {
+				case "on":
+					x.obj.onmouseup = clicktest;
+					if (x.obj.captureEvents) x.obj.captureEvents(Event.MOUSEUP);
+					infostring = 'onmouseups added';
+					break;
+				case "listener":
+					x.obj.addEventListener('mouseup',clicktest,capture);
+					infostring = 'Event listeners added';
+					break;
+				case "attach":
+					x.obj.attachEvent('onmouseup',clicktest2);
+					infostring = 'Events attached';
+					break;
+				case "mouseover":
+					x.obj.onmouseover = clicktest;
+					infostring = 'mouseover added to ev3 only';
+					break;
+			}
+		}
+	}
+
+	// Change text color of related td
+
+	var theId = (method == 'listener') ? method + capture : method;
+	var y = new getObj(theId);
+	if (y.style) y.style.color = '#cc0000';
+
+	// Inform user
+
+	alert(infostring);
+}
+
+// Remove the various event registrations
+
+function removeEvents(method,capture)
+{
+	if ((method == 'listener' && !document.addEventListener)
+		||
+		(method == 'attach' && !document.attachEvent))
+	{
+		alert('Your browser doesn\'t support this event model');
+		return;
+	}
+	var infostring;
+	if (method == 'keyup')
+	{
+			document.onkeyup = null;
+			infostring = 'keyup removed from document';
+	}
+	else
+	{
+		for (var i=1;i<4;i++)
+		{
+			var x = new getObj('ev'+i);
+			switch (method) {
+				case "on":
+					x.obj.onmouseup = null;
+					if (x.obj.releaseEvents) x.obj.releaseEvents(Event.MOUSEUP);
+					infostring = 'onmouseups removed';
+					break;
+				case "listener":
+					x.obj.removeEventListener('mouseup',clicktest,capture);
+					infostring = 'Event listeners removed';
+					break;
+				case "attach":
+					x.obj.detachEvent('onmouseup',clicktest2);
+					infostring = 'Events detached';
+					break;
+				case "mouseover":
+					x.obj.onmouseover = null;
+					x.obj.onmouseout = null;
+					infostring = 'mouseover removed';
+					break;
+			}
+		}
+	}
+	var theId = (method == 'listener') ? method + capture : method;
+	var y = new getObj(theId);
+	if (y.style) y.style.color = '#DEE7F7';
+	alert(infostring);
+}
+
+// The main test function. Set bg of target to red, alert some stuff, set
+// bg back to white
+
+function clicktest(e)
+{
+	if (!this.style)
+	{
+		this.bgColor = '#cc0000';
+	}
+	else
+	{
+		this.style.backgroundColor = '#cc0000';
+		this.style.color = '#ffffff';
+	}
+	if (!e) e = window.event;
+	var string = printInfo(e);
+	alert(string);
+	if (!this.style)
+	{
+		this.bgColor = '#ffffff';
+	}
+	else
+	{
+		this.style.backgroundColor = '#ffffff';
+		this.style.color = '#666666';
+	}
+	if (self.routeEvent) routeEvent(e);
+	return false;
+}
+
+// Print out property information based on user checking of form
+
+function printInfo(e)
+{
+	var printstring = '';
+	if (this.id) printstring +=	'Event is now in layer ' + this.id + '\n\n';
+	var possibilities = document.forms[0].elements;
+	for (var i=0;i<possibilities.length;i++)
+	{
+		if (possibilities[i].checked)
+		{
+			var thearray = self[possibilities[i].name];
+			for (var j=0;j<thearray.length;j++)
+			{
+				var current = e[thearray[j]];
+				var curr = typeof current;
+//				alert(thearray[j] + ' is ' + curr);
+				if (curr == 'undefined' || (curr == 'object' && !current)) continue;
+				if (possibilities[i].name == 'theTargets')
+				{
+					var tag = (current.tagName) ? current.tagName : '[unknown tag]';
+					var tagid = (current.id) ? current.id : '[no id]';
+					printstring += '\n' + thearray[j] + ' = ' + tag + ' ' + tagid;
+
+				}
+				else
+					printstring += '\n' + thearray[j] + ' = ' + current;
+				if (possibilities[i].name == 'theMouse')
+					setLayer(e);
+			}
+		}
+	}
+	if (!printstring) printstring = 'Alert required for example\nUse checkboxes to see useful information';
+	return printstring;
+}
+
+// Set layer on mouse position
+
+
+var isOpera = (navigator.userAgent.indexOf('Opera') != -1);
+var isIE = (!isOpera && navigator.userAgent.indexOf('MSIE') != -1)
+
+function setLayer(e)
+{
+	if (!e) e = window.event;
+	var posx,posy;
+	if (e.pageX || e.pageY)
+	{
+		posx = e.pageX;
+		posy = e.pageY;
+	}
+	else if (e.clientX || e.clientY)
+	{
+		posx = e.clientX;
+		posy = e.clientY;
+		if (isIE)
+		{
+			posx += document.body.scrollLeft;
+			posy += document.body.scrollTop;
+		}
+	}
+	else return;
+	var x = new getObj('testlayer');
+	x.style.top = posy;
+	x.style.left = posx;
+}
+
+// Special function to work around the 'this' problems in the
+// MS event registration model
+
+
+function clicktest2()
+{
+	var el = window.event.srcElement;
+	el.style.backgroundColor = '#cc0000';
+	el.style.color = '#ffffff';
+
+	var string = printInfo(window.event);
+	if (string) alert(string);
+//	alert('Event is now in layer ' + this.id + '\n\n' + string);
+
+	el.style.backgroundColor = '#ffffff';
+	el.style.color = '#666666';
+	return false;
+}
+
+// My DHTML micro-API, see http://www.xs4all.nl/~ppk/js/index.html?dhtmloptions.html
+
+function getObj(name)
+{
+  if (document.getElementById)
+  {
+  	this.obj = document.getElementById(name);
+	this.style = document.getElementById(name).style;
+  }
+  else if (document.all)
+  {
+	this.obj = document.all[name];
+	this.style = document.all[name].style;
+  }
+
+  else if (document.layers)
+  {
+	this.obj = getObjNN4(document,name);
+	this.style = this.obj;
+  }
+}
+
+function getObjNN4(obj,name)
+{
+	var x = obj.layers;
+	var thereturn;
+	for (var i=0;i<x.length;i++)
+	{
+		if (x[i].id == name)
+		 	thereturn = x[i];
+		else if (x[i].layers.length)
+			var tmp = getObjNN4(x[i],name);
+		if (tmp) thereturn = tmp;
+	}
+	return thereturn;
+}
+
+// End mini-API
+
+function testIt()
+{
+	var x = new getObj('ev1');
+	if (x.obj.onmouseup)
+		x.obj.onmouseup();
+	else
+		alert('mouseup not yet defined');
+}
+
+// -->
+</script>
+<style>
+b.warning {color: #cc0000;}
+
+#testlayer {position: absolute;
+	top: 0px;
+	left: 0px;
+	background: #0000cc;
+	width: 10px;
+	z-index: 100;
+}
+
+</style>
+
+</head>
+
+<body bgcolor="#ffffff">
+
+<div id="testlayer">&nbsp;</div>
+
+<h2>Event example</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Especially when you check the &#8220;targets&#8221; checkbox, but also when you don&#8217;t,
+<b class="warning">Opera 5 may crash viciously</b>.Opera 6 is safe, as far as I know.</p>
+<p>In <B>Opera 6 Linux</B> the events only work when you click/mouseover a <em>text</em></p>
+<p>Checking the 'type/misc' checkbox causes problems in <b>Safari</b>. The background colour
+switching doesn't work too well, either. Since this browser doesn't have JavaScript error messages
+I don't have a prayer of solving the problem.</p>
+</div>
+
+<form>Show
+<input type="checkbox" name="theType"> type/misc
+<input type="checkbox" name="theTargets"> targets
+<input type="checkbox" name="theMouse"> mouse stuff
+<input type="checkbox" name="theKeys"> key stuff
+</form>
+
+
+<!-- width attribute overruled by CSS in NN6/IE5.5Win/Op6. Good!
+	Now it only works in NN4, which is the only browser that needs it -->
+
+<table class="data" cellpadding=5 cellspacing=5 align=right width=400>
+	<tr><TH>Event model</TH><TH>Present?</TH><TH>Add</TH><TH>Remove</TH></tr>
+	<tr><td>onmouseup ev1-ev3</td><td class="keeptrack" id="on">Yes</td>
+		<td><a href="javascript:addEvents('on')">Register event</a></td>
+		<td><a href="javascript:removeEvents('on')">Remove event</a></td>
+	</tr>
+	<tr><td>addEventListener<BR>without capturing  ev1-ev3</td>
+		<td class="keeptrack" id="listenerfalse">Yes</td>
+		<td><a href="javascript:addEvents('listener',false)">Register event</a></td>
+		<td><a href="javascript:removeEvents('listener',false)">Remove event</a></td>
+	</tr>
+	<tr><td>addEventListener<BR>with capturing ev1-ev3</td>
+		<td class="keeptrack" id="listenertrue">Yes</td>
+		<td><a href="javascript:addEvents('listener',true)">Register event</a></td>
+		<td><a href="javascript:removeEvents('listener',true)">Remove event</a></td>
+	</tr>
+	<tr><td>attachEvent ev1-ev3</td>
+		<td class="keeptrack" id="attach">Yes</td>
+		<td><a href="javascript:addEvents('attach')">Register event</a></td>
+		<td><a href="javascript:removeEvents('attach')">Remove event</a></td>
+	</tr>
+	<tr><td>mouseover on ev3</td><td class="keeptrack" id="mouseover">Yes</td>
+		<td><a href="javascript:addEvents('mouseover')">Register event</a></td>
+		<td><a href="javascript:removeEvents('mouseover')">Remove event</a></td>
+	</tr>
+	<tr><td>keyup on document</td><td class="keeptrack" id="keyup">Yes</td>
+		<td><a href="javascript:addEvents('keyup')">Register event</a></td>
+		<td><a href="javascript:removeEvents('keyup')">Remove event</a></td>
+	</tr>
+	<tr>
+		<td COLSPaN=4>
+		<a href="#" onClick="testIt()">Execute the onmouseup function of ev1</a><br /><Br />
+
+
+		</td>
+	</tr>
+</table>
+
+<div id="container">
+<div id="ev1">This is div id="ev1"<br><br><br>
+	<br><br><br><br><br><br>
+	<div id="ev2">This is div id="ev2"<br><br><br><br><br><br><br>
+		<div id="ev3">This is div id="ev3"<br>test text<br><br><br><br><br><br>
+			<div id="ev4">This is div id="ev4"<br/ ><br /><br />
+				<span style="background: #00cc00; padding: 10px;">span</span>
+				<br>
+			</div>
+
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="writeroot">&nbsp;</div>
+
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/eventexample.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:55 GMT -->
+</html>

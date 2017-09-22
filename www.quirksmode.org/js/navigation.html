@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/navigation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:55 GMT -->
+<head>
+<title>JavaScript - Importing the site navigation</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+
+<h2>Importing the site navigation</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>The site navigation works only if the browser supports XMLHttpRequest.</p>
+<p>The site navigation is an example of what Jeremy Keith calls <a href="http://domscripting.com/blog/display/41"
+class="external">Hijax</a>.</p>
+</div>
+
+<p class="intro">On this page I explain how I import the site navigation that appears on every page of this site.</p>
+
+<h3>Overview</h3>
+
+<p>It's best to start with a general overview of the problem the site navigation is supposed to solve. That way,
+you'll easily understand why I coded it as I did.</p>
+
+<p>QuirksMode.org is an old, old site. Among other things, this means that the HTML structure of the pages was already well determined by
+the time I worked on the 2006 redesign that introduced the site navigation. During that redesign, I adhered to a number
+of principles set out in the <a href="https://www.quirksmode.org/blog/archives/2006/09/redesign_the_cs.html">Redesign: the CSS</a> QuirksBlog entry.
+For the site navigation, two are important:</p>
+
+<ol>
+	<li>The HTML structure of the content pages would not change.</li>
+	<li>I add links to new pages in two spots: the overall sitemap, and
+	the table-of-contents page of the relevant section (JavaScript, CSS, etc.)</li>
+</ol>
+
+<p>As a result, the site navigation would not be hard-coded into any page, and it would not form a separate file, either.</p>
+
+<p>Then how would I get the site navigation information? Which page contains an ordered list of all pages on this site? The answer
+is obvious: the <a href="https://www.quirksmode.org/sitemap.html">sitemap page</a>.
+The site navigation would have to use the sitemap as its source
+file. If I imported the sitemap and changed its presentation a bit, I'd have the perfect site navigation.</p>
+
+<p>In the 2003 design I loaded the sitemap into a navigation frame (and remember that frames can be viewed as precursors
+of XMLHttp). When in 2006 I decided to ditch the frames, I had to find another solution. The obvious one was XMLHttpRequest.</p>
+
+<h3>The source file and accessibility</h3>
+
+<p>Before treating the code, we first have to consider the source file: the sitemap. This sitemap is absolutely crucial
+for this site's continuing accessibility. Although I don't think I'm visited by large flocks of noscript users (why
+would they visit a JavaScript site?), I still had to make a determined effort to practice what I preached.
+I made the key accessibility decisions back in 2003. Summary:</p>
+
+<ol>
+	<li>Every content page (is supposed to) contain a hard-coded link to the sitemap.</li>
+	<li>Therefore, every noscript visitor is able to go to the sitemap from any page, and use this sitemap
+	to go to any other page. That's less usable than the site navigation, but QuirksMode.org would remain accessible.</li>
+</ol>
+
+<p>The sitemap remains a normal HTML page that contains lots of links as well as a few headers to
+make sense of them. It was this normal, accessible HTML page that I had to import and somehow groom into an acceptable high-end site navigation.</p>
+
+<p>This way of handling Ajax is an important progressive enhancement technique.
+As long as you make sure that anything you import can be viewed as a separate, static HTML page, a small
+amount of nifty scripting imports the page for users with modern browsers, while users without JavaScript
+will simply move on to the plain HTML pages. (See Jeremy Keith's <a href="http://domscripting.com/blog/display/41"
+class="external">Hijax definition</a> for more information on this important point.)</p>
+
+<h3>Preparations</h3>
+
+<p>When a page has loaded, I import <a href="../nav.txt">nav.txt</a> that prepares the
+way for both the site navigation and the <a href="https://www.quirksmode.org/dom/toc.html">Table of Contents</a>. It creates the HTML structures
+necessary to insert these two link lists into the page. It contains a "show site navigation" link (well, really a
+<code>&lt;span&gt;</code> for CSS reasons), clicking on which imports and shows the site navigation.</p>
+
+<h3>Importing the sitemap</h3>
+
+<p>Clicking on the "show site navigation" imports the sitemap. The importing bit is easy.
+I took my trusty <a href="xmlhttp.html">XMLHttpRequest functions</a> and wrote a single line of code:</p>
+
+<pre>
+sendRequest('/sitemap.html',setMainNav);
+</pre>
+
+<p>That took care of the importing. I had the complete sitemap ready for action. Note: the <strong>complete</strong>
+sitemap, including links to the CSS and JavaScript files, the <code>&lt;title&gt;</code>, the doctype, and so on.
+However, I just want to show the actual list of links. I'm not sure what effect inserting another doctype declaration
+into a page will have, but it's sure to be illegal as hell. Therefore I had to get rid of the overhead.</p>
+
+<p>Besides, the sitemap also contains links to all <a href="https://www.quirksmode.org/resources.html#active">archived pages</a>, but
+I didn't want to show these links in the site navigation. It should consist of links to the active pages only.
+Therefore I had to somehow separate the archived links from the active ones.</p>
+
+<h4>Markup</h4>
+
+<p>First things first: I created a <code>&lt;div id="mainMenu"&gt;</code> to delimit
+the chunk of the sitemap that contains the site navigation information. This solved both problems:
+the overhead and the archived links were excluded from this area and would never end up in the site navigation.
+Besides, moving this <code>&lt;div&gt;</code> around a bit allows me change my definition at need.</p>
+
+<pre>
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;title&gt;QuirksMode - sitemap&lt;/title&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+&lt;link rel="stylesheet" href="quirksmode.css" /&gt;
+&lt;link rel="stylesheet" href="sitemap.css" /&gt;
+&lt;script src="quirksmode.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="sitemap.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;Sitemap&lt;/h2&gt;
+&lt;div id="header"&gt;&lt;/div&gt;
+&lt;p class="intro"&gt;All pages on my site.&lt;/p&gt;
+&lt;div id="controls"&gt;&lt;/div&gt;
+&lt;h3&gt;General&lt;/h3&gt;
+<strong>&lt;div id="mainMenu"&gt;</strong>
+&lt;a href="/"&gt;Home&lt;/a&gt;&lt;br /&gt;
+[... all links to active pages ...]
+<strong>&lt;/div&gt;&lt;!-- mainMenu --&gt;</strong>
+&lt;hr /&gt;
+&lt;h2 id="archive"&gt;Archives&lt;/h2&gt;
+&lt;p&gt;The pages below are only retained for historical reasons; the information they contain is outdated.&lt;/p&gt;
+[.. all links to archived pages ...]
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>Now the site navigation area was adequately defined. However, I still had to find it in the imported sitemap.</p>
+
+<h4>responseXML and responseText</h4>
+
+<p>Whenever you've XMLHttpRequested a file, you can read out either its <code>responseXML</code> or its <code>responseText</code>
+to get to its actual content. Unsurprisingly, the first treats the file as an XML file, while the second treats it as
+plain text. When importing HTML, <code>responseText</code> is the best option, since it allows you to immediately
+paste the result into your page. Conversely, when you use <code>responseXML</code> you're required to first fire up
+a DOM script that goes through the response and converts it to HTML. Therefore I decided to use <code>responseText</code>.</p>
+
+<p>However, this is wrong:</p>
+
+<pre class="wrong">
+function setMainNav(req) {
+	document.getElementById('siteNav').innerHTML = req.responseText;
+}
+</pre>
+
+<p>Now, the entire sitemap is made into a site navigation, and as we just saw that's not what I want. I only want the
+content of the <code>&lt;div id="mainMenu"&gt;</code> to form the site navigation. Therefore I first have to
+extract the <code>&lt;div id="mainMenu"&gt;</code> from the response somehow.</p>
+
+<p>At first sight it might seem easiest
+to take the <code>responseXML</code> and use <code>getElementById('mainMenu')</code>. Unfortunately that doesn't work.
+In XML files, the <code>getElementById()</code> method works only if the DTD declares that the <code>id</code> attribute has
+<strong>type</strong> ID; a mere <strong>name</strong> ID is not enough. I could have solved this by creating a custom DTD, but I
+don't understand them well enough, and besides I'm not sure if creating one would satisfy all browsers (chances are it won't).</p>
+
+<h4>The trick</h4>
+
+<p>The trick is to first load the
+<code>responseText</code> into a generated HTML element that floats around in 'DOM hyperspace' (see section 8K of
+<a href="https://www.quirksmode.org/book/">the book</a>). This gives you the best of both worlds: DOM methods become available to the sitemap,
+but it's not yet present in the actual HTML page.</p>
+
+<pre>
+function setMainNav(req) {
+	var container = document.createElement('div');
+	container.innerHTML = req.responseText;
+	// container is NOT inserted into the document!
+</pre>
+
+<p>Unfortunately <code>document.getElementById()</code> still doesn't work: the sitemap is not (yet) part of the
+document, so any method of the document won't work. Fortunately <code>getElementsByTagName()</code> can work on
+any DOM node, whether it's present in the document or not. Therefore I go through all <code>&lt;div&gt;</code> tags
+in the sitemap until I encounter the one with id="mainMenu". If I don't find it, something is wrong and the function
+ends.</p>
+
+<pre>
+	var x = container.getElementsByTagName('div');
+	var siteMap;
+	for (var i=0;i&lt;x.length;i++) {
+		if (x[i].id == 'mainMenu') {
+			siteMap = x[i];
+			break;
+		}
+	}
+	if (!siteMap) return;
+</pre>
+
+<p>Now the <code>siteMap</code> variable refers to the <code>&lt;div id="mainMenu"&gt;</code> and I can insert it.
+Afterwards I clean up my mess: <code>container</code> is made empty.</p>
+
+<pre>
+	document.getElementById('siteNav').appendChild(siteMap);
+	container.innerHTML = '';
+}
+</pre>
+
+<p>As a result the part of the sitemap delimited by the <code>&lt;div id="mainMenu"&gt;</code> now becomes
+the site navigation.</p>
+
+<p>(I left out quite a few other tasks of the <code>setMainNav()</code> function. For instance, it moves the text
+after the links to the links' <code>title</code> attributes, it searches for the link that leads to the current
+page in order to highlight it and make it unclickable, and it sets onclick event handlers that show blocks of links
+when the user clicks on a header. All that is relatively straightforward DOM scripting, though,
+and it has nothing to do with the importing process. Take a look at the details in <a href="../quirksmode.js">quirksmode.js</a>
+around line 300.)</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/navigation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:55 GMT -->
+</html>

@@ -1,0 +1,100 @@
+
+div#testElements form {
+	border: 1px solid #000000;
+	padding: 10px;
+	margin: 20px 0;
+}
+
+div#logContainer {
+	position: absolute;
+	top: 180px;
+	left: 10px;
+	width: 210px;
+	z-index: 200;
+	background-color: #ffffff;
+}
+
+div#logContainer h4 {
+	margin-top: 0;
+}
+
+ol#log {
+	height: 400px;
+	overflow: auto;
+	padding-left: 30px;
+}
+
+ol#log li {
+	white-space: nowrap;
+}
+
+div#logContainer button {
+	width: 100%;
+}
+
+ol li {
+	margin-left: 0;
+}
+
+div#listTestElements {
+	max-height: 100px;
+	overflow: auto;
+}
+
+p#resizableParagraph {
+	border: 1px solid #000000;
+	overflow: auto;
+	resize: both;
+}
+
+div#scrollableDiv {
+	height: 100px;
+	overflow: auto;
+}
+
+div#testNested {
+	border: 1px solid #000000;
+	padding: 20px;
+}
+
+div#testNested p {
+	border: 1px solid #000000;
+}
+
+div#propertyContainer {
+	display: none;
+}
+
+div.floater li.odd {
+	background-color: #F2F3EF;
+}
+
+div#propertyContainer input {
+	margin-left: 22px;
+}
+
+fieldset span {
+	display: block;
+}
+
+fieldset {
+	margin: 10px 0;
+}
+
+fieldset p {
+	margin: 0 !important;
+}
+
+ol#properties {
+	max-height: 300px;
+	overflow: auto;
+}
+
+button#clear {
+	width: 20%;
+	margin-left: 3%;
+}
+
+div#footer {
+	clear: both;
+}

@@ -1,0 +1,388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/intro.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:56 GMT -->
+<head>
+<title>JavaScript - W3C DOM - Introduction</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+
+<h2>W3C DOM -Introduction</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 8A of <a href="https://www.quirksmode.org/book/">the book</a> for a general introduction; sections 8B through 8E for
+detailed treatments of the methods and properties discussed on this page.</p>
+<p>The Level 1 DOM is supported by Mozilla, Explorer 5, Konqueror,
+Opera 5+ and Ice Browser.</p>
+</div>
+
+
+<p class="intro">The <em>Document Object Model</em> (DOM) is the model that describes how all elements in an HTML page,
+like input fields, images, paragraphs etc., are related to the topmost structure: the <code>document</code> itself.
+By calling the element by its proper DOM name, we can influence it.</p>
+
+<p>On this page I give an introduction to the W3C Level 1 DOM that has been implemented
+in the newest generation of browsers. It will give you an overview of how the DOM works and what
+you can do with it.</p>
+
+<p>First some words about the
+<a href="#rec" class="page">DOM Recommendation</a> and the purpose of the DOM, then I teach you what
+<a href="#nodes" class="page">nodes</a> are and how you can
+<a href="#walk" class="page">walk the DOM tree</a> from node to node. Then it's time to learn how to
+<a href="#get" class="page">get</a> a specific node and how to
+<a href="#change" class="page">change</a> its value or attributes. Finally, I'll teach you how to
+<a href="#create" class="page">create nodes</a> yourself, the ultimate purpose of the new DOM.</p>
+
+<h3 id="rec">The Recommendation</h3>
+
+<p>The <a href="http://www.w3.org/TR/REC-DOM-Level-1/" class="external">Level 1 DOM Recommendation</a> has been developed by the W3C to provide any programming
+language with access to each part of an XML document. As long as you use the methods and properties
+that are part of the recommendation, it doesn't matter if you parse an XML document with VBScript, Perl
+or JavaScript. In each language you can read out whatever you like and make changes to the XML document
+itself.</p>
+
+<p class="smaller">As some of you might have guessed, this paragraph describes an ideal situation and
+differences (between browsers, for instance) do exist. Generally, however, they're far smaller than
+usual so that learning to use the W3C DOM in JavaScript will help you to learn using it in another
+programming language.</p>
+
+<p>In a way HTML pages can be considered as XML documents. Therefore the Level 1 DOM
+will work fine on an HTML document, as long as the browser can handle the necessary scripts.</p>
+
+<p>You can read out the text and attributes of every HTML tag in your document, you can delete tags and
+their content, you can even create new tags and insert them into the document so that you can really
+rewrite your pages on the fly, without a trip back to the server.</p>
+
+<p>Because it is developed to offer access to and change every aspect of XML documents,
+the DOM has many possibilities that the average web developer will never need. For
+instance, you can use it to edit the comments in your HTML document, but I don't see any reason why
+you would want to do so. Similarly, there are sections of the DOM that deal with the DTD/Doctype, with
+DocumentFragments (tiny bits of a document) or the enigmatic CDATA. You won't need these parts of
+the DOM in your HTML pages, so I ignore them and concentrate instead on the things that you'll need in
+your daily work.</p>
+
+<h3 id="nodes">Nodes</h3>
+
+<p>The DOM is a Document Object Model, a model of how the various objects of a document are related to each
+other. In the Level 1 DOM, each object, whatever it may be exactly, is a <em>Node</em>. So if you do</p>
+
+<pre>
+&lt;P&gt;This is a paragraph&lt;/P&gt;
+</pre>
+
+<p>you have created two nodes: an <em>element</em> P and a <em>text node</em> with content '<em>This is
+a paragraph</em>'. The text node is inside the element, so it is considered a <em>child node</em> of the
+element. Conversely, the element is considered the <em>parent node</em> of the text node.</p>
+
+<pre>
+              &lt;P&gt; &lt;-- element node
+               |
+               |
+     This is a paragraph &lt;-- text node
+</pre>
+
+<p>If you do</p>
+
+<pre>
+&lt;P&gt;This is a &lt;B&gt;paragraph&lt;/B&gt;&lt;/P&gt;
+</pre>
+
+<p>the element node P has two children, one of which has a child of its own:</p>
+
+<pre>
+              &lt;P&gt;
+               |
+         --------------
+        |              |
+    This is a         &lt;B&gt;
+                       |
+                       |
+                    paragraph
+</pre>
+
+<p>Finally there are <em>attribute nodes</em>. <span class="smaller">(Confusingly, they are not counted as children
+of an element node. In fact, while writing this pages I've done a few tests that seem to indicate
+that Explorer 5 on Windows doesn't see attributes as nodes at all.)</span> So</p>
+
+<pre>
+&lt;P ALIGN="right"&gt;This is a &lt;B&gt;paragraph&lt;/B&gt;&lt;/P&gt;
+</pre>
+
+<p>would give something like</p>
+
+<pre>
+              &lt;P&gt; ----------------
+               |                  |
+         --------------         ALIGN
+        |              |          |
+    This is a         &lt;B&gt;         |
+                       |        right
+                       |
+                    paragraph
+</pre>
+
+<p>So these are element nodes, text nodes and attribute nodes. They constitute about 99% of the content of an
+HTML page and you'll usually busy yourself with manipulating them. There are more kinds of nodes, but I skip
+them for the moment.</p>
+
+<p>As you'll understand, the element node P also has its own parent, this is usually the document, sometimes
+another element like a DIV. So the whole HTML document can be seen as a tree consisting of a lot of nodes,
+most of them having child nodes (and these, too, can have children).</p>
+
+<pre>
+            &lt;BODY&gt;
+               |
+               |-------------------------------------
+               |                                     |
+              &lt;P&gt; ----------------            lots more nodes
+               |                  |
+         --------------         ALIGN
+        |              |          |
+    This is a         &lt;B&gt;         |
+                       |        right
+                       |
+                    paragraph
+</pre>
+
+<h3 id="walk">Walking through the DOM tree</h3>
+
+<p>Knowing the exact structure of the DOM tree, you can walk through it in search of the element
+you want to influence. For instance, assume the element node P has been stored in the variable
+<code>x</code> (later on I'll explain how you do this). Then if we want to access the BODY we do</p>
+
+<pre>
+x.parentNode
+</pre>
+
+<p>We take the parent node of x and do something with it. To reach the B node:</p>
+
+<pre>
+x.childNodes[1]
+</pre>
+
+<p><code>childNodes</code> is an array that contains all children of the node <code>x</code>. Of course
+numbering starts at zero, so <code>childNodes[0]</code> is the text node 'This is a' and <code>childNodes[1]</code>
+is the element node B.</p>
+
+<p>Two special cases: <code>x.firstChild</code> accesses the first child of x (the text node), while
+<code>x.lastChild</code> accesses the last child of x (the element node B).</p>
+
+<p>So supposing the P is the first child of the body, which in turn is the first child of the document,
+you can reach the element node B by either of these commands:</p>
+
+<pre>
+document.firstChild.firstChild.lastChild;
+document.firstChild.childNodes[0].lastChild;
+document.firstChild.childNodes[0].childNodes[1];
+etc.
+</pre>
+
+<p>or even (though it's a bit silly)</p>
+
+<pre>
+document.firstChild.childNodes[0].parentNode.firstChild.childNodes[1];
+</pre>
+
+<h3 id="get">Getting an element</h3>
+
+<p>However, walking through the document in this way is quite cumbersome. You'll need to be absolutely certain
+of the structure of the entire DOM tree and since the whole purpose of the Level 1 DOM is to allow you to modify the
+DOM tree, this could lead to problems really quickly.</p>
+
+<p>Therefore there are several ways of jumping directly to an element of your choice. Once you have
+arrived there, you can walk the last bit of the DOM tree to where you want to be.</p>
+
+<p>So let's continue with our example. You want to access the element node B. The very simplest way
+is to directly jump to it. By the method <code>document.getElementsByTagName</code> you can construct an
+array of all tags B in the document and then go to one of them. Let's assume that this B is the
+first one in the document, then you can simply do</p>
+
+<pre>
+var x = document.getElementsByTagName('B')[0]
+</pre>
+
+<p>and <code>x</code> contains the element node B. First you order the browser to get all elements B in
+the document (<code>document.getElementsByTagName('B')</code>), then you select the first of all B's in
+the document (<code>[0]</code>) and you've arrived where you want to be.</p>
+
+<p>You could also do</p>
+
+<pre>
+var x = document.getElementsByTagName('P')[0].lastChild;
+</pre>
+
+<p>Now you go to the first paragraph in the document (we assume that our P is the first one) and then
+go to its <code>lastChild</code>.</p>
+
+<p>The best way, the only way to be certain that you reach the correct element regardless of the current
+structure of the DOM tree, is to give the B an ID:</p>
+
+<pre>
+&lt;P ALIGN="right"&gt;This is a &lt;B ID="hereweare"&gt;paragraph&lt;/B&gt;&lt;/P&gt;
+</pre>
+
+<p>Now you can simply say</p>
+
+<pre>
+var x = document.getElementById('hereweare');
+</pre>
+
+<p>and the element node B is stored in <code>x</code>.</p>
+
+<h3 id="change">Changing a node</h3>
+
+<p>Now that we have reached the node, we want to change something. Suppose we want to change the bold
+text to '<em>bold bit of text</em>'. We then have to access the correct node and change its
+<code>nodeValue</code>. Now the correct node in this case is not the element node B but its child text
+node: we want to change the text, not the element. So we simply do</p>
+
+<pre>
+document.getElementById('hereweare').firstChild.nodeValue='bold bit of text';
+</pre>
+
+<p>and the node changes. <a href="javascript:test('bold bit of text')" class="page">Try it</a> and change
+it <a href="javascript:test('paragraph')" class="page">back again</a>.</p>
+
+<script type="text/javascript">
+<!--
+function test(txt) {
+	if (document.getElementById && document.createElement)
+		document.getElementById('hereweare').firstChild.nodeValue=txt;
+	else alert('Your browser doesn\'t support the Level 1 DOM');
+}
+
+function test2(val) {
+	if (document.getElementById && document.createElement) {
+		node = document.getElementById('hereweare').parentNode;
+		node.setAttribute('align',val);
+	}
+	else alert('Your browser doesn\'t support the Level 1 DOM');
+}
+// -->
+</script>
+
+<p align="right">This is a <b id="hereweare">paragraph</b></p>
+
+<p>You can change the <code>nodeValue</code> of each text node or each attribute. Thus you can also change
+the ALIGN attribute of the paragraph. <a href="javascript:test2('left')" class="page">Try it</a> and change it
+<a href="javascript:test2('right')" class="page">back again</a>.</p>
+
+<p>This, too, is quite simple. Take the node you need (the B's parentNode, in this case), then
+use the <code>setAttribute()</code> method to set the ALIGN attribute to the value you want:</p>
+
+<pre>
+function test2(val) {
+	if (document.getElementById && document.createElement)
+	{
+		node = document.getElementById('hereweare').parentNode;
+		node.setAttribute('align',val);
+	}
+	else alert('Your browser doesn\'t support the Level 1 DOM');
+}
+</pre>
+
+<h3 id="create">Creating and removing nodes</h3>
+
+<p>Changing nodes is nice, it can even be useful, but it's nothing compared to actually creating your
+own nodes and inserting them into your document. I can easily
+<a href="javascript:test3()" class="page">add an HR</a> right below this paragraph and
+<a href="javascript:test4()" class="page">remove</a> it quite as easily.</p>
+
+<script type="text/javascript">
+<!--
+function test3() {
+	if (document.getElementById && document.createElement) {
+		var x = document.createElement('HR');
+		document.getElementById('inserthrhere').appendChild(x);
+	}
+	else alert('Your browser doesn\'t support the Level 1 DOM');
+}
+
+function test4() {
+	if (document.getElementById && document.createElement) {
+		var node = document.getElementById('inserthrhere')
+		node.removeChild(node.childNodes[0]);
+	}
+	else alert('Your browser doesn\'t support the Level 1 DOM');
+}
+// -->
+</script>
+
+<span id="inserthrhere"></span>
+
+<p>Creating the element is done by a special method:</p>
+
+<pre>
+var x = document.createElement('HR');
+</pre>
+
+<p>Thus an HR is created and temporarily stored in <code>x</code>. The second step is to insert
+x into the document. I wrote a special SPAN with ID="inserthrhere" at point where
+it should appear. So we use the <code>appendChild()</code> method on the SPAN and the HR is made a
+child of the SPAN and it magically appears:</p>
+
+<pre>
+document.getElementById('inserthrhere').appendChild(x);
+</pre>
+
+<p>Removing it is slightly more complex. First I create a temporary variable <code>node</code> to
+store the SPAN, then I tell it to remove its first child (the HR).</p>
+
+<pre>
+var node = document.getElementById('inserthrhere')
+node.removeChild(node.childNodes[0]);
+</pre>
+
+<p>In the same way we can create a new text node and append it to our faithful B ID="hereweare"</p>
+
+<pre>
+var x = document.createTextNode(' A new text node has been appended!');
+document.getElementById('hereweare').appendChild(x);
+</pre>
+
+<script type="text/javascript">
+<!--
+function test5() {
+	if (document.getElementById && document.createElement)
+	{
+		var x = document.createTextNode(' A new text node has been appended!');
+		document.getElementById('hereweare').appendChild(x);
+	}
+}
+// -->
+</script>
+
+<p><a href="javascript:test5()" class="page">Try it</a>, then
+<a href="#change" class="page">go up</a> to see the result. You
+will notice that executing the old functions does not remove the new text node, that's because
+it has become a <em>separate node</em>:</p>
+
+<pre>
+           &lt;B&gt;
+            |
+       ------------
+      |            |
+  paragraph    A new text node
+               has been appended!
+</pre>
+
+<p class="smaller">(To merge them into one node use the <code>normalize()</code> method that's sadly
+not supported by Explorer 5 on Windows).</p>
+
+<p>I won't tell you how to remove the text node, try writing that script yourself. It'll be a useful exercise.</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap>html">Sitemap</a>
+<p class="smaller" id="validation">Valid XHTML 1.0</p>
+</div>
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/intro.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:56 GMT -->
+</html>

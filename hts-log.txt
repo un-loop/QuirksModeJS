@@ -1,0 +1,31 @@
+HTTrack3.49-2+htsswf+htsjava launched on Fri, 22 Sep 2017 10:29:30 at https://www.quirksmode.org/js/contents.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Pns2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://www.quirksmode.org/js/contents.html -O1 "C:\Users\david\websites\QuirksModeJS" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+10:29:33	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): https://www.quirksmode.org/nedstat.js
+10:29:47	Error: 	"Not Found" (404) at link https://www.quirksmode.org/home.shtml (from https://www.quirksmode.org/js/contents.html)
+10:29:55	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/framebust.html (from https://www.quirksmode.org/js/intro.html)
+10:29:55	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/croswin.html (from https://www.quirksmode.org/js/intro.html)
+10:29:55	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/frameintro.html (from https://www.quirksmode.org/js/popup.html)
+10:29:55	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/js.css (from https://www.quirksmode.org/js/popup.html)
+10:29:55	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/introdate.html (from https://www.quirksmode.org/js/cookies.html)
+10:29:55	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/introdh.html (from https://www.quirksmode.org/js/introevents.html)
+10:29:56	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/mouseov.html (from https://www.quirksmode.org/js/events_pairs.html)
+10:30:08	Error: 	"Not Found" (404) at link https://www.quirksmode.org/dom/importxml.html (from https://www.quirksmode.org/dom/contents.html)
+10:30:09	Error: 	"Not Found" (404) at link https://www.quirksmode.org/dom/3column.html (from https://www.quirksmode.org/dom/contents.html)
+10:30:09	Error: 	"Not Found" (404) at link https://www.quirksmode.org/dom/maxlength.html (from https://www.quirksmode.org/dom/contents.html)
+10:30:15	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/events/targets.html (from https://www.quirksmode.org/dom/w3c_events.html)
+10:30:19	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/events/button.html (from https://www.quirksmode.org/dom/w3c_events.html)
+10:30:19	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/events/detail.html (from https://www.quirksmode.org/dom/w3c_events.html)
+10:30:19	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/events/timestamp.html (from https://www.quirksmode.org/dom/w3c_events.html)
+10:30:19	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/events/wheelDelta.html (from https://www.quirksmode.org/dom/w3c_events.html)
+10:30:19	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/events/registration.html (from https://www.quirksmode.org/dom/w3c_events.html)
+10:30:22	Error: 	"Not Found" (404) at link https://www.quirksmode.org/dom/tests/intro.html (from https://www.quirksmode.org/dom/tests/elementdimensions.html)
+10:30:22	Error: 	"Not Found" (404) at link https://www.quirksmode.org/js/pix/ppklogo.gif (from https://www.quirksmode.org/js/oldstyles.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 52 seconds : 135 links scanned, 115 files written (937508 bytes overall) [975280 bytes received at 18755 bytes/sec], 70.5 requests per connection
+(19 errors, 1 warnings, 0 messages)

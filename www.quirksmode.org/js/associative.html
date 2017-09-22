@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/associative.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:48 GMT -->
+<head>
+<title>JavaScript - Objects as associative arrays</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+var theStatus = new Object();
+
+function testIt() {
+	theStatus.Home = 'mouseover';
+	theStatus['Place'] = 'click';
+	for (var i in theStatus) {
+		alert('theStatus[\''+i+'\'] is ' + theStatus[i])
+	}
+}
+</script>
+
+</head>
+
+<body>
+
+<h2>Objects as associative arrays</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>See section 5K of <a href="https://www.quirksmode.org/book/">the book</a>.</p>
+<p>This page has been <a href="http://www.misfu.com/static/Javascript/associative.html" class="external">translated into French</a>.</p>
+</div>
+
+<p class="intro">On this page I explain how JavaScript objects are also associative arrays (hashes).
+Using these you can associate a key string with a value string, which can be very useful sometimes.</p>
+
+<p>Suppose you have a mouseover / click image swap script. You want to keep track of the status of each
+image, whether it is normal, mouseovered or clicked. In addition you want to be able to reach this
+status by image name. So if you have an image named '<em>Home</em>' you want to read out</p>
+
+<pre>
+theStatus.Home
+</pre>
+
+<p>and get one of the values '<em>normal</em>', '<em>mouseover</em>' or '<em>clicked</em>', corresponding
+to the current status of the image.<br />
+To do this you need JavaScript <em>objects</em>.</p>
+
+<h3>Objects in JavaScript</h3>
+
+<p>JavaScript is an <em>object oriented</em> language. However, in
+practice objects defined by the programmer himself are rarely used, except in complex DOM API's.
+Of course such standard objects as <code>window</code> and <code>document</code> and their
+numerous offspring are very important, but they are defined by the browser, not by the programmer.</p>
+
+<p>I myself have written JavaScript for more than three years without ever
+defining an object. The technique explained on this page is the first <em>practical</em> use
+of programmer-defined objects I've found.</p>
+
+<p>Since the only other programming languages I know are Commodore 64 Basic (which is not
+object oriented, to put it mildly) and Perl (which doesn't need to be object oriented)
+and since I don't have any formal training in programming I cannot write a general
+introduction to objects and object oriented programming. Therefore a quick overview will have
+to suffice.</p>
+
+<h3>Methods and properties</h3>
+
+<p>In JavaScript you can define your own objects. In addition, you can assign <em>methods</em> and
+<em>properties</em> to each object, pre-written or self-defined.</p>
+
+<ul>
+<li>Methods are 'things that do something', they can be recognized by their
+brackets <code>()</code>. When you call them, like <code>object.method()</code>, something happens.</li>
+<li>Properties are 'things that are something'. They have a value, for instance a number, a
+<a href="strings.html">string</a> or a
+<a href="boolean.html">Boolean</a> value. When you call them, like
+<code>object.property</code>, you get (or set) this value.</li>
+</ul>
+
+<p>Normal JavaScript <a href="function.html">functions</a> are also methods (hence the brackets).
+If you do</p>
+
+<pre>
+document.write('text')
+</pre>
+
+<p>you execute the pre-defined <code>write()</code> method
+of the document object. If you write your own functions you add methods to the <code>window</code> object,
+the parent of all other JavaScript objects.</p>
+
+<p>Likewise, if you ask for the <code>innerHeight</code> of a page, you
+access a property of the <code>window</code> object and if you define a variable of your own you really
+add a new property to the <code>window</code> object.</p>
+
+<p>So you already use methods and properties in everyday JavaScripting. Since most of these are
+preprogrammed functions and variables, you usually don't need to worry about the objects themselves,
+they're just a kind of 'black boxes' that contain useful stuff. The methods and properties
+(functions and variables) that you define yourself are usually added to the <code>window</code> object.</p>
+
+<h3>Defining an object and properties</h3>
+
+<p>But now we want to create an object of our own. This is simple:</p>
+
+<pre>
+var theStatus = new Object;
+</pre>
+
+<p>Now we have initialized our <code>theStatus</code> object and we can start adding properties (in this
+example we don't need methods). What we want is to create one property for each image on the page.
+We could do</p>
+
+<pre>
+theStatus.Home = 'normal';
+</pre>
+
+<p>Now we have added a new property <code>Home</code> to our object and set its value to the string
+<em>'normal'</em>. (Remember that JavaScript is case sensitive, so the property <code>home</code> does
+not exist, only <code>Home</code>.)</p>
+
+<p>All this is very useful, but using this notation we encounter problems later on. Suppose we want
+to create a property of <code>theStatus</code> for each image on the page.
+The property should have the same name as the image and its value should be 'normal'.</p>
+
+<p>We cannot do:</p>
+
+<pre class="wrong">
+var x = document.images;
+for (var i=0;i&lt;x.length;i++)
+{
+	var theName = x[i].name;
+	theStatus.theName = 'normal';
+}
+</pre>
+
+<p>We go through the entire images array of the page, take the name of each image and then try to
+create a new property with the same name. But the code above doesn't work. Each time you do</p>
+
+<pre class="wrong">
+	theStatus.theName = 'normal';
+</pre>
+
+<p>JavaScript faithfully creates a new property named <code>theName</code> and sets its value to
+<em>'normal'</em>. After executing this script you have only one property <code>theName</code>.
+This is not what we want, we want one property for each image.</p>
+
+<h3>Associative arrays</h3>
+
+<p>So we have to use one of JavaScript's minor mysteries.
+In JavaScript, objects are also associative arrays (or hashes). That is, the property</p>
+
+<pre>
+theStatus.Home
+</pre>
+
+<p>can also be read or written by calling</p>
+
+<pre>
+theStatus['Home']
+</pre>
+
+<p>Thus, you can access each property by entering the name of the property <em>as a string</em>
+into this array. Such an array associates each <em>key</em> with a <em>value</em> (in this
+case the key <em>Home</em> is associated with the value <em>normal</em>).
+In the Perl programming language it is also called a <em>hash</em>.</p>
+
+<p>Unlike Perl, which requires you to create such an associative array explicitly,
+JavaScript automatically creates a associative array for each object.</p>
+
+<p>You see this behaviour with common objects like a form. You can access a form by performing either
+of these DOM calls:</p>
+
+<pre>
+document.forms['theForm']
+document.forms.theForm
+</pre>
+
+<p class="smaller">(You can also use <code>document.theForm</code> but that's a special case, not
+regular behaviour of JavaScript objects/associative arrays).</p>
+
+<p>So when we want to set the status of each image to 'normal' in our object, we do</p>
+
+<pre>
+var x = document.images;
+for (var i=0;i&lt;x.length;i++)
+{
+  var theName = x[i].name;
+  theStatus[theName] = 'normal';
+}
+</pre>
+
+<p>and it works. Now <code>theName</code> (a string) is put into the brackets <code>[]</code> where a
+string is expected. So you create a new key/value pair, which is the same as a new property with
+a value.</p>
+
+<p>All this is JavaScript magic at its fullest. I don't completely understand what I'm doing either,
+but it works just fine. Basically you now have the power to let one name or string refer to another
+one.</p>
+
+<h3>for (var i in object)</h3>
+
+<p class='smaller'><code>for (var i in object)</code> is equivalent to Perl <code>foreach $key (keys %hash)</code>.</p>
+
+<p>Just as you can go through each element of a normal array by</p>
+
+<pre>
+var x = [the array];
+for (var i = 0;i&lt;x.length;i++)
+{
+  do something with x[i]
+}
+</pre>
+
+<p>you can also go through each element of an associative array. Suppose you want to go through the status values
+of all images. If the status of the image is '<em>mouseover</em>' you want to call a function
+<code>callFn()</code> and pass the image name to it. You can of course tediously write out everything:</p>
+
+<pre>
+if (theStatus.Home == 'mouseover')
+   callFn('Home'):
+if (theStatus.Place == 'mouseover')
+   callFn('Place'):
+etc.
+</pre>
+
+<p>or</p>
+
+<pre>
+if (theStatus['Home'] == 'mouseover')
+   callFn('Home'):
+if (theStatus['Place'] == 'mouseover')
+   callFn('Place'):
+etc.
+</pre>
+
+<p>But this quickly leads to immense scripts. Besides, if you rename an image later on you also have to
+change a line of code and of course you forget, so you get errors etc.</p>
+
+<p>Fortunately JavaScript has the <code>for/in</code> statement which is meant exactly for this situation. If you
+do</p>
+
+<pre>
+for (var i in theStatus)
+{
+  if (theStatus[i] == 'mouseover')
+    callFn(i)
+}
+</pre>
+
+<p>you go through all properties of the <code>theStatus</code> object (= all keys in the associative array
+<code>theStatus</code>). The variable <code>i</code> succesively becomes the name of each property
+of the object (key of the associative array) so you can do something with <code>theStatus[i]</code> and it is
+done to each property.<br />
+In this case, if an image status has the value '<em>mouseover</em>' you call <code>callFn()</code> and pass
+it the key (the name of the image).</p>
+
+<p class="smaller">(Note that JavaScript doesn't guarantee any particular <em>order</em> for
+the properties. So you cannot expect the property that was defined first to appear first,
+it might come last.)</p>
+
+<h3>Test script</h3>
+
+<p>A tiny script for your testing pleasure.
+If you click <a href="javascript:testIt()">this link</a> this script is executed:</p>
+
+<pre>
+var theStatus = new Object();
+
+function testIt() {
+	theStatus.Home = 'mouseover';
+	theStatus['Place'] = 'click';
+	for (var i in theStatus)
+	{
+		alert('theStatus[\''+i+'\'] is ' + theStatus[i])
+	}
+}
+</pre>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p id="validation" class="smaller">Valid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/associative.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:48 GMT -->
+</html>

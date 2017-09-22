@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/js/opacity.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:53 GMT -->
+<head>
+<title>Opacity setting</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<script type="text/javascript">
+<!--
+var testObj;
+
+function init() {
+	document.getElementById('tryIt').onclick = initFade;
+}
+
+function initFade() {
+	var radios = document.forms['opacityForm'].testEl;
+	for (var i=0;i<radios.length;i++)
+		if (radios[i].checked)
+		{
+			testObj = document.getElementById(radios[i].value);
+			break;
+		}
+	for (var i=0;i<11;i++)
+		setTimeout('setOpacity('+i+')',100*i);
+	return false;
+}
+
+function setOpacity(value)
+{
+	testObj.style.opacity = value/10;
+	testObj.style.filter = 'alpha(opacity=' + value*10 + ')';
+}
+// -->
+</script>
+<style type="text/css">
+td.declaration {
+	text-align: center;
+	vertical-align: middle;
+	font-size: 100%;
+}
+
+#testHEADER,#testDIV,#testP {
+	zoom: 1; /* necessary for IE */
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+<h2>Opacity setting</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Explorer 7 beta 3 seems to create an extra layer of text, which is slightly moved to the right, resulting
+in a very ugly effect.</p>
+</div>
+
+<p class="intro">Today we're trying to tweak the <code>opacity</code> of a few elements to create a
+fade-in effect. Some elements don't allow you to set their opacity in some browsers. In particular,
+setting the <code>opacity</code> of a table(-element) in all browsers is impossible.</p>
+
+<p>See also the <a href="https://www.quirksmode.org/css/opacity.html">opacity CSS test page</a>.</p>
+
+<h3>Setting opacity in JavaScript</h3>
+
+<p>I use the following script for setting the opacity:</p>
+
+<pre>
+function setOpacity(value) {
+	testObj.style.opacity = value/10;
+	testObj.style.filter = 'alpha(opacity=' + value*10 + ')';
+}
+</pre>
+
+<p><code>opacity</code> is for Mozilla and Safari, <code>filter</code> for Explorer.
+<code>value</code> ranges from 0 to 10.</p>
+
+<h3>Test results</h3>
+
+<p>General Explorer note: an element <em>must have <code>layout</code></em> in order to obey filters.
+Furthermore Explorer 6 does something weird to the left margin of the test element, while in Explorer 7 beta 3
+there appear two layers of text in an element with changed opacity.</p>
+
+<form action="#" name="opacityForm">
+<table cellspacing="7">
+<tr class="compheader">
+	<th>Test</th>
+	<th>Element</th>
+	<th>Explorer 6</th>
+	<th>Explorer 7 beta 3</th>
+	<th>Firefox 1.5</th>
+	<th>Safari 1.3</th>
+	<th>Opera 9</th>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testDIV" checked="checked" /></td>
+	<td class="declaration">
+		DIV
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testTABLE" /></td>
+	<td class="declaration">
+		TABLE
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testTBODY" /></td>
+	<td class="declaration">
+		TBODY
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testTR" /></td>
+	<td class="declaration">
+		TR
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testTD" /></td>
+	<td class="declaration">
+		TD
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testHEADER" /></td>
+	<td class="declaration">
+		H4
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testP" /></td>
+	<td class="declaration">
+		P
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td><input type="radio" name="testEl" value="testIMG" /></td>
+	<td class="declaration">
+		IMG
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+
+</table>
+</form>
+
+
+<p><a href="#" id="tryIt">Try it here</a>.</p>
+
+<h4 id="testHEADER">Test elements</h4>
+
+<div id="testDIV">This is <strong>text</strong> in a DIV.</div>
+
+<table id="testTABLE" border="1">
+	<tbody id="testTBODY">
+		<tr id="testTR"><td id="testTD">This is <b>text</b> in a TABLE.</td></tr>
+	</tbody>
+</table>
+
+<p id="testP">This is text in a paragraph.</p>
+
+<img src="../pix/logo_quirksmode.gif" id="testIMG" alt="test image" />
+
+<div id="footer"></div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/js/opacity.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:53 GMT -->
+</html>

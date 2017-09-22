@@ -1,0 +1,1057 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/w3c_events.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:04 GMT -->
+<head>
+<title>W3C DOM Events</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<link rel="core" href="http://quirksmode.org/dom/core/" />
+<link rel="html" href="http://quirksmode.org/dom/html/" />
+<link rel="css" href="w3c_css.html" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+var sitestatCounter = 7;
+</script>
+<script src="../nedstat.js" type="text/javascript"></script>
+</head>
+
+
+<body>
+
+
+<h2>W3C DOM Compatibility - Events</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>This table was last changed on <span class="lastUpdate">20 April 2005</span>. It will eventually be updated; I hope somewhere
+in the first quarter of 2008.</p>
+<a href="https://www.quirksmode.org/book/" class="image"><img class="cover" src="../pix/book.jpg" alt="Cover of my book" /></a>
+<p>If you'd like to have some practical examples of what you can do with the W3C DOM, read my
+book <a href="https://www.quirksmode.org/book/">ppk on JavaScript</a>, especially chapter 8.</p>
+</div>
+
+<p class="intro">These tables contain compatibility information for the Event methods and properties.
+It contains the W3C DOM Event specification and large sections of the Microsoft and Netscape
+proprietary event modules.</p>
+
+<p>The W3C DOM Events module has not been implemented at all in Explorer, so browser differences are
+much sharper than in the other modules. I also added Netscape 4 compatibility information because its
+system is different from both the W3C and the Microsoft systems. I advise you to read my
+<a href="../js/introevents.html">Introduction to events</a> for an overview.</p>
+
+<p>Currently this page contains the following tables:</p>
+
+<ol>
+<li><a href="#targets" class="page">Targets</a>
+	<span class="smallink">(currentTarget, from/toElement, originalTarget, relatedTarget,
+	srcElement, target)</span></li>
+<li><a href="#mousepos" class="page">Mouse position</a>
+	<span class="smallink">(clientX/Y, layerX/Y, offsetX/Y, pageX/Y, screenX/Y, x/y)</span></li>
+<li><a href="#keyprops" class="page">Key properties</a>
+	<span class="smallink">(altKey/Left, ctrlKey/Left, keyCode, metaKey, modifiers, repeat,
+	shiftKey/Left)</span></li>
+<li><a href="#miscprop" class="page">Miscellaneous properties</a>
+	<span class="smallink">(button, detail, timeStamp, type, wheelDelta, which)</span></li>
+<li class="lastimportant"><a href="#registration" class="page">Event handler registration</a>
+	<span class="smallink">(addEventListener, attachEvent, detachEvent, removeEventListener)</span></li>
+<li>(<a href="#bubble" class="page">Bubbling and canceling</a>; not yet ready)</li>
+<li>(<a href="#eventcreation" class="page">Event creation</a>; not yet ready)</li>
+</ol>
+
+<p>See also the <a href="https://www.quirksmode.org/key.html" type="popup">key</a> to my compatibility tables.</p>
+
+<a name="targets"></a>
+<h3>Targets</h3>
+
+<p>All targeting properties are described in detail on the
+<a href="../js/events_properties.html">Event properties</a> (<code>target</code>
+and <code>srcElement</code>),
+<a href="../js/events_order.html">Event order</a> (<code>currentTarget</code>)
+and <a href="../js/events_mouse.html">Mouse events</a> (<code>from/toElement</code> and
+<code>relatedTarget</code>) pages.</p>
+
+
+
+<table class="compatibility wide" cellspacing="7">
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+
+<!-- CURRENTTARGET -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">currentTarget</div>
+		The <code>currentTarget</code> property refers to the HTML element currently handling
+		the event. This is the element the event handler has been registered on.</td>
+	<td rowspan="2" class="extracolumn">focus, keypress, mouseover, mouseup, resize
+		<br /><br /><a href="../js/events/targets.html">Test page</a></td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">
+		There is no Microsoft equivalent for this property.<br />
+		See the <a href="../js/events_order.html">Event order</a> page for more information.
+	</td>
+</tr>
+
+<!-- FROM/TOELEMENT -->
+
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">fromElement, toElement</div>
+			The <code>from/toElement</code> properties exist only for mouseover and mouseout.
+			They refer to the element the mouse comes from (mouseover)
+			and the element the mouse goes to (mouseout).
+		</td>
+	<td rowspan="2" class="extracolumn">mouseover
+		<br /><br /><a href="../js/events/targets.html">Test page</a></td>
+			<td class="comp yes">Yes</td>
+			<td class="comp yes">Yes</td>
+			<td class="comp yes">Yes</td>
+			<td class="comp no">No</td>
+			<td class="comp yes">Yes</td>
+			<td class="comp yes">Yes</td>
+			<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">Equivalent W3C property: relatedTarget.<br />
+	See the <a href="../js/events_mouse.html">Mouse events</a> page for more information.
+	</td>
+</tr>
+
+
+<!-- RELATEDTARGET -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+		<div class="name">relatedTarget</div>
+		The <code>relatedTarget</code> property
+		refers to the HTML element the event is 'related' to: where the mouse comes from or
+		goes to.
+	</td>
+	<td class="extracolumn" rowspan="2">mouseover
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">Equivalent Microsoft properties: from/toElement<br />
+	See the <a href="../js/events_mouse.html">Mouse events</a> page for more information.
+	</td>
+</tr>
+
+<!-- SRCELEMENT -->
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+<tr>
+	<td class="declaration" rowspan="8"><div class="name">srcElement</div>
+	The <code>srcElement</code> is the Microsoft equivalent of <code>target</code>. See there
+	for more information.
+	</td>
+	<td class="extracolumn" rowspan="2">focus
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">See target
+	<ul>
+	<li>Explorer Windows doesn't return a srcElement for a focus event on the window.</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="extracolumn" rowspan="2">keypress
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">See target</td>
+</tr>
+<tr>
+	<td class="extracolumn" rowspan="2">mouseover, mouseup
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp no">No</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">See target
+	<ul>
+	<li>On links, Explorer returns the full href as target/srcElement instead of an
+	<code>A</code> element. You can access the element, though.</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="extracolumn" rowspan="2">resize
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">See target</td>
+</tr>
+
+<!-- TARGET -->
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+<tr>
+	<td class="declaration" rowspan="9"><div class="name">target</div>
+	The <code>target</code> property refers to the HTML element the event actually took place
+	on, even when the event handler has been registered not on the HTML element but on one of
+	its ancestors.<br /><br />
+	Mozilla 1.3 and Safari v73 have obligingly mended their earlier target confusion: text
+	nodes are no longer counted as separate targets.<br /><br />
+	Unfortunately Safari v85 has reverted to the incorrect behaviour.
+	</td>
+	<td class="extracolumn" rowspan="2">focus
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+</tr>
+<tr>
+	<td colspan="8">
+	See the
+	<a href="../js/events_properties.html">Event properties</a>
+	page for more information on <code>target</code>.
+	<ul>
+	<li>Netscape 4 returns the window object (window) or the entire outerHTML of the node (textarea).</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="extracolumn" rowspan="2">keypress
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+</tr>
+<tr>
+	<td colspan="8">
+	<ul>
+	<li>Netscape 4 returns nothing (document) or the entire outerHTML of the node (textarea).</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="extracolumn" rowspan="2">mouseover, mouseup
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp minimal">Minimal</td>
+</tr>
+<tr>
+	<td colspan="8">
+	<ul>
+	<li>On links, Explorer returns the full href as target/srcElement instead of an
+	<code>A</code> element.</li>
+	<li>Netscape 4 does not support target on mousedown, mouseup and click. This is a very
+	serious bug.</li>
+	<li class="smallink">When mouse events occur on text or inline elements and bubble up to the containing element,
+	Mozilla 1.2 and before and Safari v60 and v80 see the text node as the target of the event. Other browsers
+	report the inline element (A, B or CODE in the example) and don't react to events on text nodes.</li>
+	</ul>
+	</td>
+</tr>
+<tr>
+	<td class="extracolumn" rowspan="2">resize
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="8">
+	I ignore the difference between <code>[object Window]</code> and the document node for the
+	moment. There are very serious problems in connecting an HTML document to the window, and I'm
+	going to separately research these problems at a later date.
+	<ul>
+	<li>Safari returns <code>null</code>.</li>
+	</ul>
+	</td>
+</tr>
+
+
+</table>
+
+
+
+<a name="mousepos"></a>
+<h3>Mouse position</h3>
+
+<p>This table has been moved to the <a href="w3c_cssom.html">CSS Object Model</a> page.</p>
+
+
+<a name="keyprops"></a>
+<h3>Key event properties</h3>
+
+<table class="compatibility wide" cellspacing="7">
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+
+<!-- ALTKEY -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">altKey</div>
+	Is <code>true</code> when the alt key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">
+	<ul>
+	<li>Opera doesn't react to the Alt key at all</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- ALTLEFT -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">altLeft</div>
+	Is <code>true</code> when the left alt key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">&nbsp;</td>
+</tr>
+
+<!-- CHARCODE -->
+
+<tr>
+	<td class="declaration"><div class="name">charCode</div> </td>
+	<td colspan="8">
+	See the special <a href="../js/keys.html">Detecting keystrokes</a> page.
+	</td>
+</tr>
+
+<!-- CTRLKEY -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">ctrlKey</div>
+	Is <code>true</code> when the control key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">&nbsp;</td>
+</tr>
+
+
+<!-- CTRLLEFT -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">ctrlLeft</div>
+	Is <code>true</code> when the left control key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">
+	<ul>
+	<li>Explorer Windows always returns false</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- KEYCODE -->
+
+<tr>
+	<td class="declaration"><div class="name">keyCode</div> </td>
+	<td colspan="8">
+	See the special <a href="../js/keys.html">Detecting keystrokes</a> page.
+	</td>
+</tr>
+
+<!-- METAKEY -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">metaKey</div>
+	Is <code>true</code> when the meta key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp incomplete">Mac</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">
+	Which key is the meta key? On Mac it's Command, on Windows I don't know (and the browsers don't know,
+	either). Basically this property is only supported by Mozilla on Mac and Safari.
+	<ul>
+	<li>Mozilla Windows and Opera always return <code>false</code>. The other browsers return <code>undefined</code>.</li>
+	</ul>
+	</td>
+</tr>
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+
+<!-- MODIFIERS -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">modifiers</div>
+	Returns a bitmask that shows which special keys were pressed.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="8">
+	modifiers is a bitmask:<br />
+	1: Alt<br />
+	2: Ctrl<br />
+	4: Shift<br />
+	8: Command
+	<br />
+	Can be combined (ie. 6 = Ctrl + Shift).
+</td>
+</tr>
+
+<!-- REPEAT -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">repeat</div>
+	Is <code>true</code> when the user keeps the key depressed and the system's key repeat
+	starts up.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8"></td>
+</tr>
+
+<!-- SHIFTKEY -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">shiftKey</div>
+	Is <code>true</code> when the shift key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8"></td>
+</tr>
+
+<!-- SHIFTLEFT -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">shiftLeft</div>
+	Is <code>true</code> when the left shift key has been pressed, <code>false</code>
+	when it hasn't.
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8"></td>
+</tr>
+
+<!-- WHICH -->
+
+<tr>
+	<td class="declaration"><div class="name">which</div>
+	Equivalent of <code>keyCode</code>
+	</td>
+	<td colspan="9" class="neither">See next table</td>
+</tr>
+
+</table>
+
+
+<a name="miscprop"></a>
+<h3>Miscellaneous properties</h3>
+
+<table class="compatibility wide" cellspacing="7">
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+
+<!-- BUTTON -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">button</div>
+	Because <a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/events.html#Events-MouseEvent"
+		class="external" >W3C's spec</a> is
+	unworkable, this property has been reduced to <b class="warning">a complete mess</b>
+	</td>
+	<td class="extracolumn" rowspan="2">mousedown
+	<br /><br /><a href="../js/events/button.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp alternative">W3C</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp alternative">W3C</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">
+	The Microsoft implementation is the only one that makes sense.
+	<code>button</code> is a bitmask:<br />
+	1 - Left button<br />
+	2 - Right button<br />
+	4 - Middle button<br />
+	They can be combined in Explorer Windows, so clicking on the left and middle button simultaneously
+	gives a <code>button</code> of 5. Only Microsoft's implementation allows these combinations,
+	the W3C standard doesn't.
+	<br /><br />
+	Fortunately all browsers agree that a right click has a <code>button</code> value of 2.
+	<ul>
+	<li>Mozilla on Mac sees a Shift+Click as a right button click.</li>
+	<li>All other Mac browsers only detect the left button, even if the mouse has more than one button.</li>
+	<li>Opera allows you to <em>disable</em> right click detection in the JavaScript preferences.</li>
+	</ul>
+		<span class="smaller"><b>W3C</b>'s definition is:<br />
+		0 - Left button<br />
+		1 - Middle button<br />
+		2 - Right button<br />
+		0 should mean "no button pressed", any other meaning is silly. Besides these values
+		cannot be combined into a bitmask: you'll never know whether the left button has been pressed.
+		This definition is very shoddy work.
+		<br /><br />
+		Old Operas used their own values; but Opera 8b has switched to the W3C values.<br />
+		1 - Left button<br />
+		2 - Right button<br />
+		3 - Middle button</span>
+
+	</td>
+</tr>
+
+<!-- DETAIL -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">detail</div>
+	The <code>detail</code> property gives some more details about the event.
+	</td>
+	<td class="extracolumn" rowspan="2">mousedown
+	<br /><br /><a href="../js/events/detail.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp incorrect">Incor<wbr />rect on Windows</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">
+	'More details' have only been defined for click events and their siblings: here <code>detail</code> gives
+	the total amount of clicks fired in rapid succession.<br />
+	Works perfectly only in Mozilla Mac and Safari.
+	<ul>
+	<li>Mozilla Windows's implementation is closely linked to the function of
+	repeated clicks. The first click inserts the caret, the second one selects the word, the
+	third one the entire line. The fourth click reverts the selection back to a single word,
+	while the fifth click again selects the whole line.<br />
+	<code>detail</code>'s values follow this 1-2-3-2-3 sequence exactly and thus show which
+	text has been selected by the user.</li>
+	<li>Opera always returns <code>0</code></li>
+	</ul>
+	</td>
+</tr>
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+
+<!-- TIMESTAMP -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">timeStamp</div>
+	The <code>timeStamp</code> property returns the
+	<a href="../js/introdate.html#epoch">Epoch time</a> at which the event
+	took place (at least, I assume so; values on my Windows and Mac computers differ significantly).
+	</td>
+	<td class="extracolumn" rowspan="2">mousedown/ up/ click, keydown/ up/ press
+	<br /><br /><a href="../js/events/timestamp.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp incomplete">Incom<wbr />plete</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">As long as you use timeStamp for comparing it to other timeStamps, and not
+	for obtaining an absolute time, you shouldn't encounter too many problems.
+	<ul>
+	<li>In <em>Mozilla</em> it doesn't work for a click event.</li>
+	</ul>
+	</td>
+</tr>
+
+<!-- TYPE -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">type</div>
+	The <code>type</code> property returns the type of the event, without the 'on' prefix.
+	</td>
+	<td class="extracolumn" rowspan="2">Any event
+	<br /><br /><a href="../js/events/targets.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan="8">&nbsp;</td>
+</tr>
+
+
+<!-- WHEELDELTA -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">wheelDelta</div>
+	How many pixels the mouse wheel scrolls the page.
+	</td>
+	<td class="extracolumn" rowspan="2">mousewheel (MS proprietary)
+	<br /><br /><a href="../js/events/wheelDelta.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">&nbsp;</td>
+</tr>
+
+
+<!-- WHICH -->
+
+<tr>
+	<td class="declaration" rowspan="4"><div class="name">which</div>
+	<b>Two meanings</b><br />
+
+	1) For the key events<br />
+	Returns the code of the pressed key. a = 65 etc.
+
+	<br /><br />
+	2) For the mouse events<br />
+	Returns the mouse button pressed<br />
+	1 - Left button<br />
+	2 - Middle button<br />
+	3 - Right button
+
+	</td>
+	<td class="extracolumn" rowspan="2">keydown, keyup
+	<br /><br /><a href="../js/events/keys.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">Incor<wbr />rect</td>
+</tr>
+<tr>
+	<td colspan="8">
+	It is extremely difficult to detect arrow keys, function keys and Insert/Home/etc. keys.
+	<ul>
+	<li>Netscape 4 gives <code>a</code> key code 97. This is the old Netscape 4 system.</li>
+	</ul>
+	</td>
+</tr>
+
+<tr>
+	<td class="extracolumn" rowspan="2">mousedown
+	<br /><br /><a href="../js/events/button.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incorrect">(Prop) button</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incomplete">Incom<wbr />plete</td>
+</tr>
+<tr>
+	<td colspan="8">
+	<ul>
+	<li>Netscape 4 cannot detect the middle button.</li>
+	<li>Safari gives <code>which</code> the same value as
+	<code>button</code>.</li>
+	</ul>
+	</td>
+</tr>
+</table>
+
+
+<a name="registration"></a>
+<h3>Event handler registration</h3>
+
+<p>See the
+<a href="../js/events_advanced.html">Advanced event registration models</a> page for
+a full discussion of these methods. I advise you not to use either of these systems since they are
+not cross-browser. There is an alternative supported by <b>all browsers</b>: the
+<a href="../js/events_tradmod.html">traditional event registration model</a>.</p>
+
+<table class="compatibility wide" cellspacing="7">
+
+<tr class="compheader">
+	<th>Property</th>
+	<th>Events</th>
+	<th>Explorer 5 Win</th>
+	<th>Explorer 6 Win</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.75</th>
+	<th>Safari 1.2</th>
+	<th>Opera 8</th>
+	<th>Netscape 4</th>
+</tr>
+
+
+<!-- ADDEVENTLISTENER -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">addEvent<wbr />Listener()</div>
+	Add an event handler to an element.
+	<b class="warning">W3C</b>
+	</td>
+	<td class="extracolumn" rowspan="2">click
+	<br /><br /><a href="../js/events/registration.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">x.addEventListener('click',doSomething,false)<br />
+	Add an onclick event handler that executes function <code>doSomething()</code> to element
+	x.
+	<br /><br />
+	The <code>true/false</code> flag at the end states
+	whether the event handler should be executed in the capturing or in the bubbling phase.
+	</td>
+</tr>
+
+
+<!-- ATTACHEVENT -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">attachEvent()</div>
+	Add an event handler to an element.
+ 	<b class="warning">Microsoft</b>
+	</td>
+	<td class="extracolumn" rowspan="2">click
+	<br /><br /><a href="../js/events/registration.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">x.attachEvent('onclick',doSomething);<br />
+	Add an onclick event handler that executes function <code>doSomething()</code> to element
+	x.	</td>
+</tr>
+
+<!-- DETACHEVENT -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">detachEvent()</div>
+	Remove an event handler from an element.
+	<b class="warning">Microsoft</b>
+	</td>
+	<td class="extracolumn" rowspan="2">click
+	<br /><br /><a href="../js/events/registration.html">Test page</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">x.detachEvent('onclick',doSomething);<br />
+	Remove the onclick event handler that executes function <code>doSomething()</code>
+	from element x.
+	</td>
+</tr>
+
+<!-- REMOVEEVENTLISTENER -->
+
+<tr>
+	<td class="declaration" rowspan="2"><div class="name">removeEvent<wbr />Listener()</div>
+	Remove an event handler from an element.
+	<b class="warning">W3C</b>
+	</td>
+	<td class="extracolumn" rowspan="2">click
+	<br /><br /><a href="../js/events/registration.html">Test page</a>
+	</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan="8">x.removeEventListener('click',doSomething,false);<br />
+	Remove the onclick event handler that executes function <code>doSomething()</code>
+	from element x.
+	</td>
+</tr>
+
+</table>
+
+<a name="bubble"></a>
+<h3>Bubbling and canceling</h3>
+
+<p>Later on I'll add compatibility information for <code>bubbles, cancelable, cancelBubble,
+eventPhase, preventDefault(), returnValue</code> and <code>stopPropagation()</code>. The problem
+is creating a good, generally applicable test page and finding the time to do this.</p>
+
+<a name="eventcreation"></a>
+<h3>Event creation</h3>
+
+<p>Later on I'll also add compatibility information for <code>createEvent(), createEventObject(),
+dispatchEvent(), fireEvent(), initEvent(), initMouseEvent(), initMutationEvent()</code> and
+<code>initUIEvent()</code>. The problem is again creating the tests, and the fact
+that I'm unsure how this methods ought to work.</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Invalid XHTML 1.0 because the tables use &lt;wbr /&gt;</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/w3c_events.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:07 GMT -->
+</html>

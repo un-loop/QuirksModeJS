@@ -1,0 +1,478 @@
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/contents.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:29:56 GMT -->
+<head>
+<title>W3C DOM - Table of Contents</title>
+<link rel="stylesheet" href="../quirksmode.css">
+<link rel="intro" href="intro.html">
+<link rel="up" href="../home.html">
+<script src="../quirksmode.js"></script>
+</script>
+</head>
+
+<body>
+
+<h2>Table of contents</h2>
+
+<div id="header"></div>
+
+<p class="intro">Below you find the contents of the W3C DOM section of my site.</p>
+
+<h3>General</h3>
+
+<table cellspacing=15 class="contents">
+
+<tr>
+	<td class="link">
+	<a href="intro.html">Level 1 DOM</a></td>
+	<td>An introduction to the Level 1 DOM and its many possibilities. The DOM treee, nodes, how to change them
+	and how to create and delete them.</td>
+</tr>
+<tr>
+	<td class="link">
+	<a href="list.html">W3C DOM mailing list</a></td>
+	<td>As it says</td>
+</tr>
+</table>
+
+<h3>Compatibility tables</h3>
+
+<p>See also the <a href="https://www.quirksmode.org/key.html" type="popup">key</a> to my compatibility tables.</p>
+
+<table class="compatibility" cellspacing=7>
+
+<tr class="compheader">
+	<th>Module</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+
+<!-- NODE MANIPULATION -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+	<div class="name">Core</div>
+	Node manipulation
+	<br><br><a href="http://quirksmode.org/dom/core/">Tables</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>
+	The W3C DOM Core module defines how to access, read and manipulate an XML document. Well-formed
+	HTML documents are XML documents, so these methods and properties can be used to completely
+	rewrite any HTML page, if you so wish.
+	<br><br>
+	Here you find details on how to find elements, how to create new ones, how to read out node
+	information and how to change the structure of the document.
+	</td>
+</tr>
+
+<!-- HTML TAG MANIPULATION -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+	<div class="name">HTML</div>
+	HTML tag manipulation
+	<br><br><a href="http://quirksmode.org/dom/html/">Tables</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>
+	Though HTML documents are XML documents, they have a number of special features that the
+	average XML document doesn't have. The W3C DOM HTML module defines these special cases and
+	how to deal with them.
+	<br><br>
+	Here you find details on getting and setting properties of HTML elements, such as <code>className</code> or
+	<code>id</code>. The <code>innerHTML</code> property is of prime importance to any DOM script.
+	</td>
+</tr>
+
+<!-- STYLESHEET MANIPULATION -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+	<div class="name">CSS</div>
+	Stylesheet manipulation
+	<br><br><a href="w3c_css.html">Tables</a>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incomplete">Read only</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incomplete">Read only</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan=7>
+	Style sheets are part of the document, too (sort of). The W3C DOM CSS module
+	gives access to style sheets
+	and some browsers even allow you to change a style sheet. Where traditional
+	<a href="../js/introdh.html">DHTML</a> changes only the styles of specially selected
+	elements, these new methods allow you to change the styles of an entire page. Two lines of code
+	suffice to make all paragraphs on your page red instead of black, for instance.
+	<br><br>
+	This module contains some browser incompatibilities, but they are of the cute kind. W3C and
+	Microsoft define some different methods and arrays, but some simple
+	<a href="../js/support.html">object detection</a> allows you to evade these problems.
+	</td>
+</tr>
+
+<!-- EVENT MANIPULATION -->
+
+<tr>
+	<td class="declaration" rowspan="2">
+	<div class="name">Events</div>
+	Event manipulation
+	<br><br><a href="w3c_events.html">Tables</a>
+	</td>
+	<td class="comp yes">Microsoft</td>
+	<td class="comp yes">Microsoft</td>
+	<td class="comp yes">Mainly Microsoft</td>
+	<td class="comp yes">W3C</td>
+	<td class="comp incomplete">Mainly W3C; incom<wbr>plete</td>
+	<td class="comp yes">Both</td>
+</tr>
+<tr>
+	<td colspan=7>
+	The W3C DOM Events module specifies how events are being handled. The MS DOM events module does the
+	same, but in a different way. These tables detail both Event modules and also Netscape 4's old
+	system.
+	<br><br>
+	See the <a href="../js/introevents.html">Introduction to events</a> and subsequent pages for
+	more information.
+	</td>
+</tr>
+<tr class="compheader">
+	<th>Module</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+</table>
+
+<h3>Benchmarks</h3>
+
+<table cellspacing=15 class="contents">
+<tr>
+	<td class="link">
+	<a href="innerhtml.html">W3C DOM vs. innerHTML</a></td>
+	<td><em>Test script</em> to see which method of writing large amounts of content into a page is fastest.
+	I use some pure W3C DOM scripts and some scripts that mess with innerHTML.</td>
+</tr>
+<tr>
+	<td class="link">
+	<a href="classchange.html">style vs. className</a></td>
+	<td>Test script to find the fastest way to change the style of elements: by changing its <code>style</code>
+	properties or its <code>className</code>.</td>
+</tr>
+</table>
+
+<h3>Scripts</h3>
+
+<table class="compatibility" cellspacing=7>
+
+<tr class="compheader">
+	<th>Script</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="importxml.html">Import XML</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan=7>Example script how to load an XML document into your HTML page and create a table to display
+	the data. In my opinion this will become important in the future, as soon as we can <em>save</em> XML
+	documents back to the server.</td>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="cms.html">Edit text</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp almost">Almost</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incomplete">Incom<wbr>plete</td>
+</tr>
+<tr>
+	<td colspan=7>How to let the user click on a paragraph and let him edit its text in an input box. When
+	the user is ready, the text becomes paragraph again.<br>
+	This is a very useful script for content management systems. The only flaw is that there is
+	no simple way to send the revised texts to the server.</td>
+</tr>
+
+<tr class="compheader">
+	<th>Script</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="getstyles.html">Get styles</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>How to get the default styles of HTML elements. For instance, a paragraph gets
+	a percentual width from a general style sheet. How wide is the paragraph?<br>
+	Doesn't work perfectly yet, but you can read out some interesting information.</td>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="changess.html">Change style sheet</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan=7>This script changes an entire style sheet, so that you can, for instance, change the text
+	colour of all your paragraphs with just a few lines of code.<br>
+	Unfortunately there are very grave browser incompatibilities that make this technique badly usable for
+	the moment.</td>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="toc.html">Table of Contents</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp crash">Crash</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>How to generate a Table of Contents based on the headers in the page. I use this script on every
+	page of my site.</td>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="fir.html">Image replacement</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>The Fahrner Image Replacement is very fashionable these days. It tries to replace a header
+	text by an image by means of CSS. Unfortunately the countless variations on this theme make invalid assumptions
+	about screen readers. Besides, I feel CSS is the wrong tool for image replacement. Instead we should use
+	JavaScript. This script.</td>
+</tr>
+
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="3column.html">Three column stretching</a></div>
+	</td>
+	<td class="comp yes">5.5</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>This script gives an example of CSS enhancement through minimal JavaScript
+	interference. It's only an example, it's not yet good enough to use in real pages.</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="maxlength.html">Maxlength on textareas</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>This script adds a maximum length to a textarea and warns the user when
+	he exceeds this maximum length.</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="getElementsByTagNames.html">getElements<wbr />ByTagNames()</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>A custom script for getting elements by several tag names in the order they appear in
+	the document. For instance:
+<pre>
+var headerList = getElementsByTagNames('h1,h2,h3,h4');
+</pre></td>
+</tr>
+<tr class="compheader">
+	<th>Script</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+</table>
+
+<h3>Forms</h3>
+
+<table class="compatibility" cellspacing=7>
+
+<tr class="compheader">
+	<th>Script</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="usableforms.html">Usable forms</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp buggy">Buggy</td>
+	<td class="comp crash">Crash</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp incomplete">Incom<wbr>plete</td>
+</tr>
+<tr>
+	<td colspan=7>How to show and hide form fields based on user actions.<br>
+	For once the explanation of the script is not on my site. I published the companion
+	<a href="http://digital-web.com/features/feature_2003-05b.shtml"
+	class="external" >Forms, usability, and the W3C DOM</a> article on Digital Web Magazine.
+	<br><br>The script works in Explorer 6 Windows, but this browser may hide other page elements.
+	</td>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="domform.html">Extending forms</a></div>
+	</td>
+	<td class="comp incomplete">Incom<wbr>plete</td>
+	<td class="comp incomplete">Incom<wbr>plete</td>
+	<td class="comp buggy">Buggy</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>Example script for the way the W3C DOM is going to change the interaction of web sites.
+	In this example the user can choose how many form fields he'd like to see. We web developers
+	don't have to decide on a maximum number any more, the user is completely free to do as he
+	likes.</td>
+</tr>
+
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="error.html">Form error messages</a></div>
+	</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp crash">Danger</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+</tr>
+<tr>
+	<td colspan=7>How to write error messages next to the form field they apply to. This is clearly
+	better than using alerts to show errors.<br>
+	The example script works in Explorer Mac, but this browser may fail spectacularly when you insert
+	the script in a real web page.</td>
+</tr>
+<tr>
+	<td class="declaration" rowspan=2>
+		<div class="name"><a href="inputfile.html">Styling an input type="file"</a></div>
+	</td>
+	<td class="comp yes">5.5</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp yes">Yes</td>
+	<td class="comp no">No</td>
+</tr>
+<tr>
+	<td colspan=7>Can almost be done in pure CSS, but I prefer JavaScript.</td>
+</tr>
+<tr class="compheader">
+	<th>Script</th>
+	<th>Explorer 5 Windows</th>
+	<th>Explorer 6 Windows</th>
+	<th>Explorer 5.2 Mac</th>
+	<th>Mozilla 1.6</th>
+	<th>Safari 1.3</th>
+	<th>Opera 8</th>
+</tr>
+
+</table>
+
+
+<div id="footer"><a href="../home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a></div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/contents.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:02 GMT -->
+</html>

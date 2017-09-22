@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/style.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:14 GMT -->
+<head>
+<title>W3C DOM tests - styleSheet tests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="../../quirksmode.css" />
+<link rel="stylesheet" href="teststyles.css" />
+<link rel="stylesheet" href="teststyleSheet.css" />
+<script type="text/javascript" src="../../quirksmode.js"></script>
+<script type="text/javascript" src="testscripts.js"></script>
+<script type="text/javascript" >
+<!--
+var x,y;
+function initPage () {
+	x = document.getElementById('test');
+	var tmp = document.styleSheets;
+	if (tmp) {
+		for (var i=0;i<tmp.length;i++) {
+			if (tmp[i].href.indexOf('teststyleSheet.css') != -1) {
+				y = tmp[i];
+				break;
+			}
+		}
+	}
+}
+
+
+// -->
+</script>
+
+</head>
+
+<body>
+
+<h2>W3C DOM tests - styleSheet tests</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<div class="testHTML">
+<p id="test"
+	style="border: 1px solid #cc0000"
+	>This is element <code>x</code>. It has inline style <code>border: 1px solid #cc0000</code>.
+	Element <code>y</code> is the test style sheet.</p>
+</div>
+</div>
+
+
+<h3 id="testStart">Test scripts</h3>
+
+<h4>currentStyle</h4>
+
+<pre class="testScript">alert(x.currentStyle.color)</pre>
+
+<h4>getComputedStyle</h4>
+
+<pre class="testScript">alert(window.getComputedStyle(x,null).color)</pre>
+
+<h4>style</h4>
+
+<p>The color test should not give any result because the color is set by a linked style sheet, and not
+by inline styles.</p>
+<pre class="testScript">alert(x.style.color)</pre>
+
+<p>The border test should get or set the element's border.</p>
+<pre class="testScript">alert(x.style.border)</pre>
+<pre class="testScript">x.style.border = '2px dotted #00cccc'</pre>
+
+<p>This test should remove the border and enlarge the text. Few browsers support it.</p>
+<pre class="testScript">x.style = 'font-size: 150%'</pre>
+
+<p>This test should access the <code>color: #00cc00</code> declaration in the linked style sheet.</p>
+<pre class="testScript">alert(y.cssRules[y.cssRules.length-1].style.color)</pre>
+<pre class="testScript">alert(y.rules[y.rules.length-1].style.color)</pre>
+
+<p>Same as above, but now we're trying to set the style.</p>
+<pre class="testScript">y.cssRules[y.cssRules.length-1].style.color = '#000000'</pre>
+<pre class="testScript">y.rules[y.rules.length-1].style.color = '#000000'</pre>
+
+
+
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/tests/style.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:15 GMT -->
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html lang="en">
+<!-- Mirrored from www.quirksmode.org/js/events/keys.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:18 GMT -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Events - key events</title><link rel="stylesheet" href="../../quirksmode.css" /><link rel="stylesheet" href="eventtests.css" /><script type="text/javascript" src="../../quirksmode.js"></script><script type="text/javascript">var eventsToBeTested = ['keydown','keypress','keyup','textInput'];</script><script type="text/javascript" src="eventtests.js"></script></head><body><h2>Events - key events</h2><div id="header"></div><div class="floater" id="controls"><form id="controlForm">
+
+<fieldset>
+	<legend>Registration</legend>
+	<span><input type="radio" id="Traditional" name="registration" checked="checked" /> <label for="Traditional">Traditional</label></span>
+	<span><input type="radio" id="addEventListenerCapture" name="registration" /> <label for="addEventListenerCapture">addEventListener (capture)</label></span>
+	<span><input type="radio" id="addEventListenerBubble" name="registration" /> <label for="addEventListenerBubble">addEventListener (bubble)</label></span>
+	<span><input type="radio" id="attachEvent" name="registration" /> <label for="attachEvent">attachEvent</label></span>
+</fieldset>
+
+<fieldset>
+	<legend>Events</legend>
+	<p>The following events are registered:</p>
+	<div id="listTestEvents"></div>
+</fieldset>
+
+<fieldset>
+	<legend>Elements</legend>
+	<p>The events are registered on the following elements:</p>
+	<div id="listTestElements"></div>
+</fieldset>
+
+<fieldset>
+	<legend>Miscellaneous</legend>
+	<input type="checkbox" id="preventDefault" /> <label for="preventDefault">Prevent default action</label><br />
+	<input type="checkbox" id="cancelBubble" /> <label for="cancelBubble">Cancel bubble</label><br />
+</fieldset>
+
+<fieldset>
+<legend>Event properties</legend>
+	<input type="checkbox" id="showProperties" /> <label for="showProperties">Show event properties</label>
+
+	<div id="propertyContainer">
+	<input type="checkbox" id="hideConstants" /> <label for="hideConstants">Hide constants</label><br />
+	<input type="checkbox" id="hideValueless" /> <label for="hideValueless">Hide valueless</label><br />
+	<input type="checkbox" id="hideNative" /> <label for="hideNative">Hide native functions</label><br />
+	
+
+	<ol id="properties">
+
+	</ol>
+	
+	<p>These properties belong to the last event that fired.</p>
+	</div>
+</fieldset>
+
+</form></div><p class="intro">This page tests the key events.</p><h3>Test elements</h3><div id="testElements"><a href="#" id="testLink">This link</a> is a test element.<p id="focusableParagraph" tabindex="1">This paragraph has <code>tabindex="1"</code>.</p><p id="testParagraph">This paragraph is a test element. This paragraph is a test element. This paragraph is a test element.
+This paragraph is a test element. This paragraph is a test element. This paragraph is a test element. </p><form id="testFormMinimal">
+<p>This form is a test element, and all of its fields are test elements, too.</p>
+<input id="testInputMinimal" /> <label for="testInputMinimal">Test label</label><br />
+<textarea></textarea>
+</form></div><span id="insertPoint"></span><div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a></div></body>
+<!-- Mirrored from www.quirksmode.org/js/events/keys.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:19 GMT -->
+</html>

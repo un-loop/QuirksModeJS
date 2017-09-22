@@ -1,0 +1,488 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+
+<!-- Mirrored from www.quirksmode.org/dom/inputfile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:11 GMT -->
+<head>
+<title>CSS2/DOM - Styling an input type="file"</title>
+<link rel="stylesheet" href="../quirksmode.css" />
+<link rel="up" href="contents.html" />
+<link rel="intro" href="intro.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../quirksmode.js"></script>
+<style type="text/css">
+<!--
+form.example input {
+	background: url('pix/input_boxes.gif') no-repeat 0 -58px;
+	border: none;
+	width: 241px;
+	height: 20px;
+	padding-left: 3px;
+	padding-top: 3px;
+}
+
+form.example input:focus {
+	background-color: transparent;
+}
+
+form.example div.fileinputs {
+	position: relative;
+	height: 30px;
+	width: 300px;
+}
+
+form.example input.file {
+	width: 300px;
+	margin: 0;
+}
+
+form.example input.file.hidden {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+
+form.example div.fakefile {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 350px;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+	line-height: 90%;
+}
+
+form.example div.fakefile input {
+	margin-bottom: 5px;
+	margin-left: 0;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+
+var W3CDOM = (document.createElement && document.getElementsByTagName);
+
+function init() {
+	if (!W3CDOM) return;
+	var fakeFileUpload = document.createElement('div');
+	fakeFileUpload.className = 'fakefile';
+	fakeFileUpload.appendChild(document.createElement('input'));
+	var image = document.createElement('img');
+	image.src='pix/button_select.gif';
+	fakeFileUpload.appendChild(image);
+	var x = document.getElementsByTagName('input');
+	for (var i=0;i<x.length;i++) {
+		if (x[i].type != 'file') continue;
+		if (x[i].getAttribute('noscript')) continue;
+		if (x[i].parentNode.className != 'fileinputs') continue;
+		x[i].className = 'file hidden';
+		var clone = fakeFileUpload.cloneNode(true);
+		x[i].parentNode.appendChild(clone);
+		x[i].relatedElement = clone.getElementsByTagName('input')[0];
+		if (x[i].value)
+			x[i].onchange();
+		x[i].onchange = x[i].onmouseout = function () {
+			this.relatedElement.value = this.value;
+		}
+	}
+}
+
+// -->
+
+</script>
+
+</head>
+
+<body>
+
+<h2>Styling an input type="file"</h2>
+
+<div id="header"></div>
+
+<div class="floater">
+<p>Credits wholly go to <a href="http://michaelmcgrady.com/" class="external">Michael McGrady</a>, who
+invented this technique.</p>
+<p>A browser must support <a href="https://www.quirksmode.org/css/opacity.html">opacity</a> to support this technique. Therefore
+it doesn't work in Explorer 5.0 on Windows, Explorer 5 on Mac and Opera.</p>
+<p>A reader suggested adding a keyup event to the real input box so that you can copy the text the user types
+to the fake one.</p>
+<p>This page has been translated into <a href="http://591wap.cn/translate/inputfile/inputfile.html"
+	class="external">Chinese</a> and <a href="http://css.flepstudio.org/css-tutorials/input-type-file.html" class="external">Italian</a>.</p>
+</div>
+
+<p class="intro">Of all form fields, the file upload field is by far the worst when it comes to styling.
+Explorer Windows offers some (but not many) style possibilities, Mozilla slightly less, and the other
+browsers none at all. The "Browse" button, especially, is completely inaccessible to CSS manipulation.</p>
+
+<h3>The problem</h3>
+
+<p>For a site I created I needed input fields like this one:</p>
+
+<form action="#" class="example">
+<input />
+</form>
+
+<p>The designer wanted the same styles, plus a "Select" image, to apply to all file upload fields.
+When I applied the rules of normal input fields to file upload fields, though, it didn't really work.
+There were wild differences between the browsers, and styling the default button is totally impossible.</p>
+
+<p>Ponder the differences.</p>
+
+<img src="pix/filefields.gif" class="screenshot" alt="File input fields in the various browsers" />
+
+<p>This is hardly what anyone would call a nicely designed form field. Until recently, though, it was
+the best we could do.</p>
+
+<p class="smaller">Also note Safari's fundamentally different approach. The Safari team has probably decided
+on this approach to disallow the manual entering of a file name and this avoid <a href="http://bugzilla.mozilla.org/attachment.cgi?id=17860&amp;action=view"
+	class="external">exploits like this one</a>. The drawback is that the user can't decide not to upload
+	a file after having selected one.</p>
+
+<h3>The solution</h3>
+
+<p>Fortunately, reader <a href="http://michaelmcgrady.com/" class="external">Michael McGrady</a> invented
+a very neat trick that allows us to (more or less) style file upload fields. The credits for the solution
+presented on this page are wholly his, I only added the <code>position: relative</code>, a few notes and
+tests, and ported it entirely to JavaScript.</p>
+
+<p>Without the technique your browser reacts like this:</p>
+
+<form action="#" class="example">
+<input type="file" />
+
+<p>Using McGrady's technique, I was able to produce this file upload field:</p>
+
+<div class="fileinputs">
+	<input type="file" />
+</div>
+</form>
+
+<p>Now that looks much better, doesn't it? (Provided your browser supports <code>opacity</code>)</p>
+
+<p>McGrady's technique is elegant in its simplicity:</p>
+
+<ol class="spacing">
+<li>Take a normal <code>&lt;input type="file"&gt;</code> and put it in an element with <code>position: relative</code>.</li>
+<li>To this same parent element, add a normal <code>&lt;input&gt;</code> and an image, which have the correct styles.
+ Position these elements absolutely, so that they occupy the same place as the <code>&lt;input type="file"&gt;</code>.</li>
+<li>Set the <code>z-index</code> of the <code>&lt;input type="file"&gt;</code> to <code>2</code> so that
+it lies <em>on top of</em> the styled input/image.</li>
+<li>Finally, set the <code>opacity</code> of the <code>&lt;input type="file"&gt;</code> to <code>0</code>. The <code>&lt;input type="file"&gt;</code>
+now becomes effectively invisible, and the styles input/image shines through,
+<em>but you can still click on the "Browse" button</em>. If the button is positioned on top of the image,
+the user appears to click on the image and gets the normal file selection window.<br />
+<span class="smaller">(Note that you can't use <code>visibility: hidden</code>, because a truly invisible
+element is unclickable, too, and we need the <code>&lt;input type="file"&gt;</code> to remain clickable)</span></li>
+</ol>
+
+<p>Until here the effect can be achieved through pure CSS. However, one feature is still lacking.</p>
+
+<ol start="5">
+<li>When the user has selected a file, the visible, fake input field should show the correct path
+to this file, as a normal <code>&lt;input type="file"&gt;</code> would. It's simply a matter of copying the new value of the <code>&lt;input type="file"&gt;</code> to
+the fake input field, but we need JavaScript to do this.</li>
+</ol>
+
+<p>Therefore this technique will not wholly work without JavaScript. For reasons I'll explain later, I decided
+to port the entire idea to JavaScript. If you're willing to do without the visible file name you
+can use the pure CSS solution. I'm not sure if this would be a good idea, though.</p>
+
+<h3>The HTML/CSS structure</h3>
+
+<p>I've decided on the following HTML/CSS approach:</p>
+
+<pre>
+div.fileinputs {
+	position: relative;
+}
+
+div.fakefile {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+}
+
+&lt;div class="fileinputs"&gt;
+	&lt;input type="file" class="file" /&gt;
+	&lt;div class="fakefile"&gt;
+		&lt;input /&gt;
+		&lt;img src="search.gif" /&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<p>The surrounding <code>&lt;div class="fileinputs"&gt;</code> is positioned relatively so that we can
+create an absolutely positioned layer inside it: the fake file input.</p>
+
+<p>The <code>&lt;div class="fakefile"&gt;</code>, containing the fake input and the button, is positioned
+absolutely and has a <code>z-index</code> of 1, so that it appears underneath the real file input.</p>
+
+<p>The real file input field also gets <code>position: relative</code> to be able to assign it a
+<code>z-index</code>. After all, the real field should be on top of the fake field. Then we set the
+<code>opacity</code> of the real file input field to 0, making it effectively invisible.</p>
+
+<p>Also note the
+<code>text-align: right</code>: since Mozilla refuses a <code>width</code> declaration for the real file
+field, we should make sure that the "Browse" button is at the right edge of the <code>&lt;div&gt;</code>.
+The fake "Search" button is also positioned at the right edge, and it should be underneath the real
+button.</p>
+
+<p>You'll need some subtle CSS to set all widths, heights, borders and so on, but I didn't include it
+in this code example. View the source of this page to study my approach in this particular case; your
+pages will be different, though, so you'll have to change these values.</p>
+
+<h3>Why JavaScript?</h3>
+
+<p>Nonetheless, I decided to go for a strict JavaScript solution. My first reason is that we need
+JavaScript anyway to copy the file path to the fake field.</p>
+
+<p>Secondly, a JavaScript solution would avoid meaningless extra HTML:
+the <code>&lt;div class="fakefile"&gt;</code>. It'd keep my code cleaner.</p>
+
+<p>Finally, older browsers can't really handle
+the CSS, down to the point that the file input becomes inaccessible in Netscape and Explorer 4. As to
+users of no-CSS browsers, they'd see two input fields, and wouldn't understand what the second one was
+for.</p>
+
+<p>Below is a pure CSS solution:</p>
+
+<form action="#" class="example">
+<div class="fileinputs">
+	<input type="file" class="file hidden" noscript="true" />
+	<div class="fakefile">
+		<input />
+		<img src="pix/button_select.gif" alt="Browse" />
+	</div>
+</div>
+</form>
+
+<p>Some browser screenshots will further explain the accessibility issues.</p>
+
+<h4>Problems - Netscape 4</h4>
+
+<p>First Netscape 4. As you see, the user sees only the button. <span class="smaller">This may be because the form is spread
+across two layers by my use of <code>position: absolute</code>, and Netscape 4 can't handle that.</span></p>
+
+<p>Worse: the user can't click on the button. Maybe an extensive week long study would reveal
+a partial solution to this problem, but frankly I can't be bothered. Nonetheless, the field must be accessible
+to Netscape 4 users.</p>
+
+<img src="pix/filefields_nn4.gif" class="screenshot" alt="How it looks in Netscape 4" />
+
+<h4>Problems - Explorer 4</h4>
+
+<p>Explorer 4: an odd shadow of the original "Browse" button, and it's not clickable, either. The solution
+is inaccessible in Explorer 4.</p>
+
+<img src="pix/filefields_ie4.gif" class="screenshot" alt="How it looks in Explorer 4" />
+
+<h4>Problems - Netscape 3</h4>
+
+<p>Finally, users of Netscape 3, or any other non-CSS browser.
+The field is still accessible, but users will quite likely be confused by the extra input field.</p>
+
+<img src="pix/filefields_nn3.gif" class="screenshot" alt="How it looks in Netscape 3" />
+
+
+<h4>Solution - JavaScript</h4>
+
+<p>The solution to all this nastiness is simple: generate the fake input and button through JavaScript.
+Now, the worst that can happen is that the script doesn't work, in which case the user only sees the
+real <code>&lt;input type="file"&gt;</code>. Less beautiful, certainly, but still accessible.</p>
+
+<p>So the hard coded HTML is reduced to:</p>
+
+<pre>
+&lt;div class="fileinputs"&gt;
+	&lt;input type="file" class="file"&gt;
+&lt;/div&gt;
+</pre>
+
+<p>We'll add the rest of the elements through JavaScript.</p>
+
+<h3>The script</h3>
+
+<p>So I wrote the following script:</p>
+
+<pre>
+var W3CDOM = (document.createElement && document.getElementsByTagName);
+
+function initFileUploads() {
+	if (!W3CDOM) return;
+	var fakeFileUpload = document.createElement('div');
+	fakeFileUpload.className = 'fakefile';
+	fakeFileUpload.appendChild(document.createElement('input'));
+	var image = document.createElement('img');
+	image.src='pix/button_select.gif';
+	fakeFileUpload.appendChild(image);
+	var x = document.getElementsByTagName('input');
+	for (var i=0;i&lt;x.length;i++) {
+		if (x[i].type != 'file') continue;
+		if (x[i].parentNode.className != 'fileinputs') continue;
+		x[i].className = 'file hidden';
+		var clone = fakeFileUpload.cloneNode(true);
+		x[i].parentNode.appendChild(clone);
+		x[i].relatedElement = clone.getElementsByTagName('input')[0];
+		x[i].onchange = x[i].onmouseout = function () {
+			this.relatedElement.value = this.value;
+		}
+	}
+}
+</pre>
+
+<h4>Explanation</h4>
+
+<p>If the browser doesn't support the W3C DOM, don't do anything.</p>
+
+<pre>
+var W3CDOM = (document.createElement && document.getElementsByTagName);
+
+function initFileUploads() {
+	if (!W3CDOM) return;
+</pre>
+
+<p>Create the <code>&lt;div class="fakefile"&gt;</code> and its content. We'll clone it as often as necessary.</p>
+
+<pre>
+	var fakeFileUpload = document.createElement('div');
+	fakeFileUpload.className = 'fakefile';
+	fakeFileUpload.appendChild(document.createElement('input'));
+	var image = document.createElement('img');
+	image.src='pix/button_select.gif';
+	fakeFileUpload.appendChild(image);
+</pre>
+
+<p>Then go through all inputs on the page and ignore the ones that aren't <code>&lt;input type="file"&gt;</code>.</p>
+
+<pre>
+	var x = document.getElementsByTagName('input');
+	for (var i=0;i&lt;x.length;i++) {
+		if (x[i].type != 'file') continue;
+</pre>
+
+<p>Yet another check: if the <code>&lt;input type="file"&gt;</code> does not have a parent element with class
+<code>fileinputs</code>, ignore it.</p>
+
+<pre>
+		if (x[i].parentNode.className != 'fileinputs') continue;
+</pre>
+
+<p>Now we've found an <code>&lt;input type="file"&gt;</code> that needs tweaking. First we add "hidden" to its
+class name. I add the advanced styles (opacity and positioning) with this new class, since they might
+conceivably cause problems in old browsers.</p>
+
+<pre>
+		x[i].className = 'file hidden';
+</pre>
+
+<p>Clone the fake field and append it to the <code>&lt;input type="file"&gt;</code>'s parent node.</p>
+
+<pre>
+		var clone = fakeFileUpload.cloneNode(true);
+		x[i].parentNode.appendChild(clone);
+</pre>
+
+<p>Now we've succesfully styled the <code>&lt;input type="file"&gt;</code>. We're not yet ready, though, we have
+to make sure the user sees the path to the file he wants to upload.</p>
+
+<p>First we create a new property for the <code>&lt;input type="file"&gt;</code> that points to the fake input
+field:</p>
+
+<pre>
+		x[i].relatedElement = clone.getElementsByTagName('input')[0];
+</pre>
+
+<p>We use this to easily access the fake field as soon as the user changes the real <code>&lt;input type="file"&gt;</code>
+(ie. selects a file), so that we can copy its value to the fake input field.</p>
+
+<p>A problem here, though: which event do we use? Most natural would seem the <code>change</code> event
+of the file field: if its value changes, the fake input field's value should also change.</p>
+
+<p>Unfortunately Mozilla 1.6 doesn't support the <code>change</code> event on file fields (Firefox
+0.9.3 does, by the way). For Mozilla's sake I also use the <code>mouseout</code> event, which conveniently
+fires only after the user has selected a file. (This also works in Explorer, but not in Safari)</p>
+
+<pre>
+		x[i].onchange = x[i].onmouseout = function () {
+			this.relatedElement.value = this.value;
+		}
+</pre>
+
+<h3>Problems and extensions</h3>
+
+<p>One problem remains: the user can't choose not to upload a file after all.</p>
+
+<p>Suppose the user selects a file, then on second thought decides not to upload it. In a normal
+<code>&lt;input type="file"&gt;</code> he can simply remove the path, and the file won't be uploaded. In our
+example, though, this is very difficult. Try it, it can be done, but it's
+totally counter-intuitive.</p>
+
+<form action="#" class="example">
+<div class="fileinputs">
+	<input type="file" />
+</div>
+</form>
+
+<p>So what we'd like to do is allow the user to select and modify the content of the fake file upload
+and copy all changes to the real file upload.</p>
+
+<p>Allowing selection is somewhat possible. When the user selects any part of the real file upload, we
+select the entire value of the fake file upload.</p>
+
+<pre>
+x[i].onselect = function () {
+	this.relatedElement.select();
+}
+</pre>
+
+<p>Unfortunately, JavaScript security does not allow us to change the value of an <code>&lt;input type="file"&gt;</code>,
+so we can't let the user manually change the fake input. Therefore I decided to entirely leave out
+the <code>onselect</code> event handler.</p>
+
+<p>A possible solution would be to add a "Clear" button to the fake input, which triggers a script that
+entirely trashes the <code>&lt;input type="file"&gt;</code> and creates a new one. It's a bit cumbersome, but
+we might be able to remove the chosen file entirely. I didn't write that part of the script,
+though, so I'm not sure if it would actually work.</p>
+
+<h4>Route the click event</h4>
+
+<p>A reader proposed to remove all the complicated CSS stuff, totally hide the file upload field, and
+route all click events on the fake upload field to the real one. An excellent idea, and much simpler
+than the one described above.</p>
+
+<pre>
+fakeField.onclick = function () {
+	realField.click()
+}
+</pre>
+
+<p>The <code>click()</code> method allows you to simulate a click on a form field. Checkboxes get toggled,
+radios selected, and so on. Unfortunately Mozilla and Opera haven't added this method to file upload
+fields. I wonder why, adding it is not really a security risk since the worst that can happen is that
+the file selection window pops up.</p>
+
+<p>So unfortunately we cannot use this simple solution.</p>
+
+<div id="footer"><a href="https://www.quirksmode.org/home.html">Home</a> <a href="https://www.quirksmode.org/sitemap.html">Sitemap</a>
+<p class="smaller" id="validation">Invalid XHTML 1.0</p>
+</div>
+
+</body>
+
+<!-- Mirrored from www.quirksmode.org/dom/inputfile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Sep 2017 17:30:13 GMT -->
+</html>
